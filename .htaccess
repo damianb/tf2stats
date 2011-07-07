@@ -11,4 +11,10 @@
 	AddType application/javascript .js.gz
 </IfModule>
 
+# we'll handle the errors, thanks
+# (yes, the 403 page will say 404, but guess what - it keeps people from getting too curious)
+ErrorDocument 403 /index.php?page=error
 ErrorDocument 404 /index.php?page=error
+
+# no page indexes!
+Options -Indexes
