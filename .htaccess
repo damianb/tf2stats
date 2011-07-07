@@ -1,0 +1,14 @@
+#
+# Copyright (c) 2010 - 2011 scrii.com
+# Licensed under the GPLv3
+# Available at http://github.com/damianb/tf2stats
+#
+
+# Provide support for gz compressed stylesheets/js files
+<IfModule mime_module>
+	AddEncoding x-gzip .gz .tgz
+	AddType text/css .css.gz
+	AddType application/javascript .js.gz
+</IfModule>
+
+ErrorDocument 404 /index.php?page=error
