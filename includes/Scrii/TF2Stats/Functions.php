@@ -25,12 +25,6 @@ if(!defined('Codebite\\Quartz\\SITE_ROOT')) exit;
 
 function steamIdToSteamCommunity($steam_id)
 {
-	// check if bcmath is loaded
-	if(!\Scrii\TF2Stats\BCMATH_LOADED)
-	{
-		return false;
-	}
-
 	// mmmm regexp
 	$count = preg_match('/STEAM_0:([01]):([0-9]+)/i', $steam_id, $matches);
 	if(!$count)
@@ -43,12 +37,6 @@ function steamIdToSteamCommunity($steam_id)
 
 function steamCommunityToSteamId($steam_community)
 {
-	// check if bcmath is loaded
-	if(!\Scrii\TF2Stats\BCMATH_LOADED)
-	{
-		return false;
-	}
-
 	$c1 = substr($steam_community, -1, 1) % 2 == 0 ? 0 : 1;
 	$c2 = bcsub($steam_community, '76561197960265728');
 	if(bccomp($c2, '0') != 1)

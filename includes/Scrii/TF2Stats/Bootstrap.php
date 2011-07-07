@@ -33,7 +33,6 @@ require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/Functions.php';
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/TF2Stats/Functions.php';
 
 define('Scrii\\TF2Stats\\VERSION', '8.0.0');
-define('Scrii\\TF2Stats\\BCMATH_LOADED', (bool) extension_loaded('bcmath'));
 /**
  * banreason support is disabled by default in this script, as it requires database structure modifications
  * to enable banreason support, use this query, and uncomment the constant declaration line below (remove the //):
@@ -62,6 +61,10 @@ if(@get_magic_quotes_gpc() == 1)
 if(@get_magic_quotes_runtime())
 {
 	throw new \RuntimeException('Web UI will not run with magic_quotes_runtime enabled; please disable magic_quotes_runtime to run the script.');
+}
+if(@extension_loaded('bcmath'))
+{
+	throw new \RuntimeException('Web UI will not run without the bcmath extension; please enable or load the bcmath extension to run the script.');
 }
 if(!$debug)
 {
