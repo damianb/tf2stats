@@ -3,10 +3,10 @@
 	"db.name":"tf2stats",
 	"db.username":"tf2stats",
 	"db.password":"passwordhere",
-	"twig.debug":true,
+	"twig.debug":false,
 	"site.debug":false,
 	"site.use_gzip_assets":true,
 	"page.base_url":"/",
 	"steam.webapikey":"",
-	"steam.groupurl":"http://steamcommunity.com/groups/yourgroupnamehere"
+	"steam.groupurl":"http://steamcommunity.com/groups/yourgroupnamehere/"
 }
