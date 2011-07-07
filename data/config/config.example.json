@@ -1,0 +1,8 @@
+{
+	"db.host":"localhost",
+	"db.name":"tf2stats",
+	"db.username":"tf2stats",
+	"db.password":"passwordhere",
+	"twig.debug":true,
+	"page.base_url":"/tf2/"
+}
