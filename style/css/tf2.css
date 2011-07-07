@@ -46,9 +46,9 @@ div.content { min-height: 370px; }
 
 div#errbox { margin-bottom: 10px; }
 
-.scriiplayer { color: #CFB52B !important; }
-a.scriiplayer, a.scriiplayer:active { color: #CFB52B !important; }
-a.scriiplayer:hover, a.scriiplayer:focus { color: #B26620 !important; }
+.groupplayer { color: #CFB52B !important; }
+a.groupplayer, a.groupplayer:active { color: #CFB52B !important; }
+a.groupplayer:hover, a.groupplayer:focus { color: #B26620 !important; }
 
 /**
  * navigation stuff
@@ -198,7 +198,7 @@ div.profilestats div.item-lastonline { width: 477px; }
 div.profilestats div.statitem div.statitem-title { float: left; font-weight: bold; }
 div.profilestats div.statitem div.statitem-data { float: right; }
 
-h3.scriiplayer {
+h3.groupplayer {
 	font-weight: bold;
 	text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 1px;
 }
@@ -210,7 +210,7 @@ h3.banneduser {
 	text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 1px;
 }
 
-div.scriiplayermarker {
+div.groupplayermarker {
 	font-size: 14px;
 	color: #eee;
 	margin-left: 17px;
@@ -324,21 +324,21 @@ div.table div.tablebody div.tablerow:hover { background-color: #D6D6D6; }
 div.table div.tablebody div.tablerow span:hover { background-color: #D6D6D6; color: #202020; }
 div.table div.tablebody div.tablerow span:hover a, div.table div.tablebody div.tablerow span:hover a:active{ color: #393939; }
 div.table div.tablebody div.tablerow span:hover a:hover, div.table div.tablebody div.tablerow span:hover a:focus { color: #202020; }
-/* scrii member fix */
-div.table div.tablebody div.tablerow span a.scriiplayer { font-weight: bold; }
-div.table div.tablebody div.tablerow span:hover a.scriiplayer, div.table div.tablebody div.tablerow span:hover a.scriiplayer:active{ color: #9B5517 !important; }
-div.table div.tablebody div.tablerow span:hover a.scriiplayer:hover, div.table div.tablebody div.tablerow span:hover a.scriiplayer:focus{ color: #BF6D26 !important; }
+/* group member fix */
+div.table div.tablebody div.tablerow span a.groupplayer { font-weight: bold; }
+div.table div.tablebody div.tablerow span:hover a.groupplayer, div.table div.tablebody div.tablerow span:hover a.groupplayer:active{ color: #9B5517 !important; }
+div.table div.tablebody div.tablerow span:hover a.groupplayer:hover, div.table div.tablebody div.tablerow span:hover a.groupplayer:focus{ color: #BF6D26 !important; }
 /* banned users */
 div.table div.tablebody div.tablerow span a.banneduser { color: #a00; font-weight: bold; text-decoration: line-through; }
 div.table div.tablebody div.tablerow span:hover a.banneduser, div.table div.tablebody div.tablerow span:hover a.banneduser:active{ color: #8E0200 !important; }
 div.table div.tablebody div.tablerow span:hover a.banneduser:hover, div.table div.tablebody div.tablerow span:hover a.banneduser:focus{ color: #EA0000 !important; }
 
-div.top10 div span.column-rank, div.topscrii div span.column-rank, div.ranking div span.column-rank { width: 60px; text-align: center; font-weight: bold; }
-div.top10 div span.column-name, div.topscrii div span.column-name, div.ranking div span.column-name { width: 200px; }
-div.top10 div span.column-name a, div.topscrii div span.column-name a, div.ranking div span.column-name a { display: inline-block; margin-left: 4px; }
-div.top10 div span.column-points, div.topscrii div span.column-points, div.ranking div span.column-points { width: 67px; text-align: center; }
-div.top10 div span.column-playtime, div.topscrii div span.column-playtime, div.ranking div span.column-playtime { width: 150px; text-align: center; }
-div.top10 div span.column-lastonline, div.topscrii div span.column-lastonline, div.ranking div span.column-lastonline { width: 260px; text-align: center; }
+div.top10 div span.column-rank, div.topgroup div span.column-rank, div.ranking div span.column-rank { width: 60px; text-align: center; font-weight: bold; }
+div.top10 div span.column-name, div.topgroup div span.column-name, div.ranking div span.column-name { width: 200px; }
+div.top10 div span.column-name a, div.topgroup div span.column-name a, div.ranking div span.column-name a { display: inline-block; margin-left: 4px; }
+div.top10 div span.column-points, div.topgroup div span.column-points, div.ranking div span.column-points { width: 67px; text-align: center; }
+div.top10 div span.column-playtime, div.topgroup div span.column-playtime, div.ranking div span.column-playtime { width: 150px; text-align: center; }
+div.top10 div span.column-lastonline, div.topgroup div span.column-lastonline, div.ranking div span.column-lastonline { width: 260px; text-align: center; }
 
 div.profileactions div span.column-actionname { width: 200px; text-align: center; font-weight: bold; }
 div.profileactions div span.column-actioncount { width: 65px; text-align: center; }
