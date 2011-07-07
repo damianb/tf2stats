@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+	tf2 stats web ui {{ SCRII_TF2_VERSION }}
+	Copyright (c) 2010 - 2011 scrii.com
+	Licensed under the GPLv3
+	Available at http://github.com/damianb/tf2stats
+-->
+<html lang="en-us">
+<head>
+	<meta charset="utf-8" />
+	<title>{% block title %}team fortress 2 server rankings{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{% if use_gzip_content %}{{ asset.css.grid_min }}{% else %}{{ asset.css.grid }}{% endif %}" />
+	<link rel="stylesheet" type="text/css" href="{% if use_gzip_content %}{{ asset.css.common_min }}{% else %}{{ asset.css.common }}{% endif %}" />
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold&amp;v1' rel='stylesheet' type='text/css'>
+	<script type="text/javascript" src="{% if use_gzip_content %}{{ asset.js.jquery_min }}{% else %}{{ asset.js.jquery }}{% endif %}"></script>
+	<script type="text/javascript" src="{{ asset.js.common }}"></script>
+</head>
+<body>
+	<div class="container_12 wrap">
+		<div class="grid_10 prefix_1 suffix_1">
+			<header>
+				<h1>Team Fortress 2 server rankings</h1>
+				<nav>
+					<a href="{{ url.groupRanking() }}">member rankings</a>
+					<a href="{{ url.top10() }}">top 10 players</a>
+					<a href="{{ url.serverRanking(1) }}">full server rankings</a>
+				</nav>
+			</header>
+
+			<div class="content">
+				{% block content %}<!-- ASDF -->{% endblock %}
+			</div>
+
+			<footer>
+				tf2 stats web ui {{ SCRII_TF2_VERSION }} &copy; 2011 <a href="http://scrii.com/">scrii.com</a> | <a href="http://steampowered.com">powered by steam</a> | page generation time: {{ timer.mark('end') }} s
+			</footer>
+		</div>
+		<div class="clear"></div>
+	</div>
+</body>
+</html>

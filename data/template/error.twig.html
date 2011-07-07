@@ -1,0 +1,10 @@
+{% extends "layout.twig.html" %}
+{% block title %}error {{ error_code }} - {{ parent() }}{% endblock %}
+{% block content %}
+	<img class="errorimage" src="{{ asset.image.shana_error }}" alt="Shana asks you to spare her the excuses." title="Shana asks you to spare her the excuses." />
+
+	<div class="errordetails">
+		<span class="errorcode">error:{{ error_code}}</span><br />
+		<span class="errordesc">Server error {{ error_string }}</span>
+	</div>
+{% endblock %}
