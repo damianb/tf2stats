@@ -8,7 +8,7 @@
  * @category    tf2stats-webui
  * @package     tf2stats-webui
  * @author      Damian Bushong
- * @copyright   (c) 2010 - 2011 scrii.com
+ * @copyright   (c) 2011 scrii.com
  * @license     GPLv3
  *
  *===================================================================
