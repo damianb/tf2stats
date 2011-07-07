@@ -32,7 +32,7 @@ require \Scrii\TF2Stats\ROOT_PATH . '/Codebite/Quartz/Bootstrap.php';
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/Functions.php';
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/TF2Stats/Functions.php';
 
-define('Scrii\\TF2Stats\\VERSION', '8.0.0');
+define('Scrii\\TF2Stats\\VERSION', '1.0.0');
 /**
  * banreason support is disabled by default in this script, as it requires database structure modifications
  * to enable banreason support, use this query, and uncomment the constant declaration line below (remove the //):
@@ -54,7 +54,7 @@ if(@ini_get('register_globals'))
 {
 	throw new \RuntimeException('Web UI will not run with register_globals enabled; please disable register_globals to run the script.');
 }
-if(@get_magic_quotes_gpc() == 1)
+if(@get_magic_quotes_gpc())
 {
 	throw new \RuntimeException('Web UI will not run with magic_quotes_gpc enabled; please disable magic_quotes_gpc to run the script.');
 }
@@ -62,7 +62,7 @@ if(@get_magic_quotes_runtime())
 {
 	throw new \RuntimeException('Web UI will not run with magic_quotes_runtime enabled; please disable magic_quotes_runtime to run the script.');
 }
-if(@extension_loaded('bcmath'))
+if(!@extension_loaded('bcmath'))
 {
 	throw new \RuntimeException('Web UI will not run without the bcmath extension; please enable or load the bcmath extension to run the script.');
 }
@@ -78,6 +78,10 @@ if(Core::getConfig('site.debug') == true)
 	@error_reporting(E_ALL);
 	ExceptionHandler::enableDebug();
 }
+if(!defined('Scrii\\TF2Stats\\ENABLE_BANREASON'))
+{
+	define('Scrii\\TF2Stats\\ENABLE_BANREASON', false);
+}
 
 /**
  * Define some of our own injectors
@@ -92,7 +96,10 @@ $injector->setInjector('db', function() {
 	$options = array(
 		\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
 	);
-	return DbalConnection::getInstance()->connect($dsn, $username, $password, $options);
+	$connection = DbalConnection::getInstance()
+		->connect($dsn, $username, $password, $options);
+
+	return $connection;
 });
 
 $injector->setInjector('simplerouter', function() {
@@ -109,6 +116,7 @@ $injector->setInjector('steamgroup', function() {
 	}
 
 	$steam = new \Scrii\Steam\Group($group_url, $web_api_key);
+
 	return $steam;
 });
 
@@ -119,7 +127,8 @@ $injector->setInjector('steamgroup', function() {
  // Remove the PHP X-Powered-By header to help deter vuln sniffing
 $dispatcher->register('page.headers.send', 5, function(Event $event) use($injector) {
 	$header_manager = $injector->get('header');
-	$header_manager->removeHeader('X-Powered-By');
+	$header_manager->removeHeader('X-Powered-By')
+		->setHeader('X-App-Version', 'scrii tf2 stats web ui ' . \Scrii\TF2Stats\VERSION);
 });
 
 /**
@@ -140,9 +149,15 @@ $dispatcher->register('page.assets.define', 5, function(Event $event) use($injec
 		'js'	=> array(
 			'jquery'		=> 'jquery-1.6.2.min.js',
 			'jquery_min'	=> 'jquery-1.6.2.min.js.gz',
-			// @note: reason we're using only external JS is to make it easy to support CSP in the future
-			// see: https://developer.mozilla.org/en/introducing_content_security_policy
-			// (CSP is only supported in Firefox 4 and above - no other browser implements CSP at this time)
+
+			/**
+			 * @note: reason all JS is isolated into an external file is to make it easy to support CSP (Content Security Policy) in the future
+			 * see: https://developer.mozilla.org/en/introducing_content_security_policy
+			 *
+			 * CSP is only fully supported in Firefox 4 and above; no other browser fully implements CSP at this time
+			 * Some experimental support for CSP has been added in Chromium 13, however it is not yet completely supported
+			 * The CSP implementation in Chromium also uses a different (proprietary) header, so it must be addressed/supported separately.
+			 */
 			'common'	=> 'tf2.js',
 		),
 		'image' => array(
@@ -188,27 +203,23 @@ $dispatcher->register('page.prepare', 0, function(Event $event) use($injector) {
 
 	$router->newRoute('error', '\\Scrii\\TF2Stats\\Page\\Instance\\Error');
 	$router->newRoute('home', '\\Scrii\TF2Stats\Page\Instance\\Home');
-	$router->newRoute('scrii', '\\Scrii\TF2Stats\Page\Instance\\Home');
+	$router->newRoute('group', '\\Scrii\TF2Stats\Page\Instance\\Home');
 	$router->newRoute('player', '\\Scrii\TF2Stats\Page\Instance\\Player');
 	$router->newRoute('list', '\\Scrii\TF2Stats\Page\Instance\\ListPlayers');
 	$router->newRoute('top10', '\\Scrii\TF2Stats\Page\Instance\\Top10');
 
 	$url->setBaseURL($asset_manager->getBaseURL());
 	$url->newPattern('playerProfile', '?page=player&steam=%s');
-	$url->newPattern('scriiRanking', '?page=scrii');
+	$url->newPattern('groupRanking', ''); // URL looks nicer this way :D
+	//$url->newPattern('groupRanking', '?page=group');
 	$url->newPattern('serverRanking', '?page=list&p=%d');
 	$url->newPattern('top10', '?page=top10');
 
 	$template->assignVar('SCRII_TF2_VERSION', \Scrii\TF2Stats\VERSION);
+	$template->assignVar('use_gzip_content', Core::getConfig('site.use_gzip_assets'));
 
 	$dispatcher->trigger(Event::newEvent('page.headers.snag'));
 	$dispatcher->trigger(Event::newEvent('page.assets.define'));
-});
-
-$dispatcher->register('page.assets.define', 18, function(Event $event) use($injector) {
-    $twig = $injector->get('twig');
-	$twig_env = $twig->getTwigEnvironment();
-	$twig_env->addGlobal('url', $injector->get('url_proxy'));
 });
 
 // Execute the page logic
