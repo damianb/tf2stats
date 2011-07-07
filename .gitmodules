@@ -1,0 +1,12 @@
+[submodule "includes/Codebite/Quartz"]
+	path = includes/Codebite/Quartz
+	url = git://github.com/damianb/Quartz.git
+[submodule "includes/OpenFlame/Framework"]
+	path = includes/OpenFlame/Framework
+	url = git://github.com/damianb/OpenFlame-Framework.git
+[submodule "includes/vendor/Twig"]
+	path = includes/vendor/Twig
+	url = git://github.com/fabpot/Twig.git
+[submodule "includes/OpenFlame/Dbal"]
+	path = includes/OpenFlame/Dbal
+	url = git://github.com/OpenFlame/OpenFlame-Dbal.git
