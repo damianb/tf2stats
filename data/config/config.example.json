@@ -4,5 +4,7 @@
 	"db.username":"tf2stats",
 	"db.password":"passwordhere",
 	"twig.debug":true,
-	"page.base_url":"/tf2/"
+	"page.base_url":"/tf2/",
+	"steam.webapikey":"",
+	"steam.groupurl":"http://steamcommunity.com/groups/yourgroupnamehere"
 }
