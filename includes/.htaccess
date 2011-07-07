@@ -1,0 +1,5 @@
+ErrorDocument 403 /index.php?page=error
+ErrorDocument 404 /index.php?page=error
+
+Order Allow,Deny
+Deny from All
