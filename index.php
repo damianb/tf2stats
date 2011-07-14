@@ -48,6 +48,7 @@ $dispatcher = $injector->get('dispatcher');
  * - Prepare page elements (assets, routes, language file stuff, etc.)
  * - Execute page handling logic & display the page!
  */
+$dispatcher->triggerUntilBreak(Event::newEvent('db.mysql.connect'));
 $dispatcher->triggerUntilBreak(Event::newEvent('page.prepare'));
 $dispatcher->triggerUntilBreak(Event::newEvent('page.execute'));
 $dispatcher->triggerUntilBreak(Event::newEvent('page.display'));
