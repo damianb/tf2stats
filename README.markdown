@@ -81,3 +81,6 @@ There's one somewhere in it.  ;)
 ## todo
 
 * Package and distribute the app with the the OpenFlame Framework,  OpenFlame Dbal, and Quartz contained in OpenSSL-signed phar packages.
+* Timezone should be set in config file
+* Move array of "weapon kill" data in Player controller to own json file for easy updating
+* Update for new changes to Quartz
