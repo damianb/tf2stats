@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2010 - 2011 scrii.com
+# Copyright (c) 2011 scrii.com
 # Licensed under the GPLv3
 # Available at http://github.com/damianb/tf2stats
 #
@@ -18,3 +18,18 @@ ErrorDocument 404 /index.php?page=error
 
 # no page indexes!
 Options -Indexes
+
+<IfModule mod_rewrite>
+	# let us know in-script that mod rewrite is in use
+	SetEnv USING_MOD_REWRITE On
+
+	# enable mod_rewrite!
+	RewriteEngine On
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule . index.php [L]
+
+	# change the error documents accordingly
+	ErrorDocument 403 /error/
+	ErrorDocument 404 /error/
+</IfModule>
