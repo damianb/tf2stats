@@ -45,11 +45,11 @@ define('Scrii\\TF2Stats\\VERSION', '1.0.1-dev');
  * Idiot checks...make sure stupid settings aren't being used.
  * Under no circumstances should these checks be removed.
  */
-$debug = ExceptionHandler::getDebugState();
-if(!$debug)
-{
-	ExceptionHandler::enableDebug();
-}
+$debug = Core::getConfig('site.debug') ?: false;
+$injector = Injector::getInstance();
+$dispatcher = $injector->get('dispatcher');
+$dispatcher->trigger(Event::newEvent('debug.enable'));
+
 if(@ini_get('register_globals'))
 {
 	throw new \RuntimeException('Web UI will not run with register_globals enabled; please disable register_globals to run the script.');
@@ -68,16 +68,9 @@ if(!@extension_loaded('bcmath'))
 }
 if(!$debug)
 {
-	ExceptionHandler::disableDebug();
+	$dispatcher->trigger(Event::newEvent('debug.disable'));
 }
 
-// debug modo
-if(Core::getConfig('site.debug') == true)
-{
-	@ini_set("display_errors", "On");
-	@error_reporting(E_ALL);
-	ExceptionHandler::enableDebug();
-}
 if(!defined('Scrii\\TF2Stats\\ENABLE_BANREASON'))
 {
 	define('Scrii\\TF2Stats\\ENABLE_BANREASON', false);
@@ -86,8 +79,6 @@ if(!defined('Scrii\\TF2Stats\\ENABLE_BANREASON'))
 /**
  * Define some of our own injectors
  */
-
-$injector = Injector::getInstance();
 
 $injector->setInjector('db', function() {
 	$dsn = 'mysql:host=' . (Core::getConfig('db.host') ?: 'localhost') . ';dbname=' . (Core::getConfig('db.name') ?: 'tf2stats');
@@ -141,12 +132,14 @@ $dispatcher->register('page.assets.define', 5, function(Event $event) use($dispa
 });
 
 // Prepare page elements (assets, routes, language file stuff, etc.)
-$dispatcher->register('page.prepare', 0, function(Event $event) use($injector) {
-	$dispatcher = $injector->get('dispatcher');
+$dispatcher->register('page.prepare', 0, function(Event $event) use($injector, $dispatcher) {
 	$router = $injector->get('simplerouter');
 	$url = $injector->get('url_builder');
 	$asset_manager = $injector->get('asset');
 	$template = $injector->get('template');
+
+	// @todo split route loading into own event
+	// @todo split url pattern definition into own event
 
 	$router->newRoute('error', '\\Scrii\\TF2Stats\\Page\\Instance\\Error');
 	$router->newRoute('home', '\\Scrii\TF2Stats\Page\Instance\\Home');
@@ -174,7 +167,6 @@ $dispatcher->register('page.execute', 5, function(Event $event) use($injector) {
 	$input = $injector->get('input');
 	$router = $injector->get('simplerouter');
 	$dispatcher = $injector->get('dispatcher');
-	$db = $injector->get('db');
 
 	$p = $input->getInput('GET::page', 'home')
 		->disableFieldJuggling()
