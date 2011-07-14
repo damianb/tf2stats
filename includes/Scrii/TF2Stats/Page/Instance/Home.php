@@ -76,7 +76,7 @@ class Home extends \Scrii\TF2Stats\Page\Base
 				$row['playspan'] = $interval->format('%i minutes');
 			}
 			$row['steamid64'] = \Scrii\TF2Stats\steamIdToSteamCommunity($row['STEAMID']);
-			$row['ismember'] = in_array($row['steamid64'], $steam->members) ? true : false;
+			$row['ismember'] = in_array($row['steamid64'], $steam->members, true) ? true : false;
 
 			$online = new \DateTime('@' . $row['LASTONTIME']);
 			$online->setTimeZone($timezone);
