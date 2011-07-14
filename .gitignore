@@ -3,3 +3,4 @@ cache/twig/*
 !cache/twig/.keep
 cache/*.tmp
 data/config/config.json
+package/*
