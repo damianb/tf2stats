@@ -119,6 +119,7 @@ $injector->setInjector('steamgroup', function() {
 $dispatcher->register('page.headers.send', 5, function(Event $event) use($injector) {
 	$header_manager = $injector->get('header');
 	$header_manager->removeHeader('X-Powered-By')
+		->setHeader('X-Frame-Options', 'DENY') // NO FRAMES.
 		->setHeader('X-App-Version', 'scrii tf2 stats web ui ' . \Scrii\TF2Stats\VERSION);
 });
 
