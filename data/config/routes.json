@@ -1,0 +1,38 @@
+{
+	"site.routes":{
+		"home":{
+			"path":"\/home\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Home::newRoutedInstance"
+		},
+		"error":{
+			"path":"\/error\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Error::newRoutedInstance"
+		},
+		"errorid":{
+			"path":"\/error\/$error:int\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Error::newRoutedInstance"
+		},
+
+		# dynamic pages
+		"group":{
+			"path":"\/group\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Home::newRoutedInstance"
+		},
+		"player":{
+			"path":"\/player\/$playerid:str\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Player::newRoutedInstance"
+		},
+		"list":{
+			"path":"\/list\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\ListPlayers::newRoutedInstance"
+		},
+		"listpage":{
+			"path":"\/list\/$page:int\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\ListPlayers::newRoutedInstance"
+		},
+		"top10":{
+			"path":"\/top10\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Top10::newRoutedInstance"
+		}
+	}
+}
