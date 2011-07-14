@@ -42,6 +42,11 @@ define('Scrii\\TF2Stats\\VERSION', '1.0.1-dev');
 //define('Scrii\\TF2Stats\\ENABLE_BANREASON', true);
 
 /**
+ * Check to see if URL rewriting support is enabled and in use.
+ */
+define('Scrii\\TF2Stats\\REWRITING_ENABLED', (@getenv('HTTP_USING_MOD_REWRITE') == 'On' ? true : false));
+
+/**
  * Idiot checks...make sure stupid settings aren't being used.
  * Under no circumstances should these checks be removed.
  */
@@ -79,19 +84,6 @@ if(!defined('Scrii\\TF2Stats\\ENABLE_BANREASON'))
 /**
  * Define some of our own injectors
  */
-
-$injector->setInjector('db', function() {
-	$dsn = 'mysql:host=' . (Core::getConfig('db.host') ?: 'localhost') . ';dbname=' . (Core::getConfig('db.name') ?: 'tf2stats');
-	$username = Core::getConfig('db.username') ?: 'tf2stats';
-	$password = Core::getConfig('db.password') ?: '';
-	$options = array(
-		\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
-	);
-	$connection = DbalConnection::getInstance()
-		->connect($dsn, $username, $password, $options);
-
-	return $connection;
-});
 
 $injector->setInjector('simplerouter', function() {
 	return new \Scrii\TF2Stats\Router\SimpleRouter();
@@ -132,6 +124,17 @@ $dispatcher->register('page.assets.define', 5, function(Event $event) use($dispa
 	$dispatcher->triggerUntilBreak(Event::newEvent('page.assets.autodefine'));
 });
 
+$dispatcher->register('page.simpleroutes.load', 0, function(Event $event) use($injector) {
+	$router = $injector->get('simplerouter');
+
+	$router->newRoute('home', '\\Scrii\TF2Stats\Page\Instance\\Home');
+	$router->newRoute('error', '\\Scrii\\TF2Stats\\Page\\Instance\\Error');
+	$router->newRoute('group', '\\Scrii\TF2Stats\Page\Instance\\Home');
+	$router->newRoute('player', '\\Scrii\TF2Stats\Page\Instance\\Player');
+	$router->newRoute('list', '\\Scrii\TF2Stats\Page\Instance\\ListPlayers');
+	$router->newRoute('top10', '\\Scrii\TF2Stats\Page\Instance\\Top10');
+});
+
 // Prepare page elements (assets, routes, language file stuff, etc.)
 $dispatcher->register('page.prepare', 0, function(Event $event) use($injector, $dispatcher) {
 	$router = $injector->get('simplerouter');
@@ -139,15 +142,15 @@ $dispatcher->register('page.prepare', 0, function(Event $event) use($injector, $
 	$asset_manager = $injector->get('asset');
 	$template = $injector->get('template');
 
-	// @todo split route loading into own event
+	if(\Scrii\TF2Stats\REWRITING_ENABLED)
+	{
+		// @todo rewriting router here
+	}
+	else
+	{
+		$dispatcher->trigger(Event::newEvent('page.simpleroutes.load'));
+	}
 	// @todo split url pattern definition into own event
-
-	$router->newRoute('error', '\\Scrii\\TF2Stats\\Page\\Instance\\Error');
-	$router->newRoute('home', '\\Scrii\TF2Stats\Page\Instance\\Home');
-	$router->newRoute('group', '\\Scrii\TF2Stats\Page\Instance\\Home');
-	$router->newRoute('player', '\\Scrii\TF2Stats\Page\Instance\\Player');
-	$router->newRoute('list', '\\Scrii\TF2Stats\Page\Instance\\ListPlayers');
-	$router->newRoute('top10', '\\Scrii\TF2Stats\Page\Instance\\Top10');
 
 	$url->setBaseURL($asset_manager->getBaseURL());
 	$url->newPattern('playerProfile', '?page=player&steam=%s');
