@@ -21,7 +21,7 @@ Options -Indexes
 
 <IfModule mod_rewrite>
 	# let us know in-script that mod rewrite is in use
-	SetEnv USING_MOD_REWRITE On
+	SetEnv HTTP_USING_MOD_REWRITE On
 
 	# enable mod_rewrite!
 	RewriteEngine On
