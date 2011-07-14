@@ -84,3 +84,4 @@ There's one somewhere in it.  ;)
 * Timezone should be set in config file
 * Move array of "weapon kill" data in Player controller to own json file for easy updating
 * Update for new changes to Quartz
+* Update for changes to autoloader
