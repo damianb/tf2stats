@@ -22,14 +22,14 @@ use OpenFlame\Framework\Event\Instance as Event;
 use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 
 // Required constants for Quartz and OpenFlame Framework
-define('Codebite\\Quartz\\SITE_ROOT', dirname(__FILE__));
+define('Codebite\\Quartz\\SITE_ROOT', __DIR__);
+// @deprecated
 define('OpenFlame\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
 define('Scrii\\TF2Stats\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
 
 // Load the OpenFlame Framework autoloader
 require \Scrii\TF2Stats\ROOT_PATH . '/OpenFlame/Framework/Autoloader.php';
 $autoloader = Autoloader::register(\Scrii\TF2Stats\ROOT_PATH);
-Core::setObject('autoloader', $autoloader);
 
 ExceptionHandler::register();
 ExceptionHandler::setUnwrapCount(2);
@@ -48,6 +48,6 @@ $dispatcher = $injector->get('dispatcher');
  * - Prepare page elements (assets, routes, language file stuff, etc.)
  * - Execute page handling logic & display the page!
  */
-$dispatcher->triggerUntilBreak(Event::newEvent('services.load'));
 $dispatcher->triggerUntilBreak(Event::newEvent('page.prepare'));
 $dispatcher->triggerUntilBreak(Event::newEvent('page.execute'));
+$dispatcher->triggerUntilBreak(Event::newEvent('page.display'));
