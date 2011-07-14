@@ -136,61 +136,8 @@ $dispatcher->register('page.headers.send', 5, function(Event $event) use($inject
  */
 
 // Add in our own assets.
-$dispatcher->register('page.assets.define', 5, function(Event $event) use($injector) {
-	$asset_manager = $injector->get('asset');
-
-	$assets = array(
-		'css'	=> array(
-			'grid'			=> '960.min.css',
-			'grid_min'		=> '960.min.css.gz',
-			'common'		=> 'tf2.css',
-			'common_min'	=> 'tf2.min.css.gz',
-		),
-		'js'	=> array(
-			'jquery'		=> 'jquery-1.6.2.min.js',
-			'jquery_min'	=> 'jquery-1.6.2.min.js.gz',
-
-			/**
-			 * @note: reason all JS is isolated into an external file is to make it easy to support CSP (Content Security Policy) in the future
-			 * see: https://developer.mozilla.org/en/introducing_content_security_policy
-			 *
-			 * CSP is only fully supported in Firefox 4 and above; no other browser fully implements CSP at this time
-			 * Some experimental support for CSP has been added in Chromium 13, however it is not yet completely supported
-			 * The CSP implementation in Chromium also uses a different (proprietary) header, so it must be addressed/supported separately.
-			 */
-			'common'	=> 'tf2.js',
-		),
-		'image' => array(
-			'shana_error'	=> 'shana_error.jpg',
-			'killicon'		=> 'killicon/Killicon_',
-			'bannedavvy'	=> 'banavatar.png',
-		),
-	);
-
-	if(isset($assets['css']) && !empty($assets['css']))
-	{
-		foreach($assets['css'] as $asset_name => $asset_url)
-		{
-			$asset_manager->registerCSSAsset($asset_name)
-				->setURL('/style/css/' . $asset_url);
-		}
-	}
-	if(isset($assets['js']) && !empty($assets['js']))
-	{
-		foreach($assets['js'] as $asset_name => $asset_url)
-		{
-			$asset_manager->registerJSAsset($asset_name)
-				->setURL('/style/js/' . $asset_url);
-		}
-	}
-	if(isset($assets['image']) && !empty($assets['image']))
-	{
-		foreach($assets['image'] as $asset_name => $asset_url)
-		{
-			$asset_manager->registerImageAsset($asset_name)
-				->setURL('/style/img/' . $asset_url);
-		}
-	}
+$dispatcher->register('page.assets.define', 5, function(Event $event) use($dispatcher) {
+	$dispatcher->triggerUntilBreak(Event::newEvent('page.assets.autodefine'));
 });
 
 // Prepare page elements (assets, routes, language file stuff, etc.)
@@ -236,7 +183,6 @@ $dispatcher->register('page.execute', 5, function(Event $event) use($injector) {
 
 	Core::setObject('page', $page);
 	$page->executePage();
-	$dispatcher->triggerUntilBreak(Event::newEvent('page.display'));
 
 	// override the other listener
 	$event->breakTrigger();
