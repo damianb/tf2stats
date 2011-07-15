@@ -5,7 +5,7 @@
 	"db.password":"passwordhere",
 	"twig.debug":false,
 	"site.debug":false,
-	"site.use_gzip_assets":true,
+	"site.use_gzip_assets":false,
 	"site.timezone":"America\/New_York",
 	"page.base_url":"/",
 	"steam.webapikey":"",
