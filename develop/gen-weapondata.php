@@ -84,7 +84,7 @@ $weapons = array(
 	array('Deflected Arrow', 'KW_deflect_arrow', 'deflect_arrow.png'),
 	array('Deflected Flare', 'KW_deflect_flare', 'deflect_flare.png'),
 	array('Deflected Rocket', 'KW_deflect_rocket', 'deflect_rocket.png'),
-	//array('NOT A BLOODY CLUE', 'KW_deflect_promode', 'deflect_.png'),
+	array('Deflected Grenade', 'KW_deflect_promode', 'deflect_grenade.png'),
 	array('Deflected Stickybomb', 'KW_deflect_sticky', 'deflect_sticky.png'),
 	array('Hadouken Tauntkill', 'KW_taunt_pyro', 'hadouken.png'),
 	array('The Axtinguisher', 'KW_Axtinguisher', 'axtinguisher.png'),
