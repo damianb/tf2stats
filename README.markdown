@@ -78,8 +78,20 @@ Also, please note that the "powered by steam" text and link in the footer may no
 
 There's one somewhere in it.  ;)
 
+## troubleshooting
+
+### enabling pretty urls
+
+asdf
+
+### enabling compressed stylesheets/js files
+
+asdf
+
+ ubuntu: `/etc/apache2/mods-available/mime.conf`
+ `AddEncoding x-gzip .gz .tgz`
+ `#AddType application/x-gzip .gz .tgz`
+
 ## todo
 
 * Package and distribute the app with the the OpenFlame Framework,  OpenFlame Dbal, and Quartz contained in OpenSSL-signed phar packages.
-* Timezone should be set in config file
-* Update for new changes to Quartz
