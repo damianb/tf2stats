@@ -23,6 +23,7 @@
 		"image":{
 			"shana_error":"shana_error.jpg",
 			"killicon":"killicon/Killicon_",
+			"noavvy":"noavatar.png",
 			"bannedavvy":"banavatar.png"
 		}
 	}

@@ -3,7 +3,7 @@
 {% block content %}
 	<div class="profilecard">
 		<div class="profilecard-left">
-			<img src="{% if playerdata.is_banned %}{{ asset.image.bannedavvy }}{% else %}{{ playerdata.profile.avatarfull }}{% endif %}" class="steamavatarfull" alt="Steam avatar" title="Steam avatar" />
+			<img src="{% if playerdata.is_banned %}{{ asset.image.bannedavvy }}{% else %}{% if playerdata.profile.avatarfull %}{{ playerdata.profile.avatarfull }}{% else %}{{ asset.image.noavvy }}{% endif %}{% endif %}" class="steamavatarfull" alt="Steam avatar" title="Steam avatar" />
 		</div>
 		<div class="profilecard-right">
 			<h3 class="playername{% if group_member and not playerdata.is_banned %} groupplayer{% endif %}{% if playerdata.is_banned %} banneduser{% endif %}" title="{{ playerdata.playername_full }}">{{ playerdata.playername_trim }}</h3>
