@@ -15,7 +15,7 @@
  *
  */
 
-namespace Scrii;
+namespace Scrii\TF2Stats;
 use OpenFlame\Framework\Core;
 use OpenFlame\Framework\Event\Instance as Event;
 use OpenFlame\Framework\Dependency\Injector;
@@ -44,7 +44,7 @@ define('Scrii\\TF2Stats\\VERSION', '1.0.1-dev');
 /**
  * Check to see if URL rewriting support is enabled and in use.
  */
-define('Scrii\\TF2Stats\\REWRITING_ENABLED', (@getenv('HTTP_USING_MOD_REWRITE') == 'On' ? true : false));
+define('Scrii\\TF2Stats\\REWRITING_ENABLED', (getenv('HTTP_USING_MOD_REWRITE') == 'On' ? true : false));
 
 /**
  * Idiot checks...make sure stupid settings aren't being used.
@@ -128,11 +128,11 @@ $dispatcher->register('page.routes.load', 10, function(Event $event) use($inject
 	$url = $injector->get('url_builder');
 
 	$url->newPattern('groupRanking', ''); // URL looks nicer this way :D
-	//$url->newPattern('groupRanking', '?page=group');
-	$url->newPattern('playerProfile', '?page=player&steam=%s');
-	$url->newPattern('serverRanking', '?page=list');
-	$url->newPattern('serverRankingPage', '?page=list&p=%d');
-	$url->newPattern('top10', '?page=top10');
+	//$url->newPattern('groupRanking', 'group/');
+	$url->newPattern('playerProfile', 'player/%s/');
+	$url->newPattern('serverRanking', 'list/');
+	$url->newPattern('serverRankingPage', 'list/%d/');
+	$url->newPattern('top10', 'top10/');
 });
 
 $dispatcher->register('page.simpleroutes.load', 5, function(Event $event) use($injector) {
@@ -150,11 +150,11 @@ $dispatcher->register('page.simpleroutes.load', 10, function(Event $event) use($
 	$url = $injector->get('url_builder');
 
 	$url->newPattern('groupRanking', ''); // URL looks nicer this way :D
-	//$url->newPattern('groupRanking', 'group/');
-	$url->newPattern('playerProfile', 'player/%s/');
-	$url->newPattern('serverRanking', 'list/');
-	$url->newPattern('serverRankingPage', 'list/%d/');
-	$url->newPattern('top10', 'top10/');
+	//$url->newPattern('groupRanking', '?page=group');
+	$url->newPattern('playerProfile', '?page=player&steam=%s');
+	$url->newPattern('serverRanking', '?page=list');
+	$url->newPattern('serverRankingPage', '?page=list&p=%d');
+	$url->newPattern('top10', '?page=top10');
 });
 
 // Prepare page elements (assets, routes, language file stuff, etc.)
