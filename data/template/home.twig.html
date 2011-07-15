@@ -1,6 +1,7 @@
 {% extends "layout.twig.html" %}
 {% block title %}top group members - {{ parent() }}{% endblock %}
 {% block content %}
+	{% if not unavailable %}
 	<div class="table topgroup">
 		<div class="tableheader">
 			<span class="column-rank lead">Rank</span>
@@ -25,4 +26,7 @@
 		{% endfor %}
 		</div>
 	</div>
+	{% else %}
+		Steam group member data currently unavailable, please check back in a few minutes.
+	{% endif %}
 {% endblock %}

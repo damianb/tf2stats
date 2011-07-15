@@ -60,7 +60,7 @@ class Group
 		if($steam_data === NULL)
 		{
 			$xml = false;
-			$xml_string = file_get_contents(rtrim($this->steam_group_url, '/') . '/memberslistxml/?xml=1');
+			$xml_string = @file_get_contents(rtrim($this->steam_group_url, '/') . '/memberslistxml/?xml=1');
 
 			// suppress xml parsing errors
 			libxml_use_internal_errors(true);

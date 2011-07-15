@@ -210,8 +210,19 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		$data['friendlink'] = 'steam://friends/add/' . $steam_cid;
 		$data['is_banned'] = (isset($row['BANREASON']) && $row['BANREASON'] != '') ? true : false;
 		$data['banreason'] = (isset($row['BANREASON'])) ? $row['BANREASON'] : '';
-		$data['playername_trim'] = (strlen($data['profile']['personaname']) > 23) ? substr($data['profile']['personaname'], 0, 19) . ' [...]' : $data['profile']['personaname'];
-		$data['playername_full'] = $data['profile']['personaname'];
+
+		// in case steam community mucks up
+		if($data['profile']['personaname'])
+		{
+			$data['playername_trim'] = (strlen($data['profile']['personaname']) > 23) ? substr($data['profile']['personaname'], 0, 19) . ' [...]' : $data['profile']['personaname'];
+			$data['playername_full'] = $data['profile']['personaname'];
+		}
+		else
+		{
+			$data['playername_trim'] = (strlen($row['NAME']) > 23) ? substr($row['NAME'], 0, 19) . ' [...]' : $row['NAME'];
+			$data['playername_full'] = $row['NAME'];
+		}
+
 
 		// Dump vars to template now
 		$template->assignVars(array(

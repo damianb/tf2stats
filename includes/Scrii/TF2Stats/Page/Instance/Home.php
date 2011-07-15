@@ -51,6 +51,11 @@ class Home extends \Scrii\TF2Stats\Page\Base
 			$where[] = $steamid;
 		}
 
+		if($steam->unavailable === true)
+		{
+			$template->assignVar('unavailable', true);
+		}
+
 		$q = Query::newInstance();
 		$q->sql('SELECT p.STEAMID, p.NAME, p.POINTS, p.PLAYTIME, p.LASTONTIME
 			FROM Player p
