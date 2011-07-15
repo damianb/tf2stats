@@ -124,7 +124,18 @@ $dispatcher->register('page.assets.define', 5, function(Event $event) use($dispa
 	$dispatcher->triggerUntilBreak(Event::newEvent('page.assets.autodefine'));
 });
 
-$dispatcher->register('page.simpleroutes.load', 0, function(Event $event) use($injector) {
+$dispatcher->register('page.routes.load', 10, function(Event $event) use($injector) {
+	$url = $injector->get('url_builder');
+
+	$url->newPattern('groupRanking', ''); // URL looks nicer this way :D
+	//$url->newPattern('groupRanking', '?page=group');
+	$url->newPattern('playerProfile', '?page=player&steam=%s');
+	$url->newPattern('serverRanking', '?page=list');
+	$url->newPattern('serverRankingPage', '?page=list&p=%d');
+	$url->newPattern('top10', '?page=top10');
+});
+
+$dispatcher->register('page.simpleroutes.load', 5, function(Event $event) use($injector) {
 	$router = $injector->get('simplerouter');
 
 	$router->newRoute('home', '\\Scrii\TF2Stats\Page\Instance\\Home');
@@ -135,29 +146,33 @@ $dispatcher->register('page.simpleroutes.load', 0, function(Event $event) use($i
 	$router->newRoute('top10', '\\Scrii\TF2Stats\Page\Instance\\Top10');
 });
 
+$dispatcher->register('page.simpleroutes.load', 10, function(Event $event) use($injector) {
+	$url = $injector->get('url_builder');
+
+	$url->newPattern('groupRanking', ''); // URL looks nicer this way :D
+	//$url->newPattern('groupRanking', 'group/');
+	$url->newPattern('playerProfile', 'player/%s/');
+	$url->newPattern('serverRanking', 'list/');
+	$url->newPattern('serverRankingPage', 'list/%d/');
+	$url->newPattern('top10', 'top10/');
+});
+
 // Prepare page elements (assets, routes, language file stuff, etc.)
 $dispatcher->register('page.prepare', 0, function(Event $event) use($injector, $dispatcher) {
-	$router = $injector->get('simplerouter');
 	$url = $injector->get('url_builder');
 	$asset_manager = $injector->get('asset');
 	$template = $injector->get('template');
 
+	$url->setBaseURL($asset_manager->getBaseURL());
+
 	if(\Scrii\TF2Stats\REWRITING_ENABLED)
 	{
-		// @todo rewriting router here
+		$dispatcher->trigger(Event::newEvent('page.routes.load'));
 	}
 	else
 	{
 		$dispatcher->trigger(Event::newEvent('page.simpleroutes.load'));
 	}
-	// @todo split url pattern definition into own event
-
-	$url->setBaseURL($asset_manager->getBaseURL());
-	$url->newPattern('playerProfile', '?page=player&steam=%s');
-	$url->newPattern('groupRanking', ''); // URL looks nicer this way :D
-	//$url->newPattern('groupRanking', '?page=group');
-	$url->newPattern('serverRanking', '?page=list&p=%d');
-	$url->newPattern('top10', '?page=top10');
 
 	$template->assignVar('SCRII_TF2_VERSION', \Scrii\TF2Stats\VERSION);
 	$template->assignVar('use_gzip_content', Core::getConfig('site.use_gzip_assets'));
@@ -168,6 +183,12 @@ $dispatcher->register('page.prepare', 0, function(Event $event) use($injector, $
 
 // Execute the page logic
 $dispatcher->register('page.execute', 5, function(Event $event) use($injector) {
+	// If we're using rewriting, skip this listener!
+	if(\Scrii\TF2Stats\REWRITING_ENABLED)
+	{
+		return;
+	}
+
 	$input = $injector->get('input');
 	$router = $injector->get('simplerouter');
 	$dispatcher = $injector->get('dispatcher');
@@ -180,6 +201,6 @@ $dispatcher->register('page.execute', 5, function(Event $event) use($injector) {
 	Core::setObject('page', $page);
 	$page->executePage();
 
-	// override the other listener
+	// prevent the other listener from firing
 	$event->breakTrigger();
 });
