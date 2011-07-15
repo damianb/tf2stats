@@ -19,7 +19,7 @@
 			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Home::newRoutedInstance"
 		},
 		"player":{
-			"path":"\/player\/$playerid:str\/",
+			"path":"\/player\/$steam:str\/",
 			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Player::newRoutedInstance"
 		},
 		"list":{
