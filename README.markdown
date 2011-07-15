@@ -86,11 +86,18 @@ asdf
 
 ### enabling compressed stylesheets/js files
 
-asdf
+Depending on your system, enabling compressed stylesheets/javascript files may or may not work out of the box.  Go ahead and set the site config setting `site.use_gzip_assets` to **true** to see if your server sends the files with the correct headers.  If you load the page and the styling is screwed up beyond belief, read on.  Otherwise, you're all set.
 
- ubuntu: `/etc/apache2/mods-available/mime.conf`
- `AddEncoding x-gzip .gz .tgz`
- `#AddType application/x-gzip .gz .tgz`
+Due to a rather...*odd* choice by the Ubuntu repository maintainers, Apache's mime_module configuration file declares files ending with the extension .gz to be the wrong content type.  Instead of declaring the content encoding as `x-gzip` (the code to do this is actually commented out), the maintainers decided to declare the content type to be `application/x-gzip`, which will cause most browsers to not use the data within as merely compressed content.  
+
+To fix this problem on Ubuntu server 10.04 LTS (may apply to other versions):
+
+* open up the file `/etc/apache2/mods-available/mime.conf`
+* locate the line `# AddEncoding x-gzip .gz .tgz` and uncomment it (remove the **#** at the beginning of the line)
+* locate the line `AddType application/x-gzip .gz .tgz` and comment it out (add a **#** at the beginning of the line)
+* restart/reload Apache with `sudo service apache2 reload` or `sudo service apache2 restart`
+* clear your browser cache
+* reload the page and see if the page styling loads properly
 
 ## todo
 
