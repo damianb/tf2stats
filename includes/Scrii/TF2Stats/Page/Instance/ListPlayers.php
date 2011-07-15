@@ -35,9 +35,21 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 		$input = $injector->get('input');
 		$steam->getGroupMembers();
 
-		$page = $input->getInput('GET::p', 1)
-			->disableFieldJuggling()
-			->getClean();
+		if(\Scrii\TF2Stats\REWRITING_ENABLED)
+		{
+			$page = $this->route->getRequestDataPoint('page');
+			if($page <= 0)
+			{
+				$page = 1;
+			}
+		}
+		else
+		{
+			$page = $input->getInput('GET::p', 1)
+				->disableFieldJuggling()
+				->getClean();
+		}
+
 
 		// Calculate the  intended offset
 		$offset = ($page > 1) ? ($page - 1) * 50 : 0;
@@ -51,7 +63,7 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 
 		$rows = array();
 		$d1 = new \DateTime('@0');
-		$timezone = new \DateTimeZone('America/Chicago');
+		$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
 		$utc = new \DateTimeZone('UTC');
 		$i = 0;
 		while($row = $q->fetchRow())
@@ -84,12 +96,20 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 
 		if(empty($rows))
 		{
-			$router = $injector->get('simplerouter');
-			$error = $router->getPage('error');
-			Core::setObject('page', $error);
-			$error->setErrorCode(404);
-			$error->executePage();
-			return;
+			if(\Scrii\TF2Stats\REWRITING_ENABLED)
+			{
+				throw new \Codebite\Quartz\Exception\ServerErrorException('', 404);
+			}
+			else
+			{
+				$router = $injector->get('simplerouter');
+				$error = $router->getPage('error');
+				Core::setObject('page', $error);
+				$error->setErrorCode(404);
+				$error->executePage();
+				return;
+			}
+
 		}
 
 		$pq = QueryBuilder::newInstance();
@@ -129,7 +149,6 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 		}
 
 		$template->assignVars(array(
-			'test'			=> 'Test variable',
 			'data'			=> $rows,
 			'pagination'	=> $pagination,
 		));

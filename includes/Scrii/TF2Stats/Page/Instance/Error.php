@@ -24,7 +24,7 @@ class Error extends \Scrii\TF2Stats\Page\Base
 	protected $error_code = 0;
 
 	protected $template_name = 'error.twig.html';
-	
+
 	public function setErrorCode($error_code)
 	{
 		$this->error_code = (int) $error_code;
@@ -36,19 +36,24 @@ class Error extends \Scrii\TF2Stats\Page\Base
 		$template = $injector->get('template');
 		$header = $injector->get('header');
 
+		if(!empty($this->route))
+		{
+			$this->setErrorCode($this->route->getRequestDataPoint('code'));
+		}
+
 		$header->setHTTPStatus($this->error_code);
 		try
 		{
 			$error_string = $header->getHTTPStatusHeader();
-		} 
+		}
 		catch(\LogicException $e)
 		{
 			$header->setHTTPStatus(500);
 			$error_string = $header->getHTTPStatusHeader();
 		}
-		
+
 		$error_string = str_replace('HTTP/1.0 ', '', $error_string);
-		
+
 		$template->assignVars(array(
 			'error_code'	=> $this->error_code,
 			'error_string'	=> $error_string,

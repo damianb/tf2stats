@@ -34,9 +34,17 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		$template = $injector->get('template');
 		$input = $injector->get('input');
 		$steam = $injector->get('steamgroup');
-		$steam_cid = $input->getInput('GET::steam', '')
-			->disableFieldJuggling()
-			->getClean();
+		// get steam ID
+		if(\Scrii\TF2Stats\REWRITING_ENABLED)
+		{
+			$steam_cid = $this->route->getRequestDataPoint('steam');
+		}
+		else
+		{
+			$steam_cid = $input->getInput('GET::steam', '')
+				->disableFieldJuggling()
+				->getClean();
+		}
 
 		$steam->getGroupMembers();
 		$this->is_member = in_array($steam_cid, $steam->members) ? true : false;
@@ -44,12 +52,19 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 		if($steam_id === false)
 		{
-			$router = $injector->get('simplerouter');
-			$error = $router->getPage('error');
-			Core::setObject('page', $error);
-			$error->setErrorCode(404);
-			$error->executePage();
-			return;
+			if(\Scrii\TF2Stats\REWRITING_ENABLED)
+			{
+				throw new \Codebite\Quartz\Exception\ServerErrorException('', 404);
+			}
+			else
+			{
+				$router = $injector->get('simplerouter');
+				$error = $router->getPage('error');
+				Core::setObject('page', $error);
+				$error->setErrorCode(404);
+				$error->executePage();
+				return;
+			}
 		}
 
 		$q = QueryBuilder::newInstance();
@@ -75,7 +90,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		// Prep vars
 		$data = array();
 		$d1 = new \DateTime('@0');
-		$timezone = new \DateTimeZone('America/Chicago');
+		$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
 		$utc = new \DateTimeZone('UTC');
 
 		// Build "action" data.

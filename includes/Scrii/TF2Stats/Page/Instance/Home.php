@@ -90,7 +90,7 @@ class Home extends \Scrii\TF2Stats\Page\Base
 		}
 
 		$template->assignVars(array(
-			'test'			=> 'Test variable',
+			'members'		=> count($rows),
 			'data'			=> $rows,
 		));
 

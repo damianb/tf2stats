@@ -40,7 +40,7 @@ class Top10 extends \Scrii\TF2Stats\Page\Base
 
 		$rows = array();
 		$d1 = new \DateTime('@0');
-		$timezone = new \DateTimeZone('America/Chicago');
+		$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
 		$utc = new \DateTimeZone('UTC');
 		$i = 0;
 		while($row = $q->fetchRow())
@@ -72,7 +72,6 @@ class Top10 extends \Scrii\TF2Stats\Page\Base
 		}
 
 		$template->assignVars(array(
-			'test'			=> 'Test variable',
 			'data'			=> $rows,
 		));
 
