@@ -12,24 +12,35 @@
 </IfModule>
 
 # we'll handle the errors, thanks
-# (yes, the 403 page will say 404, but guess what - it keeps people from getting too curious)
-ErrorDocument 403 /index.php?page=error
-ErrorDocument 404 /index.php?page=error
+# (yes, the 403 page will say 404, nobody really cares though)
+ErrorDocument 403 index.php?page=error
+ErrorDocument 404 index.php?page=error
 
 # no page indexes!
 Options -Indexes
 
-<IfModule mod_rewrite>
-	# let us know in-script that mod rewrite is in use
-	SetEnv HTTP_USING_MOD_REWRITE On
+#
+###############################################################################
+# To enable rewriting, please uncomment the lines below
+# (remove the # at the beginning of each line)
+###############################################################################
+#
 
-	# enable mod_rewrite!
-	RewriteEngine On
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule . index.php [L]
-
-	# change the error documents accordingly
-	ErrorDocument 403 /error/
-	ErrorDocument 404 /error/
-</IfModule>
+#<IfModule mod_rewrite.c>
+#	# let us know in-script that mod rewrite is in use
+#	SetEnv HTTP_USING_MOD_REWRITE On
+#
+#	# enable mod_rewrite!
+#	RewriteEngine On
+#
+#	# CHANGE THIS LINE TO YOUR SITE BASE PATH
+#	RewriteBase /tf2
+#
+#	RewriteCond %{REQUEST_FILENAME} !-f
+#	RewriteCond %{REQUEST_FILENAME} !-d
+#	RewriteRule . index.php [L]
+#
+#	# change the error documents accordingly
+#	ErrorDocument 403 /error/
+#	ErrorDocument 404 /error/
+#</IfModule>
