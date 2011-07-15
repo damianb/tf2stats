@@ -6,6 +6,7 @@
 	"twig.debug":false,
 	"site.debug":false,
 	"site.use_gzip_assets":true,
+	"site.timezone":"America\/New_York",
 	"page.base_url":"/",
 	"steam.webapikey":"",
 	"steam.groupurl":"http://steamcommunity.com/groups/yourgroupnamehere/"
