@@ -32,12 +32,12 @@ require \Scrii\TF2Stats\ROOT_PATH . '/Codebite/Quartz/Bootstrap.php';
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/Functions.php';
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/TF2Stats/Functions.php';
 
-define('Scrii\\TF2Stats\\VERSION', '1.0.1-dev');
+define('Scrii\\TF2Stats\\VERSION', '1.0.1');
 /**
  * banreason support is disabled by default in this script, as it requires database structure modifications
  * to enable banreason support, use this query, and uncomment the constant declaration line below (remove the //):
  *
- * 'ALTER TABLE `player` ADD `BANREASON` VARCHAR( 255 ) NOT NULL AFTER  `KILLS`;'
+ * 'ALTER TABLE `player` ADD `BANREASON` VARCHAR( 255 ) NOT NULL AFTER `KILLS`;'
  */
 //define('Scrii\\TF2Stats\\ENABLE_BANREASON', true);
 
