@@ -24,7 +24,7 @@ use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 // Required constants for Quartz and OpenFlame Framework
 define('Codebite\\Quartz\\SITE_ROOT', __DIR__);
 // @deprecated
-define('OpenFlame\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
+// define('OpenFlame\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
 define('Scrii\\TF2Stats\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
 
 // Load the OpenFlame Framework autoloader
