@@ -82,13 +82,22 @@ There's one somewhere in it.  ;)
 
 ### enabling pretty urls
 
-asdf
+To enable the "pretty URLs" mode, first check that you are running Apache and that you have the modules `mod_rewrite` and `mod_env` enabled (`mod_env` is needed to let the script know that rewriting is enabled).
+
+Now...
+
+* open up the file `.htaccess` in your installation
+* locate the section regarding rewriting
+* uncomment the lines as instructed - just don't remove anything after the first comment hash (the `#` symbol)
+* locate the line `RewriteBase /tf2stats` within the uncommented section, and change this to match the path you set in the `page.base_path` configuration setting ( ***DO NOT LEAVE A TRAILING SLASH FOR THIS LINE*** )
+* save the file
+* access your site and look at the links to players, the top 10 listing, etc.  If you're being sent to `/tf2stats/top10/` for example, everything is working fine.
 
 ### enabling compressed stylesheets/js files
 
 Depending on your system, enabling compressed stylesheets/javascript files may or may not work out of the box.  Go ahead and set the site config setting `site.use_gzip_assets` to **true** to see if your server sends the files with the correct headers.  If you load the page and the styling is screwed up beyond belief, read on.  Otherwise, you're all set.
 
-Due to a rather...*odd* choice by the Ubuntu repository maintainers, Apache's mime_module configuration file declares files ending with the extension .gz to be the wrong content type.  Instead of declaring the content encoding as `x-gzip` (the code to do this is actually commented out), the maintainers decided to declare the content type to be `application/x-gzip`, which will cause most browsers to not use the data within as merely compressed content.  
+Due to a rather...*odd* choice by the Ubuntu repository maintainers, Apache's mime_module configuration file declares files ending with the extension .gz to be the wrong content type.  Instead of declaring the content encoding as `x-gzip` (the code to do this is actually commented out), the maintainers decided to declare the content type to be `application/x-gzip`, which will cause most browsers to not use the data within as merely compressed content.
 
 To fix this problem on Ubuntu server 10.04 LTS (may apply to other versions):
 
