@@ -1,0 +1,6 @@
+User-Agent: *
+Crawl-Delay: 600
+Disallow: /cache/
+Disallow: /data/
+Disallow: /includes/
+Disallow: /style/
