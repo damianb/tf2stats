@@ -15,23 +15,8 @@
  *
  */
 
-use OpenFlame\Framework\Core;
-use OpenFlame\Framework\Autoloader;
-use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
-use OpenFlame\Framework\Utility\JSON;
-
 // Required constants for Quartz and OpenFlame Framework
 define('Codebite\\Quartz\\SITE_ROOT', dirname(__DIR__));
-// @deprecated
-define('OpenFlame\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
-define('Scrii\\TF2Stats\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
-
-// Load the OpenFlame Framework autoloader
-require \Scrii\TF2Stats\ROOT_PATH . '/OpenFlame/Framework/Autoloader.php';
-$autoloader = Autoloader::register(\Scrii\TF2Stats\ROOT_PATH);
-
-ExceptionHandler::register();
-ExceptionHandler::setUnwrapCount(2);
 
 // weapon kill data array
 $weapons = array(
@@ -183,7 +168,7 @@ $weapons = array(
 	array('The Big Earner', 'KW_big_earner', 'big_earner.png'),
 );
 
-$json = JSON::encode($weapons);
+$json = json_encode($weapons);
 file_put_contents(\Codebite\Quartz\SITE_ROOT . '/data/config/weapondata.json', $json);
 
 echo 'JSON file creation/update successful';
