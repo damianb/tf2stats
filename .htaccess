@@ -33,7 +33,9 @@ Options -Indexes
 #	# enable mod_rewrite!
 #	RewriteEngine On
 #
+#   ####
 #	# CHANGE THIS LINE TO YOUR SITE BASE PATH
+#   ####
 #	RewriteBase /tf2
 #
 #	RewriteCond %{REQUEST_FILENAME} !-f
