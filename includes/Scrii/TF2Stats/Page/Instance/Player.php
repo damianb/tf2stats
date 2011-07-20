@@ -89,7 +89,6 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 		// Prep vars
 		$data = array();
-		$d1 = new \DateTime('@0');
 		$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
 		$utc = new \DateTimeZone('UTC');
 
@@ -185,17 +184,40 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		$data['kdr'] = ($row['Death'] > 0) ? round($row['KILLS'] / $row['Death'], 2) : $row['KILLS'];
 		$data['kpm'] = ($row['PLAYTIME'] > 0) ? round($row['KILLS'] / $row['PLAYTIME'], 2) : $row['KILLS'];
 
-		// Figure out total time played.
-		$d2 = new \DateTime('@' . $row['PLAYTIME'] * 60);
-		$interval = $d1->diff($d2);
-		if($interval->h > 0)
+		// handle playtime calculations
+		// whee math!
+		$playtime = array();
+		$playtime['s'] = (int) $row['PLAYTIME'] * 60;
+		// calc days
+		$playtime['d'] = (int) floor($playtime['s'] / 60 / 60 / 24);
+		$playtime['s'] -= $playtime['d'] * (60 * 60 * 24);
+		// calc hours
+		$playtime['h'] = (int) floor($playtime['s'] / 60 / 60);
+		$playtime['s'] -= $playtime['h'] * (60 * 60);
+		// calc minutes
+		$playtime['m'] = (int) floor($playtime['s'] / 60);
+		$playtime['s'] -= $playtime['m'] * 60;
+
+		// figure out plurals
+		$playtime = array_merge($playtime, array(
+			'plural_d'		=> ($playtime['d'] == 1) ? '' : 's',
+			'plural_h'		=> ($playtime['h'] == 1) ? '' : 's',
+			'plural_m'		=> ($playtime['m'] == 1) ? '' : 's',
+		));
+
+		if($playtime['d'] > 0)
 		{
-			$data['playspan'] = $interval->format('%h hrs %i minutes');
+			$format = '%2$d day%5$s %3$d hr%6$s %4$d min%7$s';
+		}
+		elseif($playtime['h'] > 0)
+		{
+			$format = '%3$d hr%6$s %4$d min%7$s';
 		}
 		else
 		{
-			$data['playspan'] = $interval->format('%i minutes');
+			$format = '%4$d min%7$s';
 		}
+		$data['playspan'] = vsprintf($format, $playtime);
 
 		// Figure out last-online time.
 		$online = new \DateTime('@' . $row['LASTONTIME']);
