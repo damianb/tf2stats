@@ -2,7 +2,7 @@
 	"site.path.assets":"/style/",
 	"site.assets":{
 		"css":{
-			"grid":"960.css",
+			"grid":"960.min.css",
 			"grid_min":"960.min.css.gz",
 			"common":"tf2.css",
 			"common_min":"tf2.min.css.gz"
