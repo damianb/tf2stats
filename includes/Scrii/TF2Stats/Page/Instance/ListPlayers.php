@@ -62,23 +62,46 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 			->limit(self::LIMIT_PAGE);
 
 		$rows = array();
-		$d1 = new \DateTime('@0');
 		$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
 		$utc = new \DateTimeZone('UTC');
 		$i = 0;
 		while($row = $q->fetchRow())
 		{
-			$d2 = new \DateTime('@' . $row['PLAYTIME'] * 60);
-			$interval = $d1->diff($d2);
+			// handle playtime calculations
+			// whee math!
+			$playtime = array();
+			$playtime['s'] = (int) $row['PLAYTIME'] * 60;
+			// calc days
+			$playtime['d'] = (int) floor($playtime['s'] / 60 / 60 / 24);
+			$playtime['s'] -= $playtime['d'] * (60 * 60 * 24);
+			// calc hours
+			$playtime['h'] = (int) floor($playtime['s'] / 60 / 60);
+			$playtime['s'] -= $playtime['h'] * (60 * 60);
+			// calc minutes
+			$playtime['m'] = (int) floor($playtime['s'] / 60);
+			$playtime['s'] -= $playtime['m'] * 60;
 
-			if($interval->h > 0)
+			// figure out plurals
+			$playtime = array_merge($playtime, array(
+				'plural_d'		=> ($playtime['d'] == 1) ? '' : 's',
+				'plural_h'		=> ($playtime['h'] == 1) ? '' : 's',
+				'plural_m'		=> ($playtime['m'] == 1) ? '' : 's',
+			));
+
+			if($playtime['d'] > 0)
 			{
-				$row['playspan'] = $interval->format('%h hrs %i minutes');
+				$format = '%2$d day%5$s %3$d hr%6$s %4$d min%7$s';
+			}
+			elseif($playtime['h'] > 0)
+			{
+				$format = '%3$d hr%6$s %4$d min%7$s';
 			}
 			else
 			{
-				$row['playspan'] = $interval->format('%i minutes');
+				$format = '%4$d min%7$s';
 			}
+			$row['playspan'] = vsprintf($format, $playtime);
+
 			$row['steamid64'] = \Scrii\TF2Stats\steamIdToSteamCommunity($row['STEAMID']);
 			$row['ismember'] = in_array($row['steamid64'], $steam->members) ? true : false;
 
