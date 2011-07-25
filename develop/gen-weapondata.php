@@ -62,6 +62,8 @@ $weapons = array(
 	array('The Disciplinary Action', 'KW_disciplinary_action', 'disciplinary_action.png'),
 	array('The Market Gardener', 'KW_market_gardener', 'market_gardener.png'),
 	array('The Mantreads', 'KW_mantreads', 'mantreads.png'),
+	array('The Cow Mangler 5000', 'KW_mangler', 'cow_mangler_5000.png'),
+	array('The Righteous Bison', 'KW_bison', 'righteous_bison.png'),
 
 	// pyro
 	array('Fireaxe', 'KW_Axe', 'fireaxe.png'),
@@ -93,7 +95,7 @@ $weapons = array(
 	array('Sword Tauntkill', 'KW_taunt_demoman', 'decapitation.png'),
 	array('The Scottish Resistance', 'KW_sticky_resistance', 'scottish_resistance.png'),
 	array('The Scotsman\'s Skullcutter', 'KW_battleaxe', 'scotsmans_skullcutter.png'),
-	array('The Horseless Headless Horsemann\'s Headtaker', 'KW_headtaker', 'horseless_headless_horsemanns_headtaker.png'),
+	array('The Horsemann\'s Headtaker', 'KW_headtaker', 'horseless_headless_horsemanns_headtaker.png'),
 	array('The Ullapool Caber', 'KW_ullapool_caber', 'ullapool_caber.png'),
 	array('The Loch-n-Load', 'KW_lochnload', 'loch-n-load.png'),
 	array('The Claidheamh Mor', 'KW_claidheamohmor', 'claidheamh_mor.png'),
