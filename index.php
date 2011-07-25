@@ -32,7 +32,6 @@ require \Scrii\TF2Stats\ROOT_PATH . '/OpenFlame/Framework/Autoloader.php';
 $autoloader = Autoloader::register(\Scrii\TF2Stats\ROOT_PATH);
 
 ExceptionHandler::register();
-ExceptionHandler::setUnwrapCount(2);
 
 // Load up the bootstrap file
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/TF2Stats/Bootstrap.php';
@@ -48,6 +47,7 @@ $dispatcher = $injector->get('dispatcher');
  * - Prepare page elements (assets, routes, language file stuff, etc.)
  * - Execute page handling logic & display the page!
  */
+$dispatcher->triggerUntilBreak(Event::newEvent('exception.setup'));
 $dispatcher->triggerUntilBreak(Event::newEvent('db.mysql.connect'));
 $dispatcher->triggerUntilBreak(Event::newEvent('page.prepare'));
 $dispatcher->triggerUntilBreak(Event::newEvent('page.execute'));
