@@ -17,15 +17,22 @@
 
 namespace Scrii\TF2Stats;
 use OpenFlame\Framework\Core;
+use OpenFlame\Framework\Autoloader;
 use OpenFlame\Framework\Event\Instance as Event;
 use OpenFlame\Framework\Dependency\Injector;
 use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 use OpenFlame\Dbal\Connection as DbalConnection;
 
-/**
- * @ignore
- */
-if(!defined('Codebite\\Quartz\\SITE_ROOT')) exit;
+// Required constants for Quartz
+define('Codebite\\Quartz\\SITE_ROOT', dirname(__FILE__));
+define('Scrii\\TF2Stats\\ROOT_PATH', dirname(__FILE__) . '/includes/');
+
+// Load the OpenFlame Framework autoloader
+require \Scrii\TF2Stats\ROOT_PATH . '/OpenFlame/Framework/Autoloader.php';
+$autoloader = Autoloader::register(\Scrii\TF2Stats\ROOT_PATH);
+
+// Register the exception handler...
+ExceptionHandler::register();
 
 // Our secondary bootstrap file (quartz), and the functions file...
 require \Scrii\TF2Stats\ROOT_PATH . '/Codebite/Quartz/Bootstrap.php';
@@ -204,3 +211,23 @@ $dispatcher->register('page.execute', 5, function(Event $event) use($injector) {
 	// prevent the other listener from firing
 	$event->breakTrigger();
 });
+
+// RUN DA SITE
+$dispatcher->register('page.run', 0, function(Event $event) use($dispatcher) {
+	/**
+	 * - Load essential services
+	 * - Prepare page elements (assets, routes, language file stuff, etc.)
+	 * - Execute page handling logic & display the page!
+	 */
+   $dispatcher->triggerUntilBreak(Event::newEvent('exception.setup'));
+   $dispatcher->triggerUntilBreak(Event::newEvent('db.mysql.connect'));
+   $dispatcher->triggerUntilBreak(Event::newEvent('page.prepare'));
+   $dispatcher->triggerUntilBreak(Event::newEvent('page.execute'));
+   $dispatcher->triggerUntilBreak(Event::newEvent('page.display'));
+});
+
+/**
+ * Global-scope code.  Moved from index.php so we can warn the user that, hey, your server is falling behind the curve!
+ */
+
+$dispatcher->trigger(Event::newEvent('page.run'));
