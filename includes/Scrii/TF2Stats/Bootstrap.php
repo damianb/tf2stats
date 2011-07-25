@@ -24,8 +24,9 @@ use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 use OpenFlame\Dbal\Connection as DbalConnection;
 
 // Required constants for Quartz
-define('Codebite\\Quartz\\SITE_ROOT', dirname(__FILE__));
-define('Scrii\\TF2Stats\\ROOT_PATH', dirname(__FILE__) . '/includes/');
+define('Codebite\\Quartz\\SITE_ROOT', dirname(dirname(dirname(dirname(__FILE__))))); // dirname spam: fml.
+define('Scrii\\TF2Stats\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
+define('Scrii\\TF2Stats\\VERSION', '1.0.2');
 
 // Load the OpenFlame Framework autoloader
 require \Scrii\TF2Stats\ROOT_PATH . '/OpenFlame/Framework/Autoloader.php';
@@ -39,7 +40,6 @@ require \Scrii\TF2Stats\ROOT_PATH . '/Codebite/Quartz/Bootstrap.php';
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/Functions.php';
 require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/TF2Stats/Functions.php';
 
-define('Scrii\\TF2Stats\\VERSION', '1.0.2-dev');
 /**
  * banreason support is disabled by default in this script, as it requires database structure modifications
  * to enable banreason support, use this query, and uncomment the constant declaration line below (remove the //):
