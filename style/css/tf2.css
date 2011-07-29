@@ -267,6 +267,9 @@ img.killicon { display: block; margin: 0 auto; }
 .weaponrow-left { float: left; }
 .weaponrow-right { float: right; }
 
+div.weaponlisting { margin: 0 auto; width: 500px; }
+div.weaponlisting div span.killicon_wrap span a { color: #444; }
+
 /**
  * table stuff
  */

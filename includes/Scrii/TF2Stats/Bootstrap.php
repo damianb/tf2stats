@@ -21,7 +21,6 @@ use OpenFlame\Framework\Autoloader;
 use OpenFlame\Framework\Event\Instance as Event;
 use OpenFlame\Framework\Dependency\Injector;
 use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
-use OpenFlame\Dbal\Connection as DbalConnection;
 
 // Required constants for Quartz
 define('Codebite\\Quartz\\SITE_ROOT', dirname(dirname(dirname(dirname(__FILE__))))); // dirname spam: fml.
@@ -139,6 +138,8 @@ $dispatcher->register('page.routes.load', 10, function(Event $event) use($inject
 	$url->newPattern('playerProfile', 'player/%s/');
 	$url->newPattern('serverRanking', 'list/');
 	$url->newPattern('serverRankingPage', 'list/%d/');
+	$url->newPattern('weaponList', 'weapons/');
+	$url->newPattern('weaponRank', 'weapon/%s/');
 	$url->newPattern('top10', 'top10/');
 });
 
@@ -150,6 +151,7 @@ $dispatcher->register('page.simpleroutes.load', 5, function(Event $event) use($i
 	$router->newRoute('group', '\\Scrii\TF2Stats\Page\Instance\\Home');
 	$router->newRoute('player', '\\Scrii\TF2Stats\Page\Instance\\Player');
 	$router->newRoute('list', '\\Scrii\TF2Stats\Page\Instance\\ListPlayers');
+	$router->newRoute('weapons', '\\Scrii\TF2Stats\Page\Instance\\ListWeapons');
 	$router->newRoute('top10', '\\Scrii\TF2Stats\Page\Instance\\Top10');
 });
 
@@ -161,6 +163,8 @@ $dispatcher->register('page.simpleroutes.load', 10, function(Event $event) use($
 	$url->newPattern('playerProfile', '?page=player&steam=%s');
 	$url->newPattern('serverRanking', '?page=list');
 	$url->newPattern('serverRankingPage', '?page=list&p=%d');
+	$url->newPattern('weaponList', '?page=weapons');
+	$url->newPattern('weaponRank', '?page=weapon&weapon=%s');
 	$url->newPattern('top10', '?page=top10');
 });
 
