@@ -11,19 +11,19 @@
 			<span class="column-lastonline trail">Last online</span>
 		</div>
 		<div class="tablebody">
-		{% for u in data %}
-			<div class="tablerow">
+{% for u in data %}
+			<div class="tablerow" id="groupr{{ u.rank }}">
 				<span class="cell column-rank lead">{{ u.rank }} </span>
 				<span class="cell column-name"><a href="{{ url.playerProfile(u.steamid64)}}"{% if u.ismember and not u.is_banned %} class="groupplayer" title="group member"{% endif %}{% if u.is_banned %} class="banneduser" title="banned: {{ u.BANREASON }}"{% endif %}>{{ u.NAME }}</a></span>
 				<span class="cell column-points">{{ u.POINTS }}</span>
 				<span class="cell column-playtime">{{ u.playspan }}</span>
 				<span class="cell column-lastonline trail"><span title="{{ u.lastonline_utc }}">{{ u.lastonline }}</span></span>
 			</div>
-		{% else %}
+{% else %}
 			<div class="tablerow">
 				<span class="column-max">No results</span>
 			</div>
-		{% endfor %}
+{% endfor %}
 		</div>
 	</div>
 	{% else %}
