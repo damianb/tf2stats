@@ -32,7 +32,7 @@ The 960gs grid system is dual-licensed under the [MIT License](https://github.co
 
 ## dependencies
 
-* Twig 1.1.0 (provided in a git submodule)
+* Twig 1.1.1 (provided in a git submodule)
 * OpenFlame Framework 1.2.0-dev (provided in a git submodule)
 * OpenFlame Dbal 1.0.0-dev (provided in a git submodule)
 * Quartz (provided in a git submodule)
@@ -47,7 +47,7 @@ Installation of the tf2 stats web ui is fairly straightforward.
 
 To prepare your installation, rename or copy the file `data/config/config.example.json` to `data/config/config.json`, then open it up in your favorite unix-newline-safe editor (I recommend Notepad++ for Windows users).
 
-In it are ten different settings, explained below:
+In it are eleven different settings, explained below:
 
 * `db.host` - This setting should be the hostname used to connect to your database server.  In most circumstances, it is `localhost`.
 * `db.name` - The name of your database (*not* database user).
@@ -56,6 +56,7 @@ In it are ten different settings, explained below:
 * `twig.debug` - Enables debug mode in the Twig template library.  Only needed for anyone modifying templates themselves.
 * `site.debug` - Enables debug mode on the site itself.  The full error message, backtrace, and code context is displayed instead of a vague message.
 * `site.use_gzip_assets` - The site will use gzip-compressed assets (CSS, JS files) instead of uncompressed files to save bandwidth if this setting is enabled.  **If you experience problems with page styling not appearing correctly, try disabling this setting first.**
+* `site.timezone` - A valid DateTime timezone.  Please reference [http://us3.php.net/manual/en/timezones.php] to locate your timezone.
 * `page.base_url` - The base URL to use for all links generated on the site.  If you install the site to [http://mysite.com/], this would be "/", if you install the site to [http://mysite.com/tf2stats/] this would be "/tf2stats/", etc.
 * `steam.webapikey` - Your personal Steam Web API key.  See the section "obtaining a Steam Web API key" below for more details if you do not have a Steam Web API key yet.
 * `steam.groupurl` - The URL to your Steam group's profile page.  This should be something like `http://steamcommunity.com/groups/scrii/`.
