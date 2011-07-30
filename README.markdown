@@ -32,7 +32,7 @@ The 960gs grid system is dual-licensed under the [MIT License](https://github.co
 
 ## dependencies
 
-* Twig 1.1.1 (provided in a git submodule)
+* Twig 1.1.2 (provided in a git submodule)
 * OpenFlame Framework 1.2.0-dev (provided in a git submodule)
 * OpenFlame Dbal 1.0.0-dev (provided in a git submodule)
 * Quartz (provided in a git submodule)
