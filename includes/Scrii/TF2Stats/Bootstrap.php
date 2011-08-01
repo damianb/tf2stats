@@ -110,7 +110,7 @@ $injector->setInjector('steamgroup', function() {
 });
 
 /**
- * Define extra primary-tier listeners
+ * Define extra listeners
  */
 
  // Remove the PHP X-Powered-By header to help deter vuln sniffing
@@ -121,9 +121,9 @@ $dispatcher->register('page.headers.send', 5, function(Event $event) use($inject
 		->setHeader('X-App-Version', 'scrii tf2 stats web ui ' . \Scrii\TF2Stats\VERSION);
 });
 
-/**
- * Setup second-tier listeners
- */
+$dispatcher->register('exception.setup', 10, function(Event $event) use($injector) {
+	ExceptionHandler::setUnwrapCount((int) Core::getConfig('exception.unwrapcount') ?: 3);
+});
 
 // Add in our own assets.
 $dispatcher->register('page.assets.define', 5, function(Event $event) use($dispatcher) {
