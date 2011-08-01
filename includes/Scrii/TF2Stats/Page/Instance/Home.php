@@ -36,12 +36,13 @@ class Home extends \Scrii\TF2Stats\Page\Base
 		$where = array();
 		foreach($steam->members as $member)
 		{
+			// Make sure this is a valid steam ID...if it's just digits, it should be safe.
 			if(!ctype_digit($member))
 			{
 				continue;
 			}
 
-			// convert to STEAM_0: ID.
+			// convert to steamID32 format.
 			$steamid = \Scrii\TF2Stats\steamCommunityToSteamId($member);
 			if($steamid === false)
 			{
