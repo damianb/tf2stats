@@ -49,13 +49,8 @@ class SteamID
 
 	private function convert32to64($steam_id)
 	{
-		// mmmm regexp
-		$count = preg_match('/STEAM_0:([01]):([0-9]+)/', $steam_id, $matches);
-		if(!$count)
-		{
-			return false;
-		}
-		list($steam_cid, ) = explode('.', bcadd((((int) $matches[2] * 2) + $matches[1]), '76561197960265728'), 2);
+		list( , $m1, $m2) = explode(':', $steam_id, 3);
+		list($steam_cid, ) = explode('.', bcadd((((int) $m2 * 2) + $m1), '76561197960265728'), 2);
 		return $steam_cid;
 	}
 
