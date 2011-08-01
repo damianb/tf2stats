@@ -22,11 +22,6 @@ use OpenFlame\Framework\Event\Instance as Event;
 use OpenFlame\Framework\Dependency\Injector;
 use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 
-// Required constants for Quartz
-define('Codebite\\Quartz\\SITE_ROOT', dirname(dirname(dirname(dirname(__FILE__))))); // dirname spam: fml.
-define('Scrii\\TF2Stats\\ROOT_PATH', \Codebite\Quartz\SITE_ROOT . '/includes/');
-define('Scrii\\TF2Stats\\VERSION', '1.0.2');
-
 // Load the OpenFlame Framework autoloader
 require \Scrii\TF2Stats\ROOT_PATH . '/OpenFlame/Framework/Autoloader.php';
 $autoloader = Autoloader::register(\Scrii\TF2Stats\ROOT_PATH);
