@@ -46,13 +46,12 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 		else
 		{
 			$page = $input->getInput('GET::p', 1)
-				->disableFieldJuggling()
 				->getClean();
 		}
 
 
-		// Calculate the  intended offset
-		$offset = ($page > 1) ? ($page - 1) * 50 : 0;
+		// Calculate the intended offset (pages are 50 per)
+		$offset = ($page > 1) ? ($page - 1) * self::LIMIT_PAGE : 0;
 
 		$q = QueryBuilder::newInstance();
 		$q->select('p.STEAMID, p.NAME, p.POINTS, p.PLAYTIME, p.LASTONTIME' . ((\Scrii\TF2Stats\ENABLE_BANREASON) ? ', p.BANREASON' : ''))
@@ -149,9 +148,9 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 			'pages'		=> array(),
 			'last'		=> $total_pages,
 			'record'	=> array(
-				'from'		=> (($page > 1) ? ($page - 1) * 50 : 0) + 1,
+				'from'		=> (($page > 1) ? ($page - 1) * self::LIMIT_PAGE : 0) + 1,
 				'total'		=> $total,
-				'to'		=> ($page * 50 <= $total) ? $page * 50 : $total,
+				'to'		=> ($page * self::LIMIT_PAGE <= $total) ? $page * self::LIMIT_PAGE : $total,
 			),
 		);
 
