@@ -41,6 +41,11 @@ class ListWeapons extends \Scrii\TF2Stats\Page\Base
 		$select = array();
 		foreach($weapons as $weapon_name => $weapon)
 		{
+			// This is a trick to use just one preg_match for verifying that our data is safe for use within the query.  Just being paranoid.
+			if(!preg_match('#^[\w_]+::[\w_]+$#', $weapon[1] . '::' . $weapon_name))
+			{
+				continue;
+			}
 			$select[] = sprintf('SUM(%1$s) as %2$s', $weapon[1], $weapon_name);
 		}
 		$select = implode(', ', $select);
