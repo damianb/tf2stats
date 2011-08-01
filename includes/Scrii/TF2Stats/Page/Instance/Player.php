@@ -21,6 +21,7 @@ use \OpenFlame\Framework\Dependency\Injector;
 use \OpenFlame\Framework\Utility\JSON;
 use \OpenFlame\Dbal\Query;
 use \OpenFlame\Dbal\QueryBuilder;
+use \Scrii\Steam\SteamID;
 
 class Player extends \Scrii\TF2Stats\Page\Base
 {
@@ -38,19 +39,19 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		// Get steam ID
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
 		{
-			$steam_cid = $this->route->getRequestDataPoint('steam');
+			$steam_id = $this->route->getRequestDataPoint('steam');
 		}
 		else
 		{
-			$steam_cid = $input->getInput('GET::steam', '')
+			$steam_id = $input->getInput('GET::steam', '')
 				->getClean();
 		}
 
-		$steam->getGroupMembers();
-		$this->is_member = in_array($steam_cid, $steam->members) ? true : false;
-		$steam_id = \Scrii\TF2Stats\steamCommunityToSteamId($steam_cid);
-
-		if($steam_id === false)
+		try
+		{
+			$steam_id = new SteamID($steam_id);
+		}
+		catch(\RuntimeException $e)
 		{
 			if(\Scrii\TF2Stats\REWRITING_ENABLED)
 			{
@@ -67,10 +68,13 @@ class Player extends \Scrii\TF2Stats\Page\Base
 			}
 		}
 
+		$steam->getGroupMembers();
+		$this->is_member = in_array($steam_id->getSteamID64(), $steam->members) ? true : false;
+
 		$q = QueryBuilder::newInstance();
 		$q->select('p.*')
 			->from('Player p')
-			->where('p.STEAMID = ?', $steam_id)
+			->where('p.STEAMID = ?', $steam_id->getSteamID32())
 			->limit(1);
 
 		$row = $q->fetchRow();
@@ -143,8 +147,8 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		}
 
 		// Trick the steam group data fetcher here...
-		$steam->members['temp'] = $steam_cid;
-		$data['profile'] = $steam->getMemberInfo($steam_cid, false, 60);
+		$steam->members['temp'] = $steam_id->getSteamID64();
+		$data['profile'] = $steam->getMemberInfo($steam_id->getSteamID64(), false, 60);
 
 		// Get the weapondata json file.
 		$weapons = JSON::decode(\Codebite\Quartz\SITE_ROOT . '/data/config/weapondata.json');
@@ -231,7 +235,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 		// Some more vars
 		$data['backpackurl'] = rtrim(str_replace('http://steamcommunity.com/', 'http://tf2items.com/', $data['profile']['profileurl']), '/');
-		$data['friendlink'] = 'steam://friends/add/' . $steam_cid;
+		$data['friendlink'] = 'steam://friends/add/' . $steam_id->getSteamID64();
 		$data['is_banned'] = (isset($row['BANREASON']) && $row['BANREASON'] != '') ? true : false;
 		$data['banreason'] = (isset($row['BANREASON'])) ? $row['BANREASON'] : '';
 
@@ -251,9 +255,9 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		// Dump vars to template now
 		$template->assignVars(array(
 			'playername'		=> $row['NAME'],
-			'player_id'			=> $steam_id,
-			'player_cid'		=> $steam_cid,
-			'player_url'		=> 'http://steamcommunity.com/profiles/' . $steam_cid . '/',
+			'player_id'			=> $steam_id->getSteamID32(),
+			'player_cid'		=> $steam_id->getSteamID64(),
+			'player_url'		=> 'http://steamcommunity.com/profiles/' . $steam_id->getSteamID64() . '/',
 			'playerdata'		=> $data,
 			'group_member'		=> $this->is_member,
 		));
