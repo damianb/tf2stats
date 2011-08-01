@@ -152,7 +152,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		$used_weapons = array();
 		foreach($weapons as $key => $weapon)
 		{
-			if($row[$weapon[1]] <= 0)
+			if(!isset($row[$weapon[1]]) || $row[$weapon[1]] <= 0)
 			{
 				continue;
 			}
