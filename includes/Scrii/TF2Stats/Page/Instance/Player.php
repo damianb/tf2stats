@@ -34,7 +34,8 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		$template = $injector->get('template');
 		$input = $injector->get('input');
 		$steam = $injector->get('steamgroup');
-		// get steam ID
+
+		// Get steam ID
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
 		{
 			$steam_cid = $this->route->getRequestDataPoint('steam');
@@ -42,7 +43,6 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		else
 		{
 			$steam_cid = $input->getInput('GET::steam', '')
-				->disableFieldJuggling()
 				->getClean();
 		}
 
@@ -126,7 +126,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		);
 
 		// Rank class performance...
-		$tf2classes = array('Scout' => 'Scout	', 'Soldier' => 'Soldier', 'Pyro' => 'Pyro', 'Demo' => 'Demoman', 'Heavy' => 'Heavy', 'Engi' => 'Engineer', 'Medic' => 'Medic', 'Sniper' => 'Sniper', 'Spy' => 'Spy');
+		$tf2classes = array('Scout' => 'Scout', 'Soldier' => 'Soldier', 'Pyro' => 'Pyro', 'Demo' => 'Demoman', 'Heavy' => 'Heavy', 'Engi' => 'Engineer', 'Medic' => 'Medic', 'Sniper' => 'Sniper', 'Spy' => 'Spy');
 		foreach($tf2classes as $classname => $class)
 		{
 			$kd[$classname] = ($row[$classname . 'Deaths'] > 0) ? round($row[$classname . 'Kills'] / $row[$classname . 'Deaths'], 2) : $row[$classname . 'Kills'];
@@ -146,12 +146,14 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		$steam->members['temp'] = $steam_cid;
 		$data['profile'] = $steam->getMemberInfo($steam_cid, false, 60);
 
-		// Get weapon kill data
+		// Get the weapondata json file.
 		$weapons = JSON::decode(\Codebite\Quartz\SITE_ROOT . '/data/config/weapondata.json');
 
+		// Figure out weapon kill stats.
 		$used_weapons = array();
 		foreach($weapons as $key => $weapon)
 		{
+			// Make sure the weapon's column exists, and that the weapon was used before continuing
 			if(!isset($row[$weapon[1]]) || $row[$weapon[1]] <= 0)
 			{
 				continue;
@@ -169,15 +171,15 @@ class Player extends \Scrii\TF2Stats\Page\Base
 			);
 		}
 
-		// Obtain rank on server...
-		$q = QueryBuilder::newInstance();
-		$q->select('COUNT(p.STEAMID) as position')
+		// Obtain rank on server... (we're ignoring the circumstance of tied-for-rank here)
+		$qr = QueryBuilder::newInstance();
+		$qr->select('COUNT(p.STEAMID) as position')
 			->from('Player p')
 			->where('p.POINTS > ?', $row['POINTS']);
-		$res = $q->fetchRow();
+		$res = $qr->fetchRow();
 		$data['rank'] = $res['position'] + 1;
 
-		// Some basic stats
+		// Some basic stats (points, kills, deaths, kill-death-ratio, kills-per-minute...etc.)
 		$data['points'] = $row['POINTS'];
 		$data['kills'] = $row['KILLS'];
 		$data['deaths'] = $row['Death'];
