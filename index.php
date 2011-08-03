@@ -29,3 +29,7 @@ define('Scrii\\TF2Stats\\VERSION', '1.0.2');
 
 // Load the bootstrap file
 require dirname(__FILE__) . '/includes/Scrii/TF2Stats/Bootstrap.php';
+
+$quartz->pagePrepare()
+	->pageExecute()
+	->pageDisplay();
