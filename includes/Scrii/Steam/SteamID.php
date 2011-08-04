@@ -29,17 +29,17 @@ class SteamID
 
 	private $steamID64 = '';
 
-	public function __construct($steamid)
+	public function __construct($steam_id)
 	{
 		if(ctype_digit($steam_id))
 		{
-			$this->steamID32 = $steam_id;
-			$this->steamID64 = $this->convert32to64($steam_id);
+			$this->steamID64 = $steam_id;
+			$this->steamID32 = $this->convert64to32($steam_id);
 		}
 		elseif(preg_match('/^STEAM_0:[01]:[0-9]+/', $steam_id))
 		{
-			$this->steamID64 = $steam_id;
-			$this->steamID32 = $this->convert64to32($steam_id);
+			$this->steamID32 = $steam_id;
+			$this->steamID64 = $this->convert32to64($steam_id);
 		}
 		else
 		{
