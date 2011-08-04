@@ -64,6 +64,7 @@ $weapons = array(
 	'mantreads'				=> array('The Mantreads', 'KW_mantreads', 'mantreads.png'),
 	'cowmangler5000'		=> array('The Cow Mangler 5000', 'KW_mangler', 'cow_mangler_5000.png'), // a.k.a. "The Stolen Polycount Engineer Update"
 	'righteousbison'		=> array('The Righteous Bison', 'KW_bison', 'righteous_bison.png'),
+	'original'				=> array('The Original', 'KW_QuakeRL', 'original.png'),
 
 	// pyro
 	'fireaxe'				=> array('Fireaxe', 'KW_Axe', 'fireaxe.png'),
