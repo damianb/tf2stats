@@ -16,8 +16,8 @@
  */
 
 namespace Scrii\TF2Stats\Page\Instance;
+use \Codebite\Quartz\Site as Quartz;
 use \OpenFlame\Framework\Core;
-use \OpenFlame\Framework\Dependency\Injector;
 use \OpenFlame\Framework\Utility\JSON;
 use \OpenFlame\Dbal\Query;
 use \OpenFlame\Dbal\QueryBuilder;
@@ -31,10 +31,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 	public function executePage()
 	{
-		$injector = Injector::getInstance();
-		$template = $injector->get('template');
-		$input = $injector->get('input');
-		$steam = $injector->get('steamgroup');
+		$quartz = Quartz::getInstance();
 
 		// Get steam ID
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
@@ -43,7 +40,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		}
 		else
 		{
-			$steam_id = $input->getInput('GET::steam', '')
+			$steam_id = $quartz->input->getInput('GET::steam', '')
 				->getClean();
 		}
 
@@ -59,8 +56,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 			}
 			else
 			{
-				$router = $injector->get('simplerouter');
-				$error = $router->getPage('error');
+				$error = $quartz->simplerouter->getPage('error');
 				Core::setObject('page', $error);
 				$error->setErrorCode(404);
 				$error->executePage();
@@ -68,8 +64,8 @@ class Player extends \Scrii\TF2Stats\Page\Base
 			}
 		}
 
-		$steam->getGroupMembers();
-		$this->is_member = in_array($steam_id->getSteamID64(), $steam->members) ? true : false;
+		$quartz->steamgroup->getGroupMembers();
+		$this->is_member = in_array($steam_id->getSteamID64(), $quartz->steamgroup->members) ? true : false;
 
 		$q = QueryBuilder::newInstance();
 		$q->select('p.*')
@@ -82,13 +78,18 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		// Any data?
 		if($row === false)
 		{
-			// @todo refactor for rewriting
-			$router = $injector->get('simplerouter');
-			$error = $router->getPage('error');
-			Core::setObject('page', $error);
-			$error->setErrorCode(404);
-			$error->executePage();
-			return;
+			if(\Scrii\TF2Stats\REWRITING_ENABLED)
+			{
+				throw new \Codebite\Quartz\Exception\ServerErrorException('', 404);
+			}
+			else
+			{
+				$error = $quartz->simplerouter->getPage('error');
+				Core::setObject('page', $error);
+				$error->setErrorCode(404);
+				$error->executePage();
+				return;
+			}
 		}
 
 		// Prep vars
@@ -148,7 +149,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 		// Trick the steam group data fetcher here...
 		$steam->members['temp'] = $steam_id->getSteamID64();
-		$data['profile'] = $steam->getMemberInfo($steam_id->getSteamID64(), false, 60);
+		$data['profile'] = $quartz->steamgroup->getMemberInfo($steam_id->getSteamID64(), false, 60);
 
 		// Get the weapondata json file.
 		$weapons = JSON::decode(\Codebite\Quartz\SITE_ROOT . '/data/config/weapondata.json');
@@ -253,7 +254,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 
 		// Dump vars to template now
-		$template->assignVars(array(
+		$quartz->template->assignVars(array(
 			'playername'		=> $row['NAME'],
 			'player_id'			=> $steam_id->getSteamID32(),
 			'player_cid'		=> $steam_id->getSteamID64(),

@@ -16,10 +16,11 @@
  */
 
 namespace Scrii\TF2Stats\Page\Instance;
+use \Codebite\Quartz\Site as Quartz;
 use \OpenFlame\Framework\Core;
-use \OpenFlame\Framework\Dependency\Injector;
 use \OpenFlame\Dbal\Query;
 use \OpenFlame\Dbal\QueryBuilder;
+use \Scrii\Steam\SteamID;
 
 class Home extends \Scrii\TF2Stats\Page\Base
 {
@@ -27,14 +28,12 @@ class Home extends \Scrii\TF2Stats\Page\Base
 
 	public function executePage()
 	{
-		$injector = Injector::getInstance();
-		$template = $injector->get('template');
+		$quartz = Quartz::getInstance();
 
-		$steam = $injector->get('steamgroup');
-		$steam->getGroupMembers();
+		$quartz->steamgroup->getGroupMembers();
 
 		$where = array();
-		foreach($steam->members as $member)
+		foreach($quartz->steamgroup->members as $member)
 		{
 			// Make sure this is a valid steam ID...if it's just digits, it should be safe.
 			if(!ctype_digit($member))
@@ -43,16 +42,19 @@ class Home extends \Scrii\TF2Stats\Page\Base
 			}
 
 			// convert to steamID32 format.
-			$steamid = \Scrii\TF2Stats\steamCommunityToSteamId($member);
-			if($steamid === false)
+			try
+			{
+				$steam_id = new SteamID($member);
+			}
+			catch(\RuntimeException $e)
 			{
 				continue;
 			}
 
-			$where[] = $steamid;
+			$where[] = $steam_id->getSteamID32();
 		}
 
-		if($steam->unavailable === true)
+		if($quartz->steamgroup->unavailable === true)
 		{
 			$template->assignVar('unavailable', true);
 		}
@@ -102,10 +104,11 @@ class Home extends \Scrii\TF2Stats\Page\Base
 			{
 				$format = '%4$d min%7$s';
 			}
+			$steam_id = new SteamID($row['STEAMID']);
 			$row['playspan'] = vsprintf($format, $playtime);
 
-			$row['steamid64'] = \Scrii\TF2Stats\steamIdToSteamCommunity($row['STEAMID']);
-			$row['ismember'] = in_array($row['steamid64'], $steam->members, true) ? true : false;
+			$row['steamid64'] = $steam_id->getSteamID64();
+			$row['ismember'] = in_array($row['steamid64'], $quartz->steamgroup->members, true) ? true : false;
 
 			$online = new \DateTime('@' . $row['LASTONTIME']);
 			$online->setTimeZone($timezone);
@@ -118,7 +121,7 @@ class Home extends \Scrii\TF2Stats\Page\Base
 			$rows[] = $row;
 		}
 
-		$template->assignVars(array(
+		$quartz->template->assignVars(array(
 			'members'		=> count($rows),
 			'data'			=> $rows,
 		));
