@@ -16,18 +16,21 @@
  */
 
 namespace Scrii\TF2Stats;
-use Codebite\Quartz\Site as Quartz;
-use Codebite\Quartz\Internal\RequirementException;
-use OpenFlame\Framework\Core;
-use OpenFlame\Framework\Autoloader;
-use OpenFlame\Framework\Event\Instance as Event;
-use OpenFlame\Framework\Dependency\Injector;
-use OpenFlame\Framework\Exception\Handler as ExceptionHandler;
+use \Codebite\Quartz\Site as Quartz;
+use \Codebite\Quartz\Internal\RequirementException;
+use \OpenFlame\Framework\Core;
+use \OpenFlame\Framework\Autoloader;
+use \OpenFlame\Framework\Event\Instance as Event;
+use \OpenFlame\Framework\Dependency\Injector;
+use \OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 
 // Our secondary bootstrap file (quartz), and the functions file...
-require \Scrii\TF2Stats\ROOT_PATH . '/Codebite/Quartz/Site.php';
-require \Scrii\TF2Stats\ROOT_PATH . '/Scrii/Functions.php';
+require \Scrii\TF2Stats\ROOT_PATH . '/includes/Codebite/Quartz/Site.php';
+// Define include paths
 Quartz::definePaths(\Scrii\TF2Stats\ROOT_PATH);
+
+require \Codebite\Quartz\INCLUDE_ROOT . '/Scrii/Functions.php';
+
 //$quartz = new \Codebite\Quartz\Site();
 $quartz = Quartz::getInstance();
 $quartz->init();
@@ -78,7 +81,8 @@ $quartz->setInjector('steamgroup', function() {
 	return $steam;
 });
 
-$quartz->loadConfig('assets')
+$quartz->connectToDatabase('mysql')
+	->loadConfig('assets')
 	->setAssets();
 
 if(\Scrii\TF2Stats\REWRITING_ENABLED)
@@ -121,8 +125,23 @@ else
 
 $quartz->setListener('page.execute', 5, function(Event $event) use($quartz) {
 	$quartz->header->removeHeader('X-Powered-By')
+		->setHeader('Content-Type', 'text/html') // content type, should be text/html because we're html5
+
+		->setHeader('Cache-Control', 'no-cache') // prevent caching
+		->setHeader('Pragma', 'no-cache') // prevent caching
 		->setHeader('X-Frame-Options', 'DENY') // NO FRAMES.
+		->setHeader('X-XSS-Protection', '1; mode=block') // IE8 header
+		->setHeader('X-Content-Type-Options', 'nosniff') // Chromium, IE8 implement this.
 		->setHeader('X-App-Version', 'scrii tf2 stats web ui ' . \Scrii\TF2Stats\VERSION);
+
+	if(Core::getConfig('site.enable_csp'))
+	{
+		$csp_header = 'default-src \'self\'; img-src \'self\' media.steampowered.com; script-src \'self\' *.googleapis.com; font-src \'self\' fonts.googleapis.com; style-src \'self\' fonts.googleapis.com';
+		// Will need updated later to match the W3C spec for CSP that's currently in progress.
+		$quartz->header->setHeader('X-Content-Security-Policy', $csp_header);
+		//$quartz->header->setHeader('X-WebKit-CSP', $csp_header); // X-WebKit-CSP is currently broken
+		//$quartz->header->setHeader('Content-Security-Policy', $csp_header); // when the CSP specification is complete, this should be safe to uncomment. :)
+	}
 });
 
 $quartz->setListener('page.display', -10, function(Event $event) use($quartz) {
