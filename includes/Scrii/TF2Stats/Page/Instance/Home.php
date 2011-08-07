@@ -17,9 +17,9 @@
 
 namespace Scrii\TF2Stats\Page\Instance;
 use \Codebite\Quartz\Site as Quartz;
+use \Codebite\Quartz\Dbal\Query;
+use \Codebite\Quartz\Dbal\QueryBuilder;
 use \OpenFlame\Framework\Core;
-use \OpenFlame\Dbal\Query;
-use \OpenFlame\Dbal\QueryBuilder;
 use \Scrii\Steam\SteamID;
 
 class Home extends \Scrii\TF2Stats\Page\Base
@@ -30,7 +30,10 @@ class Home extends \Scrii\TF2Stats\Page\Base
 	{
 		$quartz = Quartz::getInstance();
 
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', '', $dbg_instance);
 		$quartz->steamgroup->getGroupMembers();
+		$quartz->debugtime->newEntry('steam->getgroupmembers', 'Fetched steam group members (20 minute cache)', $dbg_instance);
 
 		$where = array();
 		foreach($quartz->steamgroup->members as $member)

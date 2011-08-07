@@ -19,8 +19,8 @@ namespace Scrii\TF2Stats\Page\Instance;
 use \Codebite\Quartz\Site as Quartz;
 use \OpenFlame\Framework\Core;
 use \OpenFlame\Framework\Utility\JSON;
-use \OpenFlame\Dbal\Query;
-use \OpenFlame\Dbal\QueryBuilder;
+use \Codebite\Quartz\Dbal\Query;
+use \Codebite\Quartz\Dbal\QueryBuilder;
 use \Scrii\Steam\SteamID;
 
 class Player extends \Scrii\TF2Stats\Page\Base
@@ -64,8 +64,11 @@ class Player extends \Scrii\TF2Stats\Page\Base
 			}
 		}
 
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', '', $dbg_instance);
 		$quartz->steamgroup->getGroupMembers();
 		$this->is_member = in_array($steam_id->getSteamID64(), $quartz->steamgroup->members) ? true : false;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', 'Fetched steam group members (20 minute cache)', $dbg_instance);
 
 		$q = QueryBuilder::newInstance();
 		$q->select('p.*')
@@ -149,7 +152,11 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 		// Trick the steam group data fetcher here...
 		$steam->members['temp'] = $steam_id->getSteamID64();
+
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getplayerdata', '', $dbg_instance);
 		$data['profile'] = $quartz->steamgroup->getMemberInfo($steam_id->getSteamID64(), false, 60);
+		$quartz->debugtime->newEntry('steam->getplayerdata', 'Fetched player data from Steam Web API (60 minute cache)', $dbg_instance);
 
 		// Get the weapondata json file.
 		$weapons = JSON::decode(\Codebite\Quartz\SITE_ROOT . '/data/config/weapondata.json');

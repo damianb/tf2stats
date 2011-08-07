@@ -5,6 +5,8 @@
 	"db.password":"passwordhere",
 	"twig.debug":false,
 	"site.debug":false,
+	"site.use_js":false,
+	"site.use_jquery_cdn":true,
 	"site.use_gzip_assets":false,
 	"site.timezone":"America\/New_York",
 	"page.base_url":"/",

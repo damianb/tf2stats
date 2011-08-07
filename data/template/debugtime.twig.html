@@ -1,0 +1,18 @@
+<div class="timetracker">
+	<div class="timeshowhide">
+		<span id="shdebug">Display debug information</span>
+	</div>
+	<div id="timerowset">
+{% for i in timetracker.getEntries() %}
+{% if i.description != "No description" %}
+		<div class="timerow{% if loop.first %} firstrow{% endif %}">
+			<span class="timetracker-mark">{{ i.time }} seconds</span> <span class="timetracker-instance">{{ i.type }}#{{ i.instance }}</span><br />
+
+			<span class="timetracker-span">{% if i.timespan != 0 %}(took {{ i.timespan }}s){% endif %}</span>
+			{{ i.description }}<br />
+			{# {% if i.data != "null" %}<pre class="timer-json">{{ i.data }}</pre>{% endif %}<br /> #}
+		</div>
+{% endif %}
+{% endfor %}
+	</div>
+</div>

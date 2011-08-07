@@ -24,7 +24,7 @@ if(version_compare(PHP_VERSION, '5.3.0', '<'))
 
 // Required constants
 define('Scrii\\TF2Stats\\ROOT_PATH', dirname(__FILE__));
-define('Scrii\\TF2Stats\\VERSION', '1.0.2');
+define('Scrii\\TF2Stats\\VERSION', '1.1.0-dev');
 
 // Load the bootstrap file
 require dirname(__FILE__) . '/includes/Scrii/TF2Stats/Bootstrap.php';

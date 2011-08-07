@@ -126,7 +126,6 @@ else
 $quartz->setListener('page.execute', 5, function(Event $event) use($quartz) {
 	$quartz->header->removeHeader('X-Powered-By')
 		->setHeader('Content-Type', 'text/html') // content type, should be text/html because we're html5
-
 		->setHeader('Cache-Control', 'no-cache') // prevent caching
 		->setHeader('Pragma', 'no-cache') // prevent caching
 		->setHeader('X-Frame-Options', 'DENY') // NO FRAMES.
@@ -148,6 +147,9 @@ $quartz->setListener('page.display', -10, function(Event $event) use($quartz) {
 	$quartz->template->assignVars(array(
 		'SCRII_TF2_VERSION'		=> \Scrii\TF2Stats\VERSION,
 		'use_gzip_content'		=> Core::getConfig('site.use_gzip_assets'),
+		'use_js'				=> Core::getConfig('site.use_js'),
+		'use_jquery_cdn'		=> Core::getConfig('site.use_jquery_cdn'),
+		'timetracker'			=> (Core::getConfig('site.debug') && Core::getConfig('site.use_js')) ? $quartz->debugtime : NULL,
 	));
 });
 
@@ -159,14 +161,21 @@ $quartz->setListener('page.route', -5, function(Event $event) use($quartz) {
 		return;
 	}
 
+	$dbg_instance = $dbg_instance2 = NULL;
+	$quartz->debugtime->newEntry('app->route', '', $dbg_instance);
+
 	$p = $quartz->input->getInput('GET::page', 'home')
-		->disableFieldJuggling()
 		->getClean();
 
 	$page = $quartz->simplerouter->getPage($p);
 
+	$quartz->debugtime->newEntry('app->route', 'Application route parsed', $dbg_instance, array('request' => $quartz->input->getInput('SERVER::REQUEST_URI', '/')->getClean()));
+	$quartz->debugtime->newEntry('app->executepage', '', $dbg_instance2);
+
 	Core::setObject('page', $page);
 	$page->executePage();
+
+	$quartz->debugtime->newEntry('app->executepage', 'Application page execution complete', $dbg_instance2);
 
 	// prevent the other listener from firing
 	$event->breakTrigger();
