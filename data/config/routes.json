@@ -35,8 +35,12 @@
 			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\ListWeapons::newRoutedInstance"
 		},
 		"weapon":{
-			"path":"\/weapon\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\PlayerWeaponRanking::newRoutedInstance"
+				"path":"\/weapon\/$weapon:str\/",
+				"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\PlayerWeaponRanking::newRoutedInstance"
+		},
+		"weaponpage":{
+				"path":"\/weapon\/$weapon:str\/$page:int\/",
+				"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\PlayerWeaponRanking::newRoutedInstance"
 		},
 		"top10":{
 			"path":"\/top10\/",
