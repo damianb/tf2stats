@@ -72,6 +72,12 @@ class ListWeapons extends \Scrii\TF2Stats\Page\Base
 			);
 		}
 
+		if(empty($data))
+		{
+			$quartz->template->assignVar('noresults', true);
+			return;
+		}
+
 		$quartz->template->assignVars(array(
 			'data'			=> $data,
 		));

@@ -1,6 +1,7 @@
 {% extends "layout.twig.html" %}
 {% block title %}top 10 players - {{ parent() }}{% endblock %}
 {% block content %}
+{% if not noresults %}
 	<div class="table top10">
 		<div class="tableheader">
 			<span class="column-rank lead">Rank</span>
@@ -25,4 +26,7 @@
 {% endfor %}
 		</div>
 	</div>
+{% else %}
+	<h2 class="noresults">No results</h2>
+{% endif %}
 {% endblock %}

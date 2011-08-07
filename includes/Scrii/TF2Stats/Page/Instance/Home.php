@@ -124,6 +124,12 @@ class Home extends \Scrii\TF2Stats\Page\Base
 			$rows[] = $row;
 		}
 
+		if(empty($rows))
+		{
+			$quartz->template->assignVar('noresults', true);
+			return;
+		}
+
 		$quartz->template->assignVars(array(
 			'members'		=> count($rows),
 			'data'			=> $rows,

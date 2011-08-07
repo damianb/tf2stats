@@ -1,6 +1,7 @@
 {% extends "layout.twig.html" %}
 {% block title %}weapon list - {{ parent() }}{% endblock %}
 {% block content %}
+{% if not noresults %}
 	<br />
 
 	{#
@@ -50,5 +51,7 @@
 	{# no data message here #}
 {% endfor %}
 </div>
-
+{% else %}
+	<h2 class="noresults">No results</h2>
+{% endif %}
 {% endblock %}

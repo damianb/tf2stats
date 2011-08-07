@@ -97,6 +97,7 @@ if(\Scrii\TF2Stats\REWRITING_ENABLED)
 	$quartz->url->newPattern('serverRankingPage', 'list/%d/');
 	$quartz->url->newPattern('weaponList', 'weapons/');
 	$quartz->url->newPattern('weaponRank', 'weapon/%s/');
+	$quartz->url->newPattern('weaponRankPage', 'weapon/%s/%d/');
 	$quartz->url->newPattern('top10', 'top10/');
 }
 else
@@ -107,6 +108,7 @@ else
 	$quartz->simplerouter->newRoute('player', '\\Scrii\TF2Stats\Page\Instance\\Player');
 	$quartz->simplerouter->newRoute('list', '\\Scrii\TF2Stats\Page\Instance\\ListPlayers');
 	$quartz->simplerouter->newRoute('weapons', '\\Scrii\TF2Stats\Page\Instance\\ListWeapons');
+	$quartz->simplerouter->newRoute('weapon', '\\Scrii\TF2Stats\Page\Instance\\PlayerWeaponRanking');
 	$quartz->simplerouter->newRoute('top10', '\\Scrii\TF2Stats\Page\Instance\\Top10');
 
 	$quartz->url->newPattern('groupRanking', ''); // URL looks nicer this way :D
@@ -116,6 +118,7 @@ else
 	$quartz->url->newPattern('serverRankingPage', '?page=list&p=%d');
 	$quartz->url->newPattern('weaponList', '?page=weapons');
 	$quartz->url->newPattern('weaponRank', '?page=weapon&weapon=%s');
+	$quartz->url->newPattern('weaponRankPage', '?page=weapon&weapon=%s&p=%d');
 	$quartz->url->newPattern('top10', '?page=top10');
 }
 

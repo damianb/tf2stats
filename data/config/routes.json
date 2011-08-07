@@ -34,6 +34,10 @@
 			"path":"\/weapons\/",
 			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\ListWeapons::newRoutedInstance"
 		},
+		"weapon":{
+			"path":"\/weapon\/",
+			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\PlayerWeaponRanking::newRoutedInstance"
+		},
 		"top10":{
 			"path":"\/top10\/",
 			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Top10::newRoutedInstance"

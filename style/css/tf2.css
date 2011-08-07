@@ -42,7 +42,16 @@ div.wrap {
 	padding-top: 15px;
 }
 
-div.content { min-height: 370px; }
+h2.noresults {
+	margin-top: 80px;
+	text-align: center;
+	font-size: 21px;
+	color: #eee;
+	font-weight: bold;
+	text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 1px;
+}
+
+div.content { min-height: 180px; }
 
 div#errbox { margin-bottom: 10px; }
 
@@ -246,9 +255,8 @@ img.killicon { display: block; margin: 0 auto; }
 	color: #444;
 }
 
-.weaponlistrow {
-	height: 50px;
-}
+.weaponranklistrow { text-align: center; margin: 0 auto; }
+.weaponlistrow { height: 50px; }
 
 .weaponrow {
 	font-family: 'TF2 Build', 'Droid Sans', 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
@@ -336,10 +344,12 @@ div.table div.tablebody div.tablerow span a.banneduser { color: #a00; font-weigh
 div.table div.tablebody div.tablerow span:hover a.banneduser, div.table div.tablebody div.tablerow span:hover a.banneduser:active{ color: #8E0200 !important; }
 div.table div.tablebody div.tablerow span:hover a.banneduser:hover, div.table div.tablebody div.tablerow span:hover a.banneduser:focus{ color: #EA0000 !important; }
 
-div.top10 div span.column-rank, div.topgroup div span.column-rank, div.ranking div span.column-rank { width: 60px; text-align: center; font-weight: bold; }
+div.top10 div span.column-rank, div.topgroup div span.column-rank, div.ranking div span.column-rank, div.weaponranking div span.column-rank { width: 60px; text-align: center; font-weight: bold; }
 div.top10 div span.column-name, div.topgroup div span.column-name, div.ranking div span.column-name { width: 200px; }
-div.top10 div span.column-name a, div.topgroup div span.column-name a, div.ranking div span.column-name a { display: inline-block; margin-left: 4px; }
-div.top10 div span.column-points, div.topgroup div span.column-points, div.ranking div span.column-points { width: 67px; text-align: center; }
+div.weaponranking div span.column-name { width: 550px; }
+div.top10 div span.column-name a, div.topgroup div span.column-name a, div.ranking div span.column-name a, div.weaponranking div span.column-name a { display: inline-block; margin-left: 4px; }
+div.top10 div span.column-points, div.topgroup div span.column-points, div.ranking div span.column-points, div.weaponranking div span.column-points { width: 67px; text-align: center; }
+div.weaponranking div span.column-kills { width: 133px; text-align: center; }
 div.top10 div span.column-playtime, div.topgroup div span.column-playtime, div.ranking div span.column-playtime { width: 150px; text-align: center; }
 div.top10 div span.column-lastonline, div.topgroup div span.column-lastonline, div.ranking div span.column-lastonline { width: 260px; text-align: center; }
 
