@@ -78,7 +78,7 @@
 				<div class="weaponrow weaponrow-{% if loop.index is odd %}left{% else %}right{% endif %}">
 					<span class="killicon_wrap">
 						<img class="killicon" src="{{ asset.image.killicon }}{{ weapon.image }}" alt="{{ weapon.name }}" title="{{ weapon.name }}" />
-						<span class="killicon_name">{% if weapon.name == "Fireaxe" and player_cid == "76561198012908563" %}Yukari-chan{% else %}{{ weapon.name }}{% endif %}</span>
+						<span class="killicon_name"><a href="{{ url.weaponRank(weapon.urlname) }}">{% if weapon.name == "Fireaxe" and player_cid == "76561198012908563" %}Yukari-chan{% else %}{{ weapon.name }}{% endif %}</a></span>
 						<span class="killicon_kills">{{ weapon.kills }}</span>
 					</span>
 				</div>

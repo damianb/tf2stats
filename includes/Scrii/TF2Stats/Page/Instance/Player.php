@@ -174,12 +174,13 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		}
 		arsort($used_weapons, SORT_NUMERIC);
 
-		foreach($used_weapons as $key => $kills)
+		foreach($used_weapons as $weapon_name => $kills)
 		{
 			$data['weaponkills'][] = array(
-				'name'		=> $weapons[$key][0],
+				'name'		=> $weapons[$weapon_name][0],
 				'kills'		=> $kills,
-				'image'		=> $weapons[$key][2],
+				'image'		=> $weapons[$weapon_name][2],
+				'urlname'	=> $weapon_name,
 			);
 		}
 

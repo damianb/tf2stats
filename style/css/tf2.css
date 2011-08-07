@@ -268,7 +268,7 @@ img.killicon { display: block; margin: 0 auto; }
 .weaponrow-right { float: right; }
 
 div.weaponlisting { margin: 0 auto; width: 500px; }
-div.weaponlisting div span.killicon_wrap span a { color: #444; }
+div.weaponrow span.killicon_wrap span a, div.weaponlisting div span.killicon_wrap span a { color: #444; }
 
 /**
  * table stuff
@@ -409,4 +409,3 @@ div.timetracker pre.timer-json { white-space: pre-wrap; font-size: 0.8em; }
 div.timetracker span.timetracker-mark { font-size: 1.3em; font-weight: bold; width: 165px; }
 div.timetracker span.timetracker-instance { font-family: monospace; }
 div.timetracker span.timetracker-span { text-align: center; font-size: 0.9em; font-weight: bold; width: 165px; color: #777; }
-
