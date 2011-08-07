@@ -17,10 +17,11 @@
 
 namespace Scrii\TF2Stats\Page\Instance;
 use \OpenFlame\Framework\Core;
-use \OpenFlame\Framework\Dependency\Injector;
 use \OpenFlame\Framework\Utility\JSON;
-use \OpenFlame\Dbal\Query;
-use \OpenFlame\Dbal\QueryBuilder;
+use \Codebite\Quartz\Site as Quartz;
+use \Codebite\Quartz\Dbal\Query;
+use \Codebite\Quartz\Dbal\QueryBuilder;
+use \Scrii\Steam\SteamID;
 
 class ListWeapons extends \Scrii\TF2Stats\Page\Base
 {
@@ -28,11 +29,12 @@ class ListWeapons extends \Scrii\TF2Stats\Page\Base
 
 	public function executePage()
 	{
-		$injector = Injector::getInstance();
-		$template = $injector->get('template');
-		$steam = $injector->get('steamgroup');
-		$input = $injector->get('input');
-		$steam->getGroupMembers();
+		$quartz = Quartz::getInstance();
+
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', '', $dbg_instance);
+		$quartz->steamgroup->getGroupMembers();
+		$quartz->debugtime->newEntry('steam->getgroupmembers', 'Fetched steam group members (20 minute cache)', $dbg_instance);
 
 		// Get weapon data
 		$weapons = JSON::decode(\Codebite\Quartz\SITE_ROOT . '/data/config/weapondata.json');
@@ -70,7 +72,7 @@ class ListWeapons extends \Scrii\TF2Stats\Page\Base
 			);
 		}
 
-		$template->assignVars(array(
+		$quartz->template->assignVars(array(
 			'data'			=> $data,
 		));
 
