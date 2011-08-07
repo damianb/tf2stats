@@ -107,9 +107,9 @@ class Home extends \Scrii\TF2Stats\Page\Base
 			{
 				$format = '%4$d min%7$s';
 			}
-			$steam_id = new SteamID($row['STEAMID']);
 			$row['playspan'] = vsprintf($format, $playtime);
 
+			$steam_id = new SteamID($row['STEAMID']);
 			$row['steamid64'] = $steam_id->getSteamID64();
 			$row['ismember'] = in_array($row['steamid64'], $quartz->steamgroup->members, true) ? true : false;
 

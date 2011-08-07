@@ -18,8 +18,10 @@
 namespace Scrii\TF2Stats\Page\Instance;
 use \OpenFlame\Framework\Core;
 use \OpenFlame\Framework\Dependency\Injector;
-use \OpenFlame\Dbal\Query;
-use \OpenFlame\Dbal\QueryBuilder;
+use \Codebite\Quartz\Site as Quartz;
+use \Codebite\Quartz\Dbal\Query;
+use \Codebite\Quartz\Dbal\QueryBuilder;
+use \Scrii\Steam\SteamID;
 
 class ListPlayers extends \Scrii\TF2Stats\Page\Base
 {
@@ -29,11 +31,12 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 
 	public function executePage()
 	{
-		$injector = Injector::getInstance();
-		$template = $injector->get('template');
-		$steam = $injector->get('steamgroup');
-		$input = $injector->get('input');
-		$steam->getGroupMembers();
+		$quartz = Quartz::getInstance();
+
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', '', $dbg_instance);
+		$quartz->steamgroup->getGroupMembers();
+		$quartz->debugtime->newEntry('steam->getgroupmembers', 'Fetched steam group members (20 minute cache)', $dbg_instance);
 
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
 		{
@@ -45,10 +48,9 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 		}
 		else
 		{
-			$page = $input->getInput('GET::p', 1)
+			$page = $quartz->input->getInput('GET::p', 1)
 				->getClean();
 		}
-
 
 		// Calculate the intended offset (pages are 50 per)
 		$offset = ($page > 1) ? ($page - 1) * self::LIMIT_PAGE : 0;
@@ -101,8 +103,9 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 			}
 			$row['playspan'] = vsprintf($format, $playtime);
 
-			$row['steamid64'] = \Scrii\TF2Stats\steamIdToSteamCommunity($row['STEAMID']);
-			$row['ismember'] = in_array($row['steamid64'], $steam->members) ? true : false;
+			$steam_id = new SteamID($row['STEAMID']);
+			$row['steamid64'] = $steam_id->getSteamID64();
+			$row['ismember'] = in_array($row['steamid64'], $quartz->steamgroup->members) ? true : false;
 
 			$online = new \DateTime('@' . $row['LASTONTIME']);
 			$online->setTimeZone($timezone);
@@ -124,8 +127,7 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 			}
 			else
 			{
-				$router = $injector->get('simplerouter');
-				$error = $router->getPage('error');
+				$error = $quartz->simplerouter->getPage('error');
 				Core::setObject('page', $error);
 				$error->setErrorCode(404);
 				$error->executePage();
@@ -170,7 +172,7 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 			$pagination['pages'][] = $page + $i;
 		}
 
-		$template->assignVars(array(
+		$quartz->template->assignVars(array(
 			'data'			=> $rows,
 			'pagination'	=> $pagination,
 		));

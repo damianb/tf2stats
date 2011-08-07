@@ -18,8 +18,10 @@
 namespace Scrii\TF2Stats\Page\Instance;
 use \OpenFlame\Framework\Core;
 use \OpenFlame\Framework\Dependency\Injector;
-use \OpenFlame\Dbal\Query;
-use \OpenFlame\Dbal\QueryBuilder;
+use \Codebite\Quartz\Site as Quartz;
+use \Codebite\Quartz\Dbal\Query;
+use \Codebite\Quartz\Dbal\QueryBuilder;
+use \Scrii\Steam\SteamID;
 
 class Top10 extends \Scrii\TF2Stats\Page\Base
 {
@@ -27,10 +29,12 @@ class Top10 extends \Scrii\TF2Stats\Page\Base
 
 	public function executePage()
 	{
-		$injector = Injector::getInstance();
-		$template = $injector->get('template');
-		$steam = $injector->get('steamgroup');
-		$steam->getGroupMembers();
+		$quartz = Quartz::getInstance();
+
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', '', $dbg_instance);
+		$quartz->steamgroup->getGroupMembers();
+		$quartz->debugtime->newEntry('steam->getgroupmembers', 'Fetched steam group members (20 minute cache)', $dbg_instance);
 
 		$q = QueryBuilder::newInstance();
 		$q->select('p.STEAMID, p.NAME, p.POINTS, p.PLAYTIME, p.LASTONTIME' . ((\Scrii\TF2Stats\ENABLE_BANREASON) ? ', p.BANREASON' : ''))
@@ -79,8 +83,9 @@ class Top10 extends \Scrii\TF2Stats\Page\Base
 			}
 			$row['playspan'] = vsprintf($format, $playtime);
 
-			$row['steamid64'] = \Scrii\TF2Stats\steamIdToSteamCommunity($row['STEAMID']);
-			$row['ismember'] = in_array($row['steamid64'], $steam->members) ? true : false;
+			$steam_id = new SteamID($row['STEAMID']);
+			$row['steamid64'] = $steam_id->getSteamID64();
+			$row['ismember'] = in_array($row['steamid64'], $quartz->steamgroup->members) ? true : false;
 
 			$online = new \DateTime('@' . $row['LASTONTIME']);
 			$online->setTimeZone($timezone);
@@ -94,7 +99,7 @@ class Top10 extends \Scrii\TF2Stats\Page\Base
 			$rows[] = $row;
 		}
 
-		$template->assignVars(array(
+		$quartz->template->assignVars(array(
 			'data'			=> $rows,
 		));
 
