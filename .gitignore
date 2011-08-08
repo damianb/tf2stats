@@ -4,3 +4,6 @@ cache/twig/*
 cache/*.tmp
 data/config/config.json
 package/*
+keys/*.pem
+lib/*.phar
+!lib/*.phar.pubkey
