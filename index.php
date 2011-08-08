@@ -22,11 +22,20 @@ if(version_compare(PHP_VERSION, '5.3.0', '<'))
 	exit;
 }
 
-// Required constants
-define('Scrii\\TF2Stats\\ROOT_PATH', dirname(__FILE__));
+define('TF2STATS_USE_PHAR', false);
 
-// Load the bootstrap file
-require dirname(__FILE__) . '/includes/Scrii/TF2Stats/Bootstrap.php';
+// Define required constants and load the bootstrap file
+define('Codebite\\Quartz\\SITE_ROOT', dirname(__FILE__) . '/');
+if(TF2STATS_USE_PHAR)
+{
+	define('Scrii\\TF2Stats\\ROOT_PATH', 'phar://' . dirname(__FILE__) . '/lib/tf2stats.phar/');
+	require 'phar://' . dirname(__FILE__) . '/lib/tf2stats.phar/includes/Scrii/TF2Stats/Bootstrap.php';
+}
+else
+{
+	define('Scrii\\TF2Stats\\ROOT_PATH', dirname(__FILE__));
+	require dirname(__FILE__) . '/includes/Scrii/TF2Stats/Bootstrap.php';
+}
 
 $quartz->pagePrepare()
 	->pageExecute()
