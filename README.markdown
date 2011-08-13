@@ -30,6 +30,8 @@ The 960gs grid system is dual-licensed under the [MIT License](https://github.co
 * A Steam Web API key
 * A Steam group
 
+If you are running a phar-packaged version, your installation of PHP needs OpenSSL installed as well.
+
 ## dependencies
 
 * Twig 1.1.2 (provided in a git submodule)
