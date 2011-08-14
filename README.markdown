@@ -96,6 +96,10 @@ There's one somewhere in it.  ;)
 
 ## troubleshooting
 
+### cache exceptions
+
+Make sure the `cache/` and `cache/twig/` directories have full read/write permissions.  chmod should be `0777`.
+
 ### enabling pretty urls
 
 To enable the "pretty URLs" mode, first check that you are running Apache and that you have the modules `mod_rewrite` and `mod_env` enabled (`mod_env` is needed to let the script know that rewriting is enabled).
