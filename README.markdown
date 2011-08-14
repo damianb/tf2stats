@@ -79,6 +79,17 @@ To obtain a Steam Web API key, please refer to [this page](http://steamcommunity
 
 Also, please note that the "powered by steam" text and link in the footer may not be removed; it is required by the [Steam API terms of use](http://steamcommunity.com/dev/apiterms).
 
+### optimizing database lookups
+
+I've asked DarthNinja, the maintainer of the plugin, to add some indexes to the database tables so that queries can be run faster, but so far he hasn't acknowledged or accepted the request.  So, if you want to add some indexes to help speed up database queries, here's a few that I found to be useful.
+
+```
+ALTER TABLE Player ADD INDEX(STEAMID);
+ALTER TABLE Player ADD INDEX(POINTS);
+```
+
+Since most database lookups are either by the `STEAMID` column or by the `POINTS` column, these indexes should give MySQL a crutch when sorting.  Unfortunately, we can't do the same for the weapons list; the number of columns to index wouldn't be worth it.
+
 ## easter eggs
 
 There's one somewhere in it.  ;)
