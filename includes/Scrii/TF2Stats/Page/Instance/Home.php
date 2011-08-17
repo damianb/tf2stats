@@ -59,7 +59,7 @@ class Home extends \Scrii\TF2Stats\Page\Base
 
 		if($quartz->steamgroup->unavailable === true)
 		{
-			$template->assignVar('unavailable', true);
+			$quartz->template->assignVar('unavailable', true);
 		}
 
 		$q = Query::newInstance();
