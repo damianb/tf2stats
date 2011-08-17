@@ -36,7 +36,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		// Get steam ID
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
 		{
-			$steam_id = $this->route->getRequestDataPoint('steam');
+			$steam_id = $this->route->get('steam');
 		}
 		else
 		{

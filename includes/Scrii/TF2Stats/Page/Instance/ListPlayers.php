@@ -39,7 +39,7 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
 		{
-			$page = $this->route->getRequestDataPoint('page');
+			$page = $this->route->get('page');
 			if($page <= 0)
 			{
 				$page = 1;

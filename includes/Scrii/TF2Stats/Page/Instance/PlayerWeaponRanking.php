@@ -40,8 +40,8 @@ class PlayerWeaponRanking extends \Scrii\TF2Stats\Page\Base
 
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
 		{
-			$page = $this->route->getRequestDataPoint('page');
-			$weapon = $this->route->getRequestDataPoint('weapon');
+			$page = $this->route->get('page');
+			$weapon = $this->route->get('weapon');
 			if($page <= 0)
 			{
 				$page = 1;
