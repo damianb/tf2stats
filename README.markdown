@@ -30,9 +30,11 @@ The 960gs grid system is dual-licensed under the [MIT License](https://github.co
 * A Steam Web API key
 * A Steam group
 
+If you are running a phar-packaged version, your installation of PHP needs OpenSSL installed as well.
+
 ## dependencies
 
-* Twig 1.1.0 (provided in a git submodule)
+* Twig 1.1.2 (provided in a git submodule)
 * OpenFlame Framework 1.2.0-dev (provided in a git submodule)
 * OpenFlame Dbal 1.0.0-dev (provided in a git submodule)
 * Quartz (provided in a git submodule)
@@ -47,15 +49,18 @@ Installation of the tf2 stats web ui is fairly straightforward.
 
 To prepare your installation, rename or copy the file `data/config/config.example.json` to `data/config/config.json`, then open it up in your favorite unix-newline-safe editor (I recommend Notepad++ for Windows users).
 
-In it are ten different settings, explained below:
+In it are several different settings, explained below:
 
 * `db.host` - This setting should be the hostname used to connect to your database server.  In most circumstances, it is `localhost`.
 * `db.name` - The name of your database (*not* database user).
 * `db.username` - The database username to connect to the database with.
 * `db.password` - The password to use with the datbase username to connect to the database with.
 * `twig.debug` - Enables debug mode in the Twig template library.  Only needed for anyone modifying templates themselves.
-* `site.debug` - Enables debug mode on the site itself.  The full error message, backtrace, and code context is displayed instead of a vague message.
+* `site.debug` - Enables debug mode on the site itself.  The full error message, backtrace, and code context is displayed instead of a vague message.  Also, if `site.use_js` is enabled, additional code timing information is displayed in the page footer.
+* `site.use_js` - Embeds jQuery and the tf2.js file into the entire site.  Enable only if you require the use of jQuery.
+* `site.use_jquery_cdn` - If `site.use_js` is enabled, this will embed the Google CDN copy of jQuery in the page, instead of the local copy.
 * `site.use_gzip_assets` - The site will use gzip-compressed assets (CSS, JS files) instead of uncompressed files to save bandwidth if this setting is enabled.  **If you experience problems with page styling not appearing correctly, try disabling this setting first.**
+* `site.timezone` - A valid DateTime timezone.  Please reference [http://us3.php.net/manual/en/timezones.php] to locate your timezone.
 * `page.base_url` - The base URL to use for all links generated on the site.  If you install the site to [http://mysite.com/], this would be "/", if you install the site to [http://mysite.com/tf2stats/] this would be "/tf2stats/", etc.
 * `steam.webapikey` - Your personal Steam Web API key.  See the section "obtaining a Steam Web API key" below for more details if you do not have a Steam Web API key yet.
 * `steam.groupurl` - The URL to your Steam group's profile page.  This should be something like `http://steamcommunity.com/groups/scrii/`.
@@ -74,11 +79,26 @@ To obtain a Steam Web API key, please refer to [this page](http://steamcommunity
 
 Also, please note that the "powered by steam" text and link in the footer may not be removed; it is required by the [Steam API terms of use](http://steamcommunity.com/dev/apiterms).
 
+### optimizing database lookups
+
+I've asked DarthNinja, the maintainer of the plugin, to add some indexes to the database tables so that queries can be run faster, but so far he hasn't acknowledged or accepted the request.  So, if you want to add some indexes to help speed up database queries, here's a few that I found to be useful.
+
+```
+ALTER TABLE Player ADD INDEX(STEAMID);
+ALTER TABLE Player ADD INDEX(POINTS);
+```
+
+Since most database lookups are either by the `STEAMID` column or by the `POINTS` column, these indexes should give MySQL a crutch when sorting.  Unfortunately, we can't do the same for the weapons list; the number of columns to index wouldn't be worth it.
+
 ## easter eggs
 
 There's one somewhere in it.  ;)
 
 ## troubleshooting
+
+### cache exceptions
+
+Make sure the `cache/` and `cache/twig/` directories have full read/write permissions.  chmod should be `0777`.
 
 ### enabling pretty urls
 
@@ -97,7 +117,7 @@ Now...
 
 Depending on your system, enabling compressed stylesheets/javascript files may or may not work out of the box.  Go ahead and set the site config setting `site.use_gzip_assets` to **true** to see if your server sends the files with the correct headers.  If you load the page and the styling is screwed up beyond belief, read on.  Otherwise, you're all set.
 
-Due to a rather...*odd* choice by the Ubuntu repository maintainers, Apache's mime_module configuration file declares files ending with the extension .gz to be the wrong content type.  Instead of declaring the content encoding as `x-gzip` (the code to do this is actually commented out), the maintainers decided to declare the content type to be `application/x-gzip`, which will cause most browsers to not use the data within as merely compressed content.
+Due to a rather...*odd* choice by the Ubuntu repository maintainers, Apache's `mime_module` configuration file declares files ending with the extension .gz to be the wrong content type.  Instead of declaring the content encoding as `x-gzip` (the code to do this is actually commented out), the maintainers decided to declare the content type to be `application/x-gzip`, which will cause most browsers to not use the data within as merely compressed content.
 
 To fix this problem on Ubuntu server 10.04 LTS (may apply to other versions):
 
@@ -107,7 +127,3 @@ To fix this problem on Ubuntu server 10.04 LTS (may apply to other versions):
 * restart/reload Apache with `sudo service apache2 reload` or `sudo service apache2 restart`
 * clear your browser cache
 * reload the page and see if the page styling loads properly
-
-## todo
-
-* Package and distribute the app with the the OpenFlame Framework,  OpenFlame Dbal, and Quartz contained in OpenSSL-signed phar packages.

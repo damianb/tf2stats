@@ -66,7 +66,14 @@ class Group
 			libxml_use_internal_errors(true);
 			if($xml_string != false)
 			{
-				$xml = new \SimpleXMLElement($xml_string);
+				try
+				{
+					$xml = new \SimpleXMLElement($xml_string);
+				}
+				catch(\Exception $e)
+				{
+					$xml = false;
+				}
 			}
 			libxml_use_internal_errors(false);
 
@@ -128,6 +135,10 @@ class Group
 			// aaand pull user data here
 			$url = sprintf('http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=%1$s&steamids=%2$s', $this->web_api_key, $steam_id);
 			$json = file_get_contents($url);
+
+			// Nuke the RLE crap
+			$json = preg_replace('/\xe2\x80[\x8e\x8f\xae]?/', "", $json);
+
 			if($json === false)
 			{
 				// store false in the cache to prevent API slamming

@@ -1,9 +1,10 @@
 {% extends "layout.twig.html" %}
-{% block title %}server rankings - {{ parent() }}{% endblock %}
+{% block title %}weapon list - {{ parent() }}{% endblock %}
 {% block content %}
 {% if not noresults %}
 	<br />
-	{% include "pagination_list.twig.html" %}
+
+	{#
 	<div class="table ranking">
 		<div class="tableheader">
 			<span class="column-rank lead">Rank</span>
@@ -33,8 +34,23 @@
 		<div class="recordtotal">{{ pagination.record.total }} records in total</div>
 	</div>
 
-	{% include "pagination_list.twig.html" %}
-	<br />
+	#}
+
+<div class="weaponlisting">
+{% for w in data %}
+	{% if loop.index is odd %}<div class="weaponlistrow">{% endif %}
+		<div class="weaponrow weaponrow-{% if loop.index is odd %}left{% else %}right{% endif %}">
+			<span class="killicon_wrap">
+				<img class="killicon" src="{{ asset.image.killicon }}{{ w.image }}" alt="{{ w.name }}" title="{{ w.name }}" />
+				<span class="killicon_name"><a href="{{ url.weaponRank(w.urlname) }}">{{ w.name }}</a></span>
+				<span class="killicon_kills">{{ w.kills }}</span>
+			</span>
+		</div>
+	{% if loop.index is even or loop.last %}<div class="clear"></div></div><br /><br />{% endif %}
+{% else %}
+	{# no data message here #}
+{% endfor %}
+</div>
 {% else %}
 	<h2 class="noresults">No results</h2>
 {% endif %}

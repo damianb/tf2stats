@@ -1,0 +1,10 @@
+	{% if pagination %}
+	<div class="pagination">
+		<a href="{{ url.weaponRankPage(weapon.urlname, pagination.first) }}" class="pagination-link" title="First page">&laquo;</a>
+		{% for page in pagination.pages %}
+			<a href="{{ url.weaponRankPage(weapon.urlname, page) }}" class="pagination-link{% if page == pagination.current %} currentpage{% endif %}" title="Page {{ page }}">{{ page }}</a>
+		{% endfor %}
+		<a href="{{ url.weaponRankPage(weapon.urlname, pagination.last) }}" class="pagination-link" title="Last page">&raquo;</a>
+	</div>
+	<div class="clear"></div>
+	{% endif %}

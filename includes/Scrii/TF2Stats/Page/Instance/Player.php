@@ -16,11 +16,12 @@
  */
 
 namespace Scrii\TF2Stats\Page\Instance;
+use \Codebite\Quartz\Site as Quartz;
 use \OpenFlame\Framework\Core;
-use \OpenFlame\Framework\Dependency\Injector;
 use \OpenFlame\Framework\Utility\JSON;
-use \OpenFlame\Dbal\Query;
-use \OpenFlame\Dbal\QueryBuilder;
+use \Codebite\Quartz\Dbal\Query;
+use \Codebite\Quartz\Dbal\QueryBuilder;
+use \Scrii\Steam\SteamID;
 
 class Player extends \Scrii\TF2Stats\Page\Base
 {
@@ -30,27 +31,24 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 	public function executePage()
 	{
-		$injector = Injector::getInstance();
-		$template = $injector->get('template');
-		$input = $injector->get('input');
-		$steam = $injector->get('steamgroup');
-		// get steam ID
+		$quartz = Quartz::getInstance();
+
+		// Get steam ID
 		if(\Scrii\TF2Stats\REWRITING_ENABLED)
 		{
-			$steam_cid = $this->route->getRequestDataPoint('steam');
+			$steam_id = $this->route->get('steam');
 		}
 		else
 		{
-			$steam_cid = $input->getInput('GET::steam', '')
-				->disableFieldJuggling()
+			$steam_id = $quartz->input->getInput('GET::steam', '')
 				->getClean();
 		}
 
-		$steam->getGroupMembers();
-		$this->is_member = in_array($steam_cid, $steam->members) ? true : false;
-		$steam_id = \Scrii\TF2Stats\steamCommunityToSteamId($steam_cid);
-
-		if($steam_id === false)
+		try
+		{
+			$steam_id = new SteamID($steam_id);
+		}
+		catch(\RuntimeException $e)
 		{
 			if(\Scrii\TF2Stats\REWRITING_ENABLED)
 			{
@@ -58,8 +56,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 			}
 			else
 			{
-				$router = $injector->get('simplerouter');
-				$error = $router->getPage('error');
+				$error = $quartz->simplerouter->getPage('error');
 				Core::setObject('page', $error);
 				$error->setErrorCode(404);
 				$error->executePage();
@@ -67,10 +64,16 @@ class Player extends \Scrii\TF2Stats\Page\Base
 			}
 		}
 
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', '', $dbg_instance);
+		$quartz->steamgroup->getGroupMembers();
+		$this->is_member = in_array($steam_id->getSteamID64(), $quartz->steamgroup->members) ? true : false;
+		$quartz->debugtime->newEntry('steam->getgroupmembers', 'Fetched steam group members (20 minute cache)', $dbg_instance);
+
 		$q = QueryBuilder::newInstance();
 		$q->select('p.*')
 			->from('Player p')
-			->where('p.STEAMID = ?', $steam_id)
+			->where('p.STEAMID = ?', $steam_id->getSteamID32())
 			->limit(1);
 
 		$row = $q->fetchRow();
@@ -78,13 +81,18 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		// Any data?
 		if($row === false)
 		{
-			// @todo refactor for rewriting
-			$router = $injector->get('simplerouter');
-			$error = $router->getPage('error');
-			Core::setObject('page', $error);
-			$error->setErrorCode(404);
-			$error->executePage();
-			return;
+			if(\Scrii\TF2Stats\REWRITING_ENABLED)
+			{
+				throw new \Codebite\Quartz\Exception\ServerErrorException('', 404);
+			}
+			else
+			{
+				$error = $quartz->simplerouter->getPage('error');
+				Core::setObject('page', $error);
+				$error->setErrorCode(404);
+				$error->executePage();
+				return;
+			}
 		}
 
 		// Prep vars
@@ -126,7 +134,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		);
 
 		// Rank class performance...
-		$tf2classes = array('Scout' => 'Scout	', 'Soldier' => 'Soldier', 'Pyro' => 'Pyro', 'Demo' => 'Demoman', 'Heavy' => 'Heavy', 'Engi' => 'Engineer', 'Medic' => 'Medic', 'Sniper' => 'Sniper', 'Spy' => 'Spy');
+		$tf2classes = array('Scout' => 'Scout', 'Soldier' => 'Soldier', 'Pyro' => 'Pyro', 'Demo' => 'Demoman', 'Heavy' => 'Heavy', 'Engi' => 'Engineer', 'Medic' => 'Medic', 'Sniper' => 'Sniper', 'Spy' => 'Spy');
 		foreach($tf2classes as $classname => $class)
 		{
 			$kd[$classname] = ($row[$classname . 'Deaths'] > 0) ? round($row[$classname . 'Kills'] / $row[$classname . 'Deaths'], 2) : $row[$classname . 'Kills'];
@@ -143,16 +151,22 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		}
 
 		// Trick the steam group data fetcher here...
-		$steam->members['temp'] = $steam_cid;
-		$data['profile'] = $steam->getMemberInfo($steam_cid, false, 60);
+		$steam->members['temp'] = $steam_id->getSteamID64();
 
-		// Get weapon kill data
+		$dbg_instance = NULL;
+		$quartz->debugtime->newEntry('steam->getplayerdata', '', $dbg_instance);
+		$data['profile'] = $quartz->steamgroup->getMemberInfo($steam_id->getSteamID64(), false, 60);
+		$quartz->debugtime->newEntry('steam->getplayerdata', 'Fetched player data from Steam Web API (60 minute cache)', $dbg_instance);
+
+		// Get the weapondata json file.
 		$weapons = JSON::decode(\Codebite\Quartz\SITE_ROOT . '/data/config/weapondata.json');
 
+		// Figure out weapon kill stats.
 		$used_weapons = array();
 		foreach($weapons as $key => $weapon)
 		{
-			if($row[$weapon[1]] <= 0)
+			// Make sure the weapon's column exists, and that the weapon was used before continuing
+			if(!isset($row[$weapon[1]]) || $row[$weapon[1]] <= 0)
 			{
 				continue;
 			}
@@ -160,27 +174,29 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		}
 		arsort($used_weapons, SORT_NUMERIC);
 
-		foreach($used_weapons as $key => $kills)
+		foreach($used_weapons as $weapon_name => $kills)
 		{
 			$data['weaponkills'][] = array(
-				'name'		=> $weapons[$key][0],
+				'name'		=> $weapons[$weapon_name][0],
 				'kills'		=> $kills,
-				'image'		=> $weapons[$key][2],
+				'image'		=> $weapons[$weapon_name][2],
+				'urlname'	=> $weapon_name,
 			);
 		}
 
-		// Obtain rank on server...
-		$q = QueryBuilder::newInstance();
-		$q->select('COUNT(p.STEAMID) as position')
+		// Obtain rank on server... (we're ignoring the circumstance of tied-for-rank here)
+		$qr = QueryBuilder::newInstance();
+		$qr->select('COUNT(p.STEAMID) as position')
 			->from('Player p')
 			->where('p.POINTS > ?', $row['POINTS']);
-		$res = $q->fetchRow();
+		$res = $qr->fetchRow();
 		$data['rank'] = $res['position'] + 1;
 
-		// Some basic stats
+		// Some basic stats (points, kills, deaths, kill-death-ratio, kills-per-minute...etc.)
 		$data['points'] = $row['POINTS'];
 		$data['kills'] = $row['KILLS'];
 		$data['deaths'] = $row['Death'];
+		$data['kadr'] = ($row['Death'] > 0) ? round(($row['KILLS'] + ($row['KillAssist'] / 2)) / $row['Death'], 2) : $row['KILLS'];
 		$data['kdr'] = ($row['Death'] > 0) ? round($row['KILLS'] / $row['Death'], 2) : $row['KILLS'];
 		$data['kpm'] = ($row['PLAYTIME'] > 0) ? round($row['KILLS'] / $row['PLAYTIME'], 2) : $row['KILLS'];
 
@@ -229,7 +245,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 		// Some more vars
 		$data['backpackurl'] = rtrim(str_replace('http://steamcommunity.com/', 'http://tf2items.com/', $data['profile']['profileurl']), '/');
-		$data['friendlink'] = 'steam://friends/add/' . $steam_cid;
+		$data['friendlink'] = 'steam://friends/add/' . $steam_id->getSteamID64();
 		$data['is_banned'] = (isset($row['BANREASON']) && $row['BANREASON'] != '') ? true : false;
 		$data['banreason'] = (isset($row['BANREASON'])) ? $row['BANREASON'] : '';
 
@@ -247,11 +263,11 @@ class Player extends \Scrii\TF2Stats\Page\Base
 
 
 		// Dump vars to template now
-		$template->assignVars(array(
+		$quartz->template->assignVars(array(
 			'playername'		=> $row['NAME'],
-			'player_id'			=> $steam_id,
-			'player_cid'		=> $steam_cid,
-			'player_url'		=> 'http://steamcommunity.com/profiles/' . $steam_cid . '/',
+			'player_id'			=> $steam_id->getSteamID32(),
+			'player_cid'		=> $steam_id->getSteamID64(),
+			'player_url'		=> 'http://steamcommunity.com/profiles/' . $steam_id->getSteamID64() . '/',
 			'playerdata'		=> $data,
 			'group_member'		=> $this->is_member,
 		));

@@ -1,25 +1,33 @@
 {% extends "layout.twig.html" %}
-{% block title %}server rankings - {{ parent() }}{% endblock %}
+{% block title %}weapon rankings - {{ parent() }}{% endblock %}
 {% block content %}
 {% if not noresults %}
 	<br />
-	{% include "pagination_list.twig.html" %}
-	<div class="table ranking">
+
+	<div class="weaponranklistrow">
+		<div class="weaponrow">
+			<span class="killicon_wrap">
+				<img class="killicon" src="{{ asset.image.killicon }}{{ weapon.image }}" alt="{{ weapon.name }}" title="{{ weapon.name }}" />
+				<span class="killicon_name">{{ weapon.name }}</span>
+				<span class="killicon_kills">{{ weapon.kills }}</span>
+			</span>
+		</div>
+	</div>
+	<br />
+	<div class="clear"></div>
+	{% include "pagination_playerweaponranking.twig.html" %}
+	<div class="table weaponranking">
 		<div class="tableheader">
 			<span class="column-rank lead">Rank</span>
 			<span class="column-name">Name</span>
-			<span class="column-points">Points</span>
-			<span class="column-playtime">Total playtime</span>
-			<span class="column-lastonline trail">Last online</span>
+			<span class="column-kills">Weapon Kills</span>
 		</div>
 		<div class="tablebody">
 {% for u in data %}
 			<div class="tablerow" id="listr{{ u.rank }}">
 				<span class="cell column-rank lead">{{ u.rank }} </span>
 				<span class="cell column-name"><a href="{{ url.playerProfile(u.steamid64)}}"{% if u.ismember and not u.is_banned %} class="groupplayer" title="group member"{% endif %}{% if u.is_banned %} class="banneduser" title="banned: {{ u.banreason }}"{% endif %}>{{ u.NAME }}</a></span>
-				<span class="cell column-points">{{ u.POINTS }}</span>
-				<span class="cell column-playtime">{{ u.playspan }}</span>
-				<span class="cell column-lastonline trail"><span title="{{ u.lastonline_utc }}">{{ u.lastonline }}</span></span>
+				<span class="cell column-kills trail">{{ u.weapon_kills }}</span>
 			</div>
 {% else %}
 			<div class="tablerow">
@@ -33,7 +41,7 @@
 		<div class="recordtotal">{{ pagination.record.total }} records in total</div>
 	</div>
 
-	{% include "pagination_list.twig.html" %}
+	{% include "pagination_playerweaponranking.twig.html" %}
 	<br />
 {% else %}
 	<h2 class="noresults">No results</h2>

@@ -11,6 +11,55 @@
 	AddType application/javascript .js.gz
 </IfModule>
 
+# Asset caching
+<IfModule mod_headers.c>
+	<FilesMatch "\.(css|css\.gz)$">
+		# 2 day cache
+		Header set Cache-Control "public, max-age=172800"
+		Header set X-Content-Type-Options "nosniff"
+		Header set Content-Type "text/css; charset=UTF-8"
+	</FilesMatch>
+
+	<FilesMatch "\.(js|js\.gz)$">
+		# 2 day cache
+		Header set Cache-Control "public, max-age=172800"
+		Header set X-Content-Type-Options "nosniff"
+		Header set Content-Type "application/javascript; charset=UTF-8"
+	</FilesMatch>
+
+	<FilesMatch "\.(jpg|jpeg)$">
+		# 1 week cache
+		Header set Cache-Control "public, max-age=604800"
+		Header set X-Content-Type-Options "nosniff"
+		Header set Content-Type "image/jpeg; charset=UTF-8"
+
+	</FilesMatch>
+
+	<FilesMatch "\.png$">
+		# 1 week cache
+		Header set Cache-Control "public, max-age=604800"
+		Header set X-Content-Type-Options "nosniff"
+		Header set Content-Type "image/png; charset=UTF-8"
+
+	</FilesMatch>
+
+	<FilesMatch "\.gif$">
+		# 1 week cache
+		Header set Cache-Control "public, max-age=604800"
+		Header set X-Content-Type-Options "nosniff"
+		Header set Content-Type "image/gif; charset=UTF-8"
+	</FilesMatch>
+</IfModule>
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresByType application/javascript A172800
+	ExpiresByType text/css A172800
+	ExpiresByType image/gif A604800
+	ExpiresByType image/png A604800
+	ExpiresByType image/jpeg A604800
+</IfModule>
+
 # we'll handle the errors, thanks
 # (yes, the 403 page will say 404, nobody really cares though)
 ErrorDocument 403 index.php?page=error
