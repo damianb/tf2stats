@@ -196,6 +196,7 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		$data['points'] = $row['POINTS'];
 		$data['kills'] = $row['KILLS'];
 		$data['deaths'] = $row['Death'];
+		$data['kadr'] = ($row['Death'] > 0) ? round(($row['KILLS'] + ($row['KillAssist'] / 2)) / $row['Death'], 2) : $row['KILLS'];
 		$data['kdr'] = ($row['Death'] > 0) ? round($row['KILLS'] / $row['Death'], 2) : $row['KILLS'];
 		$data['kpm'] = ($row['PLAYTIME'] > 0) ? round($row['KILLS'] / $row['PLAYTIME'], 2) : $row['KILLS'];
 
