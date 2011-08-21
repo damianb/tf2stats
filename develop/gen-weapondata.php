@@ -24,7 +24,7 @@ $weapons = array(
 	'fryingpan'				=> array('Frying Pan', 'KW_fryingpan', 'frying_pan.png'),
 	'paintrain'				=> array('Pain Train', 'KW_paintrain', 'pain_train.png'),
 	'halfzatoichi'			=> array('The Half-Zatoichi', 'KW_katana', 'half-zatoichi.png'),
-	'telefrag'				=> array('Telefrag', 'KW_telefrag', 'telefrag.png'),
+	'telefrag'				=> array('Telefrag', 'KW_telefrag', 'noicon.png'),
 	'pistol'				=> array('Pistol', 'KW_Pistl', 'pistol.png'),
 	'shotgun'				=> array('Shotgun', 'KW_Stgn', 'shotgun.png'),
 	'pumpkinbomb'			=> array('Pumpkin Bomb', 'KW_pumpkin', 'pumpkin.png'),
@@ -86,6 +86,7 @@ $weapons = array(
 	'maul'					=> array('The Maul', 'KW_maul', 'maul.png'),
 	'detonator'				=> array('The Detonator', 'KW_detonator', 'detonator.png'),
 	'postalpummeler'		=> array('The Postal Pummeler', 'KW_mailbox', 'postal_pummeler.png'),
+	'deflectmangler'		=> array('Deflected Cow Mangler Shot', 'KW_ManglerReflect', 'noicon.png'),
 
 	// demoman
 	'bottle'				=> array('Bottle', 'KW_Bttl', 'bottle.png'),
@@ -134,6 +135,8 @@ $weapons = array(
 	'frontierjusticetaunt'	=> array('Frontier Justice Tauntkill', 'KW_taunt_guitar_kill', 'dischord.png'),
 	'jag'					=> array('The Jag', 'KW_wrench_jag', 'jag.png'),
 	'minisentry'			=> array('Combat Mini-Sentry Gun', 'KW_minisentry', 'minisentry.png'),
+	'widowmaker'			=> array('Widowmaker', 'KW_Widowmaker', 'widowmaker.png'),
+	'shortcircuit'			=> array('Short Circuit', 'KW_Short_Circuit', 'short_circuit.png'),
 
 	// medic
 	'bonesaw'				=> array('Bonesaw', 'KW_Bnsw', 'bonesaw.png'),
@@ -158,6 +161,8 @@ $weapons = array(
 	'sydneysleeper'			=> array('The Sydney Sleeper', 'KW_sleeperrifle', 'sydney_sleeper.png'),
 	'bazaarbargain'			=> array('The Bazaar Bargain', 'KW_bazaar_bargain', 'bazaar_bargain.png'),
 	'shahanshah'			=> array('The Shahanshah', 'KW_shahanshah', 'shahanshah.png'),
+	'machina'				=> array('The Machina', 'KW_Machina', 'machina.png'),
+	'machinapenetation'		=> array('Machina (Penetration Kill)', 'KW_Machina_DoubleKill', 'machina_penetrate.png'),
 
 	// spy
 	'knife'					=> array('Knife', 'KW_Kn', 'backstab.png'),
@@ -169,6 +174,7 @@ $weapons = array(
 	'kunai'					=> array('Conniver\'s Kunai', 'KW_kunai', 'connivers_kunai.png'),
 	'enforcer'				=> array('The Enforcer', 'KW_enforcer', 'enforcer.png'),
 	'bigearner'				=> array('The Big Earner', 'KW_big_earner', 'big_earner.png'),
+	'diamondback'			=> array('The Diamondback', 'KW_Diamondback', 'diamondback.png'),
 );
 
 $json = json_encode($weapons);
