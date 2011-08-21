@@ -24,7 +24,8 @@
 			<div class="statitem item-points"><div class="statitem-title">Points</div> <div class="statitem-data">{{ playerdata.points }}</div><div class="clear"></div></div>
 			<div class="statitem item-kills"><div class="statitem-title">Kills</div> <div class="statitem-data">{{ playerdata.kills }}</div><div class="clear"></div></div>
 			<div class="statitem item-deaths"><div class="statitem-title">Deaths</div> <div class="statitem-data">{{ playerdata.deaths }}</div><div class="clear"></div></div>
-			<div class="statitem item-kdr"><div class="statitem-title">K/D Ratio</div> <div class="statitem-data">{{ playerdata.kdr }}</div><div class="clear"></div></div><br /><br />
+			{# <div class="statitem item-kdr"><div class="statitem-title">K/D Ratio</div> <div class="statitem-data">{{ playerdata.kdr }}</div><div class="clear"></div></div><br /><br /> #}
+			<div class="statitem item-kdr"><div class="statitem-title" title="kills + (assists x .5) / deaths">KA/D Ratio</div> <div class="statitem-data">{{ playerdata.kadr }}</div><div class="clear"></div></div><br /><br />
 			<div class="statitem item-kpm"><div class="statitem-title">Kills/minute</div> <div class="statitem-data">{{ playerdata.kpm }}</div><div class="clear"></div></div>
 			<div class="statitem item-timeonline"><div class="statitem-title">Time played</div> <div class="statitem-data">{{ playerdata.playspan }}</div><div class="clear"></div></div><br /><br />
 			<div class="statitem item-lastonline"><div class="statitem-title">Last online</div> <div class="statitem-data">{{ playerdata.lastonline }}</div><div class="clear"></div></div>
