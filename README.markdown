@@ -20,7 +20,7 @@ The 960gs grid system is dual-licensed under the [MIT License](https://github.co
 
 ## requirements
 
-* PHP 5.3.0 or newer (tested on PHP 5.3.1)
+* PHP 5.3.0 or newer (tested on PHP 5.3.1, PHP 5.3.5)
 * `bcmath` extension must be available
 * `pdo` extension must be available
 * `pdo_mysql` must be available
@@ -29,14 +29,15 @@ The 960gs grid system is dual-licensed under the [MIT License](https://github.co
 * `magic_quotes_runtime` MUST be disabled in php.ini
 * A Steam Web API key
 * A Steam group
+* [TF2 Stats 8.6.0 plugin by DarthNinja](http://forums.alliedmods.net/showthread.php?p=987696#post987696)
 
 If you are running a phar-packaged version, your installation of PHP needs OpenSSL installed as well.
 
 ## dependencies
 
-* Twig 1.1.2 (provided in a git submodule)
+* Twig 1.2.0 (provided in a git submodule)
 * OpenFlame Framework 1.2.0-dev (provided in a git submodule)
-* OpenFlame Dbal 1.0.0-dev (provided in a git submodule)
+* OpenFlame Dbal 1.0.0 (provided in a git submodule)
 * Quartz (provided in a git submodule)
 * 960gs (provided)
 * jQuery 1.6.2 (provided)
@@ -77,18 +78,7 @@ If you:
 
 To obtain a Steam Web API key, please refer to [this page](http://steamcommunity.com/dev).
 
-Also, please note that the "powered by steam" text and link in the footer may not be removed; it is required by the [Steam API terms of use](http://steamcommunity.com/dev/apiterms).
-
-### optimizing database lookups
-
-I've asked DarthNinja, the maintainer of the plugin, to add some indexes to the database tables so that queries can be run faster, but so far he hasn't acknowledged or accepted the request.  So, if you want to add some indexes to help speed up database queries, here's a few that I found to be useful.
-
-```
-ALTER TABLE Player ADD INDEX(STEAMID);
-ALTER TABLE Player ADD INDEX(POINTS);
-```
-
-Since most database lookups are either by the `STEAMID` column or by the `POINTS` column, these indexes should give MySQL a crutch when sorting.  Unfortunately, we can't do the same for the weapons list; the number of columns to index wouldn't be worth it.
+Also, please note that the "powered by steam" text and link in the footer must not be removed; it is required by the [Steam API terms of use](http://steamcommunity.com/dev/apiterms).
 
 ## easter eggs
 
