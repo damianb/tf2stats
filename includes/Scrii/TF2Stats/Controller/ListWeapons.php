@@ -15,7 +15,7 @@
  *
  */
 
-namespace Scrii\TF2Stats\Page\Instance;
+namespace Scrii\TF2Stats\Controller;
 use \OpenFlame\Framework\Core;
 use \OpenFlame\Framework\Utility\JSON;
 use \Codebite\Quartz\Site as Quartz;
@@ -23,7 +23,7 @@ use \Codebite\Quartz\Dbal\Query;
 use \Codebite\Quartz\Dbal\QueryBuilder;
 use \Scrii\Steam\SteamID;
 
-class ListWeapons extends \Scrii\TF2Stats\Page\Base
+class ListWeapons extends \Codebite\Quartz\Controller\Base
 {
 	protected $template_name = 'listweapons.twig.html';
 

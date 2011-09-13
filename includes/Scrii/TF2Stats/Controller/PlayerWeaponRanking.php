@@ -15,7 +15,7 @@
  *
  */
 
-namespace Scrii\TF2Stats\Page\Instance;
+namespace Scrii\TF2Stats\Controller;
 use \OpenFlame\Framework\Core;
 use \OpenFlame\Framework\Utility\JSON;
 use \Codebite\Quartz\Site as Quartz;
@@ -23,7 +23,7 @@ use \Codebite\Quartz\Dbal\Query;
 use \Codebite\Quartz\Dbal\QueryBuilder;
 use \Scrii\Steam\SteamID;
 
-class PlayerWeaponRanking extends \Scrii\TF2Stats\Page\Base
+class PlayerWeaponRanking extends \Codebite\Quartz\Controller\Base
 {
 	const LIMIT_PAGE = 50;
 
@@ -62,12 +62,12 @@ class PlayerWeaponRanking extends \Scrii\TF2Stats\Page\Base
 		{
 			if(\Scrii\TF2Stats\REWRITING_ENABLED)
 			{
-				throw new \Codebite\Quartz\Exception\ServerErrorException('', 404);
+				throw new \Codebite\Quartz\Internal\ServerErrorException('', 404);
 			}
 			else
 			{
 				$error = $quartz->simplerouter->getPage('error');
-				Core::setObject('page', $error);
+				Core::setObject('controller.instance', $error);
 				$error->setErrorCode(404);
 				$error->executePage();
 				return;

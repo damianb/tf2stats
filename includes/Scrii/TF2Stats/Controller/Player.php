@@ -15,7 +15,7 @@
  *
  */
 
-namespace Scrii\TF2Stats\Page\Instance;
+namespace Scrii\TF2Stats\Controller;
 use \Codebite\Quartz\Site as Quartz;
 use \OpenFlame\Framework\Core;
 use \OpenFlame\Framework\Utility\JSON;
@@ -23,7 +23,7 @@ use \Codebite\Quartz\Dbal\Query;
 use \Codebite\Quartz\Dbal\QueryBuilder;
 use \Scrii\Steam\SteamID;
 
-class Player extends \Scrii\TF2Stats\Page\Base
+class Player extends \Codebite\Quartz\Controller\Base
 {
 	protected $template_name = 'player.twig.html';
 
@@ -52,12 +52,12 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		{
 			if(\Scrii\TF2Stats\REWRITING_ENABLED)
 			{
-				throw new \Codebite\Quartz\Exception\ServerErrorException('', 404);
+				throw new \Codebite\Quartz\Internal\ServerErrorException('', 404);
 			}
 			else
 			{
 				$error = $quartz->simplerouter->getPage('error');
-				Core::setObject('page', $error);
+				Core::setObject('controller.instance', $error);
 				$error->setErrorCode(404);
 				$error->executePage();
 				return;
@@ -83,12 +83,12 @@ class Player extends \Scrii\TF2Stats\Page\Base
 		{
 			if(\Scrii\TF2Stats\REWRITING_ENABLED)
 			{
-				throw new \Codebite\Quartz\Exception\ServerErrorException('', 404);
+				throw new \Codebite\Quartz\Internal\ServerErrorException('', 404);
 			}
 			else
 			{
 				$error = $quartz->simplerouter->getPage('error');
-				Core::setObject('page', $error);
+				Core::setObject('controller.instance', $error);
 				$error->setErrorCode(404);
 				$error->executePage();
 				return;

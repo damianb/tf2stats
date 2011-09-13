@@ -15,7 +15,7 @@
  *
  */
 
-namespace Scrii\TF2Stats\Page\Instance;
+namespace Scrii\TF2Stats\Controller;
 use \OpenFlame\Framework\Core;
 use \OpenFlame\Framework\Dependency\Injector;
 use \Codebite\Quartz\Site as Quartz;
@@ -23,7 +23,7 @@ use \Codebite\Quartz\Dbal\Query;
 use \Codebite\Quartz\Dbal\QueryBuilder;
 use \Scrii\Steam\SteamID;
 
-class Top10 extends \Scrii\TF2Stats\Page\Base
+class Top10 extends \Codebite\Quartz\Controller\Base
 {
 	protected $template_name = 'top10.twig.html';
 
@@ -39,6 +39,7 @@ class Top10 extends \Scrii\TF2Stats\Page\Base
 		$q = QueryBuilder::newInstance();
 		$q->select('p.STEAMID, p.NAME, p.POINTS, p.PLAYTIME, p.LASTONTIME' . ((\Scrii\TF2Stats\ENABLE_BANREASON) ? ', p.BANREASON' : ''))
 			->from('Player p')
+			->where('p.STEAMID <> ?', 'BOT')
 			->orderBy('p.points', 'DESC')
 			->limit(10);
 

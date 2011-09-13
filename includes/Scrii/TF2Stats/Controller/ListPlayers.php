@@ -22,7 +22,7 @@ use \Codebite\Quartz\Dbal\Query;
 use \Codebite\Quartz\Dbal\QueryBuilder;
 use \Scrii\Steam\SteamID;
 
-class ListPlayers extends \Scrii\TF2Stats\Page\Base
+class ListPlayers extends \Codebite\Quartz\Controller\Base
 {
 	const LIMIT_PAGE = 50;
 
@@ -57,6 +57,7 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 		$q = QueryBuilder::newInstance();
 		$q->select('p.STEAMID, p.NAME, p.POINTS, p.PLAYTIME, p.LASTONTIME' . ((\Scrii\TF2Stats\ENABLE_BANREASON) ? ', p.BANREASON' : ''))
 			->from('Player p')
+			->where('p.STEAMID <> ?', 'BOT')
 			->orderBy('p.points', 'DESC')
 			->offset($offset)
 			->limit(self::LIMIT_PAGE);
@@ -126,7 +127,8 @@ class ListPlayers extends \Scrii\TF2Stats\Page\Base
 
 		$pq = QueryBuilder::newInstance();
 		$pq->select('COUNT(p.STEAMID) as total')
-			->from('Player p');
+			->from('Player p')
+			->where('p.STEAMID <> ?', 'BOT');
 		$pagedata = $pq->fetchRow();
 		$total = $pagedata['total'];
 		$total_pages = ceil($total / self::LIMIT_PAGE);
