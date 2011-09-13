@@ -15,7 +15,7 @@
  *
  */
 
-namespace Scrii\TF2Stats\Page\Instance;
+namespace Scrii\TF2Stats\Controller;
 use \OpenFlame\Framework\Core;
 use \Codebite\Quartz\Site as Quartz;
 use \Codebite\Quartz\Dbal\Query;
