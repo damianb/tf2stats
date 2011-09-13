@@ -31,7 +31,11 @@ class SteamID
 
 	public function __construct($steam_id)
 	{
-		if(ctype_digit($steam_id))
+		if(empty($steam_id))
+		{
+			$this->steamID32 = $this->steamID64 = '';
+		}
+		elseif(ctype_digit($steam_id))
 		{
 			$this->steamID64 = $steam_id;
 			$this->steamID32 = $this->convert64to32($steam_id);
