@@ -2,49 +2,49 @@
 	"site.routes":{
 		"home":{
 			"path":"\/home\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Home::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\Home::newRoutedInstance"
 		},
 		"error":{
 			"path":"\/error\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Error::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\Error::newRoutedInstance"
 		},
 		"errorid":{
 			"path":"\/error\/$error:int\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Error::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\Error::newRoutedInstance"
 		},
 
 		# dynamic pages
 		"group":{
 			"path":"\/group\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Home::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\Home::newRoutedInstance"
 		},
 		"player":{
 			"path":"\/player\/$steam:str\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Player::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\Player::newRoutedInstance"
 		},
 		"list":{
 			"path":"\/list\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\ListPlayers::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\ListPlayers::newRoutedInstance"
 		},
 		"listpage":{
 			"path":"\/list\/$page:int\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\ListPlayers::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\ListPlayers::newRoutedInstance"
 		},
 		"weapons":{
 			"path":"\/weapons\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\ListWeapons::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\ListWeapons::newRoutedInstance"
 		},
 		"weapon":{
 				"path":"\/weapon\/$weapon:str\/",
-				"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\PlayerWeaponRanking::newRoutedInstance"
+				"callback":"\\Scrii\\TF2Stats\\Controller\\PlayerWeaponRanking::newRoutedInstance"
 		},
 		"weaponpage":{
 				"path":"\/weapon\/$weapon:str\/$page:int\/",
-				"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\PlayerWeaponRanking::newRoutedInstance"
+				"callback":"\\Scrii\\TF2Stats\\Controller\\PlayerWeaponRanking::newRoutedInstance"
 		},
 		"top10":{
 			"path":"\/top10\/",
-			"callback":"\\Scrii\\TF2Stats\\Page\\Instance\\Top10::newRoutedInstance"
+			"callback":"\\Scrii\\TF2Stats\\Controller\\Top10::newRoutedInstance"
 		}
 	}
 }
