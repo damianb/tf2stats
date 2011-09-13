@@ -15,14 +15,14 @@
  *
  */
 
-namespace Scrii\TF2Stats\Page\Instance;
+namespace Scrii\TF2Stats\Controller;
 use \Codebite\Quartz\Site as Quartz;
 use \Codebite\Quartz\Dbal\Query;
 use \Codebite\Quartz\Dbal\QueryBuilder;
 use \OpenFlame\Framework\Core;
 use \Scrii\Steam\SteamID;
 
-class Home extends \Scrii\TF2Stats\Page\Base
+class Home extends \Codebite\Quartz\Controller\Base
 {
 	protected $template_name = 'home.twig.html';
 
