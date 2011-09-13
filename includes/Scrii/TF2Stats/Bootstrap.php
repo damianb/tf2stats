@@ -104,14 +104,14 @@ if(\Scrii\TF2Stats\REWRITING_ENABLED)
 }
 else
 {
-	$quartz->simplerouter->newRoute('home', '\\Scrii\TF2Stats\Page\Instance\\Home');
-	$quartz->simplerouter->newRoute('error', '\\Scrii\\TF2Stats\\Page\\Instance\\Error');
-	$quartz->simplerouter->newRoute('group', '\\Scrii\TF2Stats\Page\Instance\\Home');
-	$quartz->simplerouter->newRoute('player', '\\Scrii\TF2Stats\Page\Instance\\Player');
-	$quartz->simplerouter->newRoute('list', '\\Scrii\TF2Stats\Page\Instance\\ListPlayers');
-	$quartz->simplerouter->newRoute('weapons', '\\Scrii\TF2Stats\Page\Instance\\ListWeapons');
-	$quartz->simplerouter->newRoute('weapon', '\\Scrii\TF2Stats\Page\Instance\\PlayerWeaponRanking');
-	$quartz->simplerouter->newRoute('top10', '\\Scrii\TF2Stats\Page\Instance\\Top10');
+	$quartz->simplerouter->newRoute('home', '\\Scrii\TF2Stats\\Controller\\Home');
+	$quartz->simplerouter->newRoute('error', '\\Scrii\\TF2Stats\\Controller\\Error');
+	$quartz->simplerouter->newRoute('group', '\\Scrii\TF2Stats\\Controller\\Home');
+	$quartz->simplerouter->newRoute('player', '\\Scrii\TF2Stats\\Controller\\Player');
+	$quartz->simplerouter->newRoute('list', '\\Scrii\TF2Stats\\Controller\\ListPlayers');
+	$quartz->simplerouter->newRoute('weapons', '\\Scrii\TF2Stats\\Controller\\ListWeapons');
+	$quartz->simplerouter->newRoute('weapon', '\\Scrii\TF2Stats\\Controller\\PlayerWeaponRanking');
+	$quartz->simplerouter->newRoute('top10', '\\Scrii\TF2Stats\\Controller\\Top10');
 
 	$quartz->url->newPattern('groupRanking', ''); // URL looks nicer this way :D
 	//$quartz->url->newPattern('groupRanking', '?page=group');
@@ -174,13 +174,13 @@ $quartz->setListener('page.route', -5, function(Event $event) use($quartz) {
 
 	$page = $quartz->simplerouter->getPage($p);
 
-	$quartz->debugtime->newEntry('app->route', 'Application route parsed', $dbg_instance, array('request' => $quartz->input->getInput('SERVER::REQUEST_URI', '/')->getClean()));
-	$quartz->debugtime->newEntry('app->executepage', '', $dbg_instance2);
+	$quartz->debugtime->newEntry('app->route', 'Application route parsing', $dbg_instance, array('request' => $quartz->input->getInput('SERVER::REQUEST_URI', '/')->getClean()));
+	$quartz->debugtime->newEntry('app->executecontroller', '', $dbg_instance2);
 
-	Core::setObject('page', $page);
+	Core::setObject('controller.instance', $page);
 	$page->executePage();
 
-	$quartz->debugtime->newEntry('app->executepage', 'Application page execution complete', $dbg_instance2);
+	$quartz->debugtime->newEntry('app->executecontroller', 'Application controller execution complete', $dbg_instance2, array('controller' => get_class($page)));
 
 	// prevent the other listener from firing
 	$event->breakTrigger();
