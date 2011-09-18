@@ -36,7 +36,7 @@ If you are running a phar-packaged version, your installation of PHP needs OpenS
 ## dependencies
 
 * Twig 1.2.0 (provided in a git submodule)
-* OpenFlame Framework 1.2.0-dev (provided in a git submodule)
+* OpenFlame Framework 1.2.0 (provided in a git submodule)
 * OpenFlame Dbal 1.0.0 (provided in a git submodule)
 * Quartz (provided in a git submodule)
 * 960gs (provided)
