@@ -24,7 +24,7 @@ use \OpenFlame\Framework\Event\Instance as Event;
 use \OpenFlame\Framework\Dependency\Injector;
 use \OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 
-define('Scrii\\TF2Stats\\VERSION', '1.1.1');
+define('Scrii\\TF2Stats\\VERSION', '1.1.2-dev');
 
 // Our secondary bootstrap file (quartz), and the functions file...
 require \Scrii\TF2Stats\ROOT_PATH . '/includes/Codebite/Quartz/Site.php';
@@ -89,21 +89,16 @@ $quartz->connectToDatabase('mysql')
 
 if(\Scrii\TF2Stats\REWRITING_ENABLED)
 {
-	$quartz->loadConfig('routes')
+	$quartz->loadConfig('urls_rewrite')
+		->loadConfig('routes')
+		->setURLs()
 		->setRoutes();
-
-	$quartz->url->newPattern('groupRanking', ''); // URL looks nicer this way :D
-	//$quartz->url->newPattern('groupRanking', 'group/');
-	$quartz->url->newPattern('playerProfile', 'player/%s/');
-	$quartz->url->newPattern('serverRanking', 'list/');
-	$quartz->url->newPattern('serverRankingPage', 'list/%d/');
-	$quartz->url->newPattern('weaponList', 'weapons/');
-	$quartz->url->newPattern('weaponRank', 'weapon/%s/');
-	$quartz->url->newPattern('weaponRankPage', 'weapon/%s/%d/');
-	$quartz->url->newPattern('top10', 'top10/');
 }
 else
 {
+	$quartz->loadConfig('urls')
+		->setURLs();
+
 	$quartz->simplerouter->newRoute('home', '\\Scrii\TF2Stats\\Controller\\Home');
 	$quartz->simplerouter->newRoute('error', '\\Scrii\\TF2Stats\\Controller\\Error');
 	$quartz->simplerouter->newRoute('group', '\\Scrii\TF2Stats\\Controller\\Home');
@@ -112,16 +107,6 @@ else
 	$quartz->simplerouter->newRoute('weapons', '\\Scrii\TF2Stats\\Controller\\ListWeapons');
 	$quartz->simplerouter->newRoute('weapon', '\\Scrii\TF2Stats\\Controller\\PlayerWeaponRanking');
 	$quartz->simplerouter->newRoute('top10', '\\Scrii\TF2Stats\\Controller\\Top10');
-
-	$quartz->url->newPattern('groupRanking', ''); // URL looks nicer this way :D
-	//$quartz->url->newPattern('groupRanking', '?page=group');
-	$quartz->url->newPattern('playerProfile', '?page=player&steam=%s');
-	$quartz->url->newPattern('serverRanking', '?page=list');
-	$quartz->url->newPattern('serverRankingPage', '?page=list&p=%d');
-	$quartz->url->newPattern('weaponList', '?page=weapons');
-	$quartz->url->newPattern('weaponRank', '?page=weapon&weapon=%s');
-	$quartz->url->newPattern('weaponRankPage', '?page=weapon&weapon=%s&p=%d');
-	$quartz->url->newPattern('top10', '?page=top10');
 }
 
 /**

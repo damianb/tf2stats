@@ -1,0 +1,12 @@
+{
+	"site.urls":{
+		"groupRanking":"",
+		"playerProfile":"?page=player&steam=%s",
+		"serverRanking":"?page=list",
+		"serverRankingPage":"?page=list&p=%d",
+		"weaponList":"?page=weapons",
+		"weaponRank":"?page=weapon&weapon=%s",
+		"weaponRankPage":"?page=weapon&weapon=%s&p=%d",
+		"top10":"?page=top10"
+	}
+}
