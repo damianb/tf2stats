@@ -8,8 +8,8 @@
 			"common_min":"tf2.min.css.gz"
 		},
 		"js":{
-			"jquery":"jquery-1.6.2.min.js",
-			"jquery_min":"jquery-1.6.2.min.js.gz",
+			"jquery":"jquery-1.6.4.min.js",
+			"jquery_min":"jquery-1.6.4.min.js.gz",
 			#
 			# @note: reason all JS is isolated into an external file is to make it easy to support CSP (Content Security Policy) in the future
 			# see: https://developer.mozilla.org/en/introducing_content_security_policy
