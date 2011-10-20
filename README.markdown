@@ -20,7 +20,7 @@ The 960gs grid system is dual-licensed under the [MIT License](https://github.co
 
 ## requirements
 
-* PHP 5.3.0 or newer (tested on PHP 5.3.1, PHP 5.3.5)
+* PHP 5.3.0 or newer (tested on PHP 5.3.1, PHP 5.3.5, PHP 5.3.6)
 * `bcmath` extension must be available
 * `pdo` extension must be available
 * `pdo_mysql` must be available
@@ -35,12 +35,12 @@ If you are running a phar-packaged version, your installation of PHP needs OpenS
 
 ## dependencies
 
-* Twig 1.2.0 (provided in a git submodule)
-* OpenFlame Framework 1.2.0 (provided in a git submodule)
+* Twig 1.3.0 (provided in a git submodule)
+* OpenFlame Framework 1.2.2-dev (provided in a git submodule)
 * OpenFlame Dbal 1.0.0 (provided in a git submodule)
 * Quartz (provided in a git submodule)
 * 960gs (provided)
-* jQuery 1.6.2 (provided)
+* jQuery 1.6.4 (provided)
 
 ## installation
 
