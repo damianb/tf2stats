@@ -12,10 +12,10 @@
 					<div class="row">
 						<div class="span8">
 							<h3 class="playername{% if group_member and not playerdata.is_banned %} groupmember{% endif %}{% if playerdata.is_banned %} banneduser{% endif %}" title="{{ playerdata.playername_full }}">{{ playerdata.playername_trim }}</h3>
-							{% if group_member %}<div class="groupindicator">group member</div>{% endif %}
+							<div class="groupindicator">&nbsp;{% if group_member %}group member{% endif %}</div>
 						</div>
 						<div class="span1 forceright rank">
-							#1
+							{% if playerdata.is_banned %}BANNED{% else %}#{{ playerdata.rank }}{% endif %}
 						</div>
 					</div>
 					<div class="row playerstats">
