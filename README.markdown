@@ -16,7 +16,7 @@ The [OpenFlame Framework](https://github.com/OpenFlame/OpenFlame-Framework) and 
 
 jQuery is dual-licensed under the [MIT License](http://github.com/jquery/jquery/blob/master/MIT-LICENSE.txt) and the [GPLv2](http://github.com/jquery/jquery/blob/master/GPL-LICENSE.txt).
 
-The 960gs grid system is dual-licensed under the [MIT License](https://github.com/nathansmith/960-Grid-System/blob/master/licenses/MIT_license.txt) and the [GPLv3](https://github.com/nathansmith/960-Grid-System/blob/master/licenses/GPL_license.txt).
+The Twitter bootstrap licensed under the [Apache License v2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 ## requirements
 
@@ -39,7 +39,7 @@ If you are running a phar-packaged version, your installation of PHP needs OpenS
 * OpenFlame Framework 1.2.2-dev (provided in a git submodule)
 * OpenFlame Dbal 1.0.0 (provided in a git submodule)
 * Quartz (provided in a git submodule)
-* 960gs (provided)
+* Twitter bootstrap 1.3.0 (provided)
 * jQuery 1.6.4 (provided)
 
 ## installation
