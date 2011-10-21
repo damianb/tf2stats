@@ -9,39 +9,60 @@
 <head>
 	<meta charset="utf-8" />
 	<title>{% block title %}team fortress 2 server rankings{% endblock %}</title>
-	<link rel="stylesheet" type="text/css" href="{% if use_gzip_content %}{{ asset.css.grid_min }}{% else %}{{ asset.css.grid }}{% endif %}" />
-	<link rel="stylesheet" type="text/css" href="{% if use_gzip_content %}{{ asset.css.common_min }}{% else %}{{ asset.css.common }}{% endif %}" />
-	<link href='http://fonts.googleapis.com/css?family=Droid+Sans:regular,bold&amp;v1' rel='stylesheet' type='text/css'>
+	<link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' />
+	<link rel="stylesheet" href="{% if use_gzip_content %}{{ asset.css.bootstrap_min }}{% else %}{{ asset.css.bootstrap }}{% endif %}" />
+	<link rel="stylesheet" href="{% if use_gzip_content %}{{ asset.css.common_min }}{% else %}{{ asset.css.common }}{% endif %}" />
 </head>
 <body>
-	<div class="container_12 wrap">
-		<div class="grid_10 prefix_1 suffix_1">
-			<header>
-				<h1>Team Fortress 2 server rankings</h1>
+	<div class="container">
+		<!-- header
+		----------------------------------- -->
+		<div class="row">
+			<div class="span8 title"><h1>scrii <small>community tf2</small></h1>
+				<h2></small></h2></div>
+			<div class="span8 nav">
 				<nav>
-					<a href="{{ url.groupRanking() }}">member rankings</a>
-					<a href="{{ url.top10() }}">top 10 players</a>
-					<a href="{{ url.serverRanking() }}">full server rankings</a>
-					<a href="{{ url.weaponList() }}">weapon list</a>
+					<ul class="pills">
+						<li><a href="{{ url.groupRanking() }}">member rankings</a></li>
+						<li><a href="{{ url.top10() }}">top 10</a></li>
+						<li><a href="{{ url.serverRanking() }}">full rankings</a></li>
+						<li><a href="{{ url.weaponList() }}">weapon rankings</a></li>
+					</ul>
 				</nav>
-			</header>
+			</div>
+		</div>
+		<!-- end header
+		----------------------------------- -->
 
-			<div class="content">
+		<!-- content
+		----------------------------------- -->
+		<div class="row">
+			<div class="content span15">
 				{% block content %}<!-- ASDF -->{% endblock %}
 			</div>
-
-			<footer>
-				tf2 stats web ui {{ SCRII_TF2_VERSION }} &copy; 2011 <a href="http://scrii.com/">scrii.com</a> | <a href="http://steampowered.com">powered by steam</a> | page generation time: {{ timer.mark('end') }} s
-			</footer>
-{% if timetracker %}
-			{% include "debugtime.twig.html" %}
-{% endif %}
 		</div>
-		<div class="clear"></div>
-	</div>
+		<!-- end content
+		----------------------------------- -->
+
+		<!-- footer
+		----------------------------------- -->
+		<div class="row">
+			<footer>
+				tf2 stats web ui {{ SCRII_TF2_VERSION }} &copy; 2011 <a href="http://scrii.com/">scrii.com</a> | <a href="http://steampowered.com">powered by steam</a><br />
+				page generation time: {{ timer.mark('end') }} s
 {% if use_js %}
-	<script type="text/javascript" src="{% if use_jquery_cdn %}http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js{% else %}{% if use_gzip_content %}{{ asset.js.jquery_min }}{% else %}{{ asset.js.jquery }}{% endif %}{% endif %}"></script>
-	<script type="text/javascript" src="{{ asset.js.common }}"></script>
+				<script src="{% if use_jquery_cdn %}http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js{% else %}{% if use_gzip_content %}{{ asset.js.jquery_min }}{% else %}{{ asset.js.jquery }}{% endif %}{% endif %}"></script>
+				<script src="{% if use_gzip_content %}{{ asset.js.relatize_min }}{% else %}{{ asset.js.relatize }}{% endif %}"></script>
+				<script>
+					$(document).ready(function() {
+						$('.js-relative-date').relatizeDateTime();
+					});
+				</script>
 {% endif %}
+			</footer>
+		</div>
+		<!-- end footer
+		----------------------------------- -->
+	</div>
 </body>
 </html>

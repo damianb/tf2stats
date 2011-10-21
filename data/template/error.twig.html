@@ -1,8 +1,6 @@
 {% extends "layout.twig.html" %}
 {% block title %}error {{ error_code }} - {{ parent() }}{% endblock %}
 {% block content %}
-	<div class="errordetails">
-		<span class="errorcode">error:{{ error_code}}</span><br />
-		<span class="errordesc">Server error {{ error_string }}</span>
-	</div>
+	<h2>error:{{ error_code }}<br />
+	<small>server error: {{ error_string }}</small></h2>
 {% endblock %}

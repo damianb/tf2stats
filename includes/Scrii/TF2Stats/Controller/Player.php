@@ -97,8 +97,6 @@ class Player extends \Codebite\Quartz\Controller\Base
 
 		// Prep vars
 		$data = array();
-		$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
-		$utc = new \DateTimeZone('UTC');
 
 		// Build "action" data.
 		$data['actions'] = array(
@@ -236,15 +234,10 @@ class Player extends \Codebite\Quartz\Controller\Base
 		$data['playspan'] = vsprintf($format, $playtime);
 
 		// Figure out last-online time.
-		$online = new \DateTime('@' . $row['LASTONTIME']);
-		$online->setTimeZone($timezone);
-		$utc_online = new \DateTime('@' . $row['LASTONTIME']);
-		$utc_online->setTimeZone($utc);
-		$data['lastonline'] = $online->format(\DateTime::RSS);
-		$data['lastonline_utc'] = $utc_online->format(\DateTime::RSS);
+		$data['lastonline'] = \Scrii\getEventTime($row['LASTONTIME']);
 
 		// Some more vars
-		$data['backpackurl'] = rtrim(str_replace('http://steamcommunity.com/', 'http://tf2items.com/', $data['profile']['profileurl']), '/');
+		$data['backpackurl'] = rtrim(str_replace('http://steamcommunity.com/', 'http://tf2b.com/', $data['profile']['profileurl']), '/');
 		$data['friendlink'] = 'steam://friends/add/' . $steam_id->getSteamID64();
 		$data['is_banned'] = (isset($row['BANREASON']) && $row['BANREASON'] != '') ? true : false;
 		$data['banreason'] = (isset($row['BANREASON'])) ? $row['BANREASON'] : '';
@@ -252,12 +245,12 @@ class Player extends \Codebite\Quartz\Controller\Base
 		// in case steam community mucks up
 		if($data['profile']['personaname'])
 		{
-			$data['playername_trim'] = (strlen($data['profile']['personaname']) > 23) ? substr($data['profile']['personaname'], 0, 19) . ' [...]' : $data['profile']['personaname'];
+			$data['playername_trim'] = (strlen($data['profile']['personaname']) > 35) ? substr($data['profile']['personaname'], 0, 32) . ' [...]' : $data['profile']['personaname'];
 			$data['playername_full'] = $data['profile']['personaname'];
 		}
 		else
 		{
-			$data['playername_trim'] = (strlen($row['NAME']) > 23) ? substr($row['NAME'], 0, 19) . ' [...]' : $row['NAME'];
+			$data['playername_trim'] = (strlen($row['NAME']) > 35) ? substr($row['NAME'], 0, 32) . ' [...]' : $row['NAME'];
 			$data['playername_full'] = $row['NAME'];
 		}
 

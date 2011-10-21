@@ -2,8 +2,8 @@
 	"site.path.assets":"/style/",
 	"site.assets":{
 		"css":{
-			"grid":"960.min.css",
-			"grid_min":"960.min.css.gz",
+			"bootstrap":"bootstrap.min.css",
+			"bootstrap_min":"bootstrap.min.css.gz",
 			"common":"tf2.css",
 			"common_min":"tf2.min.css.gz"
 		},
@@ -18,6 +18,8 @@
 			# Some experimental support for CSP has been added in Chromium 13, however it is not yet completely supported
 			# The CSP implementation in Chromium also uses a different (proprietary) header, so it must be addressed/supported separately.
 			#
+			"relatize_min":"jquery.relatize_date.min.js.gz",
+			"relatize":"jquery.relatize_date.min.js",
 			"common":"tf2.js"
 		},
 		"image":{

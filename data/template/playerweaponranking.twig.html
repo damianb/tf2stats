@@ -2,45 +2,41 @@
 {% block title %}weapon rankings - {{ parent() }}{% endblock %}
 {% block content %}
 {% if not noresults %}
-	<br />
-
-	<div class="weaponranklistrow">
-		<div class="weaponrow">
-			<span class="killicon_wrap">
-				<img class="killicon" src="{{ asset.image.killicon }}{{ weapon.image }}" alt="{{ weapon.name }}" title="{{ weapon.name }}" />
-				<span class="killicon_name">{{ weapon.name }}</span>
-				<span class="killicon_kills">{{ weapon.kills }}</span>
-			</span>
-		</div>
-	</div>
-	<br />
-	<div class="clear"></div>
-	{% include "pagination_playerweaponranking.twig.html" %}
-	<div class="table weaponranking">
-		<div class="tableheader">
-			<span class="column-rank lead">Rank</span>
-			<span class="column-name">Name</span>
-			<span class="column-kills">Weapon Kills</span>
-		</div>
-		<div class="tablebody">
-{% for u in data %}
-			<div class="tablerow" id="listr{{ u.rank }}">
-				<span class="cell column-rank lead">{{ u.rank }} </span>
-				<span class="cell column-name"><a href="{{ url.playerProfile(u.steamid64)}}"{% if u.ismember and not u.is_banned %} class="groupplayer" title="group member"{% endif %}{% if u.is_banned %} class="banneduser" title="banned: {{ u.banreason }}"{% endif %}>{{ u.NAME }}</a></span>
-				<span class="cell column-kills trail">{{ u.weapon_kills }}</span>
+	<h2>weapon ranking <small>{{ pagination.record.from }} to {{ pagination.record.to }} (of {{ pagination.record.total }} records)</small></h2>
+	<div class="row">
+		<div class="span4 weapon weapon-bigshim">
+			<div>
+				<div class="killicon">
+					<img src="{{ asset.image.killicon }}{{ weapon.image }}" alt="{{ weapon.name }}" title="{{ weapon.name }}" />
+				</div>
+				<div class="killicon_data">
+					<span class="name"><a href="{{ url.weaponRank(weapon.urlname) }}">{{ weapon.name }}</a></span>
+					<span class="kills">{{ weapon.kills }}</span>
+				</div>
 			</div>
-{% else %}
-			<div class="tablerow">
-				<span class="column-max">No results</span>
-			</div>
-{% endfor %}
 		</div>
-	</div>
-	<div class="dataoverview">
-		<div class="recordrange">Viewing ranks {{ pagination.record.from }} to {{ pagination.record.to }}</div>
-		<div class="recordtotal">{{ pagination.record.total }} records in total</div>
 	</div>
 
+	<div class="span16">
+		<table class="zebra-striped">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>name</th>
+					<th>weapon kills</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for u in data %}
+				<tr id="listr{{ u.rank }}">
+					<td>{{ u.rank }}</td>
+					<td><a href="{{ url.playerProfile(u.steamid64) }}"{% if u.ismember and not u.is_banned %} class="groupmember" title="group member"{% endif %}{% if u.is_banned %} class="banneduser" title="banned: {{ u.banreason }}"{% endif %}>{{ u.NAME }}</a></td>
+					<td>{{ u.weapon_kills }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 	{% include "pagination_playerweaponranking.twig.html" %}
 	<br />
 {% else %}

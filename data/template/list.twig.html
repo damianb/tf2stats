@@ -2,39 +2,30 @@
 {% block title %}server rankings - {{ parent() }}{% endblock %}
 {% block content %}
 {% if not noresults %}
-	<br />
+	<h2>full ranking <small>{{ pagination.record.from }} to {{ pagination.record.to }} (of {{ pagination.record.total }} records)</small></h2>
+	<table class="zebra-striped">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>name</th>
+				<th>points</th>
+				<th>total playtime</th>
+				<th>last online</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for u in data %}
+			<tr id="listr{{ u.rank }}">
+				<td>{{ u.rank }}</td>
+				<td><a href="{{ url.playerProfile(u.steamid64) }}"{% if u.ismember and not u.is_banned %} class="groupmember" title="group member"{% endif %}{% if u.is_banned %} class="banneduser" title="banned: {{ u.banreason }}"{% endif %}>{{ u.NAME }}</a></td>
+				<td>{{ u.POINTS }}</td>
+				<td>{{ u.playspan }}</td>
+				<td><time class="js-relative-date" datetime="{{ u.lastonline.w3c }}" title="{{ u.lastonline.title }}">{{ u.lastonline.readable }}</time></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 	{% include "pagination_list.twig.html" %}
-	<div class="table ranking">
-		<div class="tableheader">
-			<span class="column-rank lead">Rank</span>
-			<span class="column-name">Name</span>
-			<span class="column-points">Points</span>
-			<span class="column-playtime">Total playtime</span>
-			<span class="column-lastonline trail">Last online</span>
-		</div>
-		<div class="tablebody">
-{% for u in data %}
-			<div class="tablerow" id="listr{{ u.rank }}">
-				<span class="cell column-rank lead">{{ u.rank }} </span>
-				<span class="cell column-name"><a href="{{ url.playerProfile(u.steamid64)}}"{% if u.ismember and not u.is_banned %} class="groupplayer" title="group member"{% endif %}{% if u.is_banned %} class="banneduser" title="banned: {{ u.banreason }}"{% endif %}>{{ u.NAME }}</a></span>
-				<span class="cell column-points">{{ u.POINTS }}</span>
-				<span class="cell column-playtime">{{ u.playspan }}</span>
-				<span class="cell column-lastonline trail"><span title="{{ u.lastonline_utc }}">{{ u.lastonline }}</span></span>
-			</div>
-{% else %}
-			<div class="tablerow">
-				<span class="column-max">No results</span>
-			</div>
-{% endfor %}
-		</div>
-	</div>
-	<div class="dataoverview">
-		<div class="recordrange">Viewing ranks {{ pagination.record.from }} to {{ pagination.record.to }}</div>
-		<div class="recordtotal">{{ pagination.record.total }} records in total</div>
-	</div>
-
-	{% include "pagination_list.twig.html" %}
-	<br />
 {% else %}
 	<h2 class="noresults">No results</h2>
 {% endif %}

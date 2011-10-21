@@ -45,3 +45,19 @@ function full_compare($a, $b)
 
 	return $result == 0;
 }
+
+function getEventTime($timestamp)
+{
+	$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
+	$time = new \DateTime('@' . (int) $timestamp);
+	$utctime = new \DateTime('@' . (int) $timestamp);
+	$utc = new \DateTimeZone('UTC');
+	$time->setTimezone($timezone);
+	$utctime->setTimezone($utc);
+
+	return array(
+		'w3c'		=> $utctime->format(DATE_W3C),
+		'readable'	=> $time->format('F j, Y'),
+		'title'		=> $time->format('Y-d-m H:i:s'),
+	);
+}

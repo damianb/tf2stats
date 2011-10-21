@@ -25,7 +25,7 @@ use \Scrii\Steam\SteamID;
 
 class PlayerWeaponRanking extends \Codebite\Quartz\Controller\Base
 {
-	const LIMIT_PAGE = 50;
+	const LIMIT_PAGE = 30;
 
 	protected $template_name = 'playerweaponranking.twig.html';
 

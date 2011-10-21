@@ -1,91 +1,114 @@
 {% extends "layout.twig.html" %}
 {% block title %}player profile - {{ parent() }}{% endblock %}
 {% block content %}
-	<div class="profilecard">
-		<div class="profilecard-left">
-			<img src="{% if playerdata.is_banned %}{{ asset.image.bannedavvy }}{% else %}{% if playerdata.profile.avatarfull %}{{ playerdata.profile.avatarfull }}{% else %}{{ asset.image.noavvy }}{% endif %}{% endif %}" class="steamavatarfull" alt="Steam avatar" title="Steam avatar" />
-		</div>
-		<div class="profilecard-right">
-			<h3 class="playername{% if group_member and not playerdata.is_banned %} groupplayer{% endif %}{% if playerdata.is_banned %} banneduser{% endif %}" title="{{ playerdata.playername_full }}">{{ playerdata.playername_trim }}</h3>
-			{% if group_member %}<div class="groupplayermarker">group member</div>{% endif %}
-			{% if playerdata.is_banned %}<div class="banplayermarker">banned: {{ playerdata.banreason }}</div>{% endif %}
-			<div class="profilecard-links">
-				<a href="{{ playerdata.profile.profileurl }}">Steam Profile</a> | <a href="{{ playerdata.backpackurl }}">Backpack</a> | <a href="{{ playerdata.friendlink }}">Add to Friends</a>
-			</div>
-		</div>
-		<div class="clear"></div>
-	</div>
-
-	<div class="basicstats">
-		<div class="profilerank">
-			<div class="rank"><div class="title">Rank</div> <div class="data{% if playerdata.is_banned %} bannedrank{% endif %}">{% if playerdata.is_banned %}BANNED{% else %}#{{ playerdata.rank }}{% endif %}</div></div>
-		</div>
-		<div class="profilestats">
-			<div class="statitem item-points"><div class="statitem-title">Points</div> <div class="statitem-data">{{ playerdata.points }}</div><div class="clear"></div></div>
-			<div class="statitem item-kills"><div class="statitem-title">Kills</div> <div class="statitem-data">{{ playerdata.kills }}</div><div class="clear"></div></div>
-			<div class="statitem item-deaths"><div class="statitem-title">Deaths</div> <div class="statitem-data">{{ playerdata.deaths }}</div><div class="clear"></div></div>
-			{# <div class="statitem item-kdr"><div class="statitem-title">K/D Ratio</div> <div class="statitem-data">{{ playerdata.kdr }}</div><div class="clear"></div></div><br /><br /> #}
-			<div class="statitem item-kdr"><div class="statitem-title" title="kills + (assists x .5) / deaths">KA/D Ratio</div> <div class="statitem-data">{{ playerdata.kadr }}</div><div class="clear"></div></div><br /><br />
-			<div class="statitem item-kpm"><div class="statitem-title">Kills/minute</div> <div class="statitem-data">{{ playerdata.kpm }}</div><div class="clear"></div></div>
-			<div class="statitem item-timeonline"><div class="statitem-title">Time played</div> <div class="statitem-data">{{ playerdata.playspan }}</div><div class="clear"></div></div><br /><br />
-			<div class="statitem item-lastonline"><div class="statitem-title">Last online</div> <div class="statitem-data">{{ playerdata.lastonline }}</div><div class="clear"></div></div>
-		</div>
-		<div class="clear"></div>
-	</div>
-
-	<div class="profile-left">
-		<div class="table classperformance">
-			<div class="tableheader">
-				<span class="column-classrank lead"></span>
-				<span class="column-classname">Class</span>
-				<span class="column-classkills">Kills</span>
-				<span class="column-classdeaths">Deaths</span>
-				<span class="column-classkdr trail">K/D</span>
-			</div>
-
-			<div class="tablebody">
-			{% for stats in playerdata.classperformance %}
-				<div class="tablerow">
-					<span class="cell column-classrank lead">{{ loop.index }}</span>
-					<span class="cell column-classname">{{ stats.class }}</span>
-					<span class="cell column-classkills">{{ stats.kills }}</span>
-					<span class="cell column-classdeaths">{{ stats.deaths }}</span>
-					<span class="cell column-classkdr trail">{{ stats.kd }}</span>
+	<h2>player stats</h2>
+	<div class="row">
+		<div class="well">
+			<div class="row">
+				<div class="span4">
+					<img src="{% if playerdata.is_banned %}{{ asset.image.bannedavvy }}{% else %}{% if playerdata.profile.avatarfull %}{{ playerdata.profile.avatarfull }}{% else %}{{ asset.image.noavvy }}{% endif %}{% endif %}" class="steamavatarfull" alt="Steam avatar" title="Steam avatar" />
 				</div>
+				<div class="span10 floatright">
+					<div class="row">
+						<div class="span8">
+							<h3 class="playername{% if group_member and not playerdata.is_banned %} groupmember{% endif %}{% if playerdata.is_banned %} banneduser{% endif %}" title="{{ playerdata.playername_full }}">{{ playerdata.playername_trim }}</h3>
+							{% if group_member %}<div class="groupindicator">group member</div>{% endif %}
+						</div>
+						<div class="span1 forceright rank">
+							#1
+						</div>
+					</div>
+					<div class="row playerstats">
+						<div class="offset1 span1 alignright stathead">
+							points<br />
+							kills<br />
+							deaths<br />
+							<span title="kills + (assists x .5) / deaths" class="abbr">ka/d</span>
+						</div>
+						<div class="span1">
+							{{ playerdata.points }}<br />
+							{{ playerdata.kills }}<br />
+							{{ playerdata.deaths }}<br />
+							{{ playerdata.kdr }}
+						</div>
+						<div class="span2 alignright stathead">
+							k/min<br />
+							time played<br />
+							last online
+						</div>
+						<div class="span4">
+							{{ playerdata.kpm }}<br />
+							{{ playerdata.playspan }}<br />
+							<time class="js-relative-date" datetime="{{ playerdata.lastonline.w3c }}" title="{{ playerdata.lastonline.title }}">{{ playerdata.lastonline.readable }}</time>
+						</div>
+					</div>
+					<div class="row playerlinks">
+						<div class="span5 forceright">
+							<a href="{{ playerdata.profile.profileurl }}">Steam Profile</a> | <a href="{{ playerdata.backpackurl }}">Backpack</a> | <a href="{{ playerdata.friendlink }}">Add to Friends</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="span6">
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>class</th>
+						<th>kills</th>
+						<th>deaths</th>
+						<th>k/d</th>
+					</tr>
+				</thead>
+				<tbody>
+{% for stats in playerdata.classperformance %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>{{ stats.class }}</td>
+						<td>{{ stats.kills }}</td>
+						<td>{{ stats.deaths }}</td>
+						<td>{{ stats.kd }}</td>
+					</tr>
+{% endfor %}
+				</tbody>
+			</table>
+			<table>
+				<thead>
+					<tr>
+						<th>action</th>
+						<th>count</th>
+					</tr>
+				</thead>
+				<tbody>
+{% for action in playerdata.actions %}
+					<tr>
+						<td>{{ action.name }}</td>
+						<td>{{ action.value }}</td>
+					</tr>
+{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div class="span8">
+			{% for weapon in playerdata.weaponkills %}
+				{% if loop.index is odd %}<div class="row">{% endif %}
+					<div class="span4 weapon">
+						<div>
+							<div class="killicon">
+								<img src="{{ asset.image.killicon }}{{ weapon.image }}" alt="{{ weapon.name }}" title="{{ weapon.name }}" />
+							</div>
+							<div class="killicon_data">
+								<span class="name"><a href="{{ url.weaponRank(weapon.urlname) }}">{% if weapon.name == "Fireaxe" and player_cid == "76561198012908563" %}Yukari-chan{% else %}{{ weapon.name }}{% endif %}</a></span>
+								<span class="kills">{{ weapon.kills }}</span>
+							</div>
+						</div>
+					</div>
+				{% if loop.index is even or loop.last %}</div>{% endif %}
 			{% endfor %}
-			</div>
-		</div>
-
-		<div class="table profileactions">
-			<div class="tableheader">
-				<span class="column-actionname lead">Action</span>
-				<span class="column-actioncount trail"></span>
-			</div>
-			<div class="tablebody">
-			{% for a in playerdata.actions %}
-				<div class="tablerow">
-					<span class="cell column-actionname lead">{{ a.name }}</span>
-					<span class="cell column-actioncount trail">{{ a.value }}</span>
-				</div>
-			{% endfor %}
-			</div>
 		</div>
 	</div>
-
-
-	<div class="profile-right">
-		{% for weapon in playerdata.weaponkills %}
-			{% if loop.index is odd %}<div class="weaponlistrow">{% endif %}
-				<div class="weaponrow weaponrow-{% if loop.index is odd %}left{% else %}right{% endif %}">
-					<span class="killicon_wrap">
-						<img class="killicon" src="{{ asset.image.killicon }}{{ weapon.image }}" alt="{{ weapon.name }}" title="{{ weapon.name }}" />
-						<span class="killicon_name"><a href="{{ url.weaponRank(weapon.urlname) }}">{% if weapon.name == "Fireaxe" and player_cid == "76561198012908563" %}Yukari-chan{% else %}{{ weapon.name }}{% endif %}</a></span>
-						<span class="killicon_kills">{{ weapon.kills }}</span>
-					</span>
-				</div>
-			{% if loop.index is even or loop.last %}<div class="clear"></div></div><br /><br />{% endif %}
-		{% endfor %}
-	</div>
-
-	<div class="clear"></div>
 {% endblock %}

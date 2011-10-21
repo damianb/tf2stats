@@ -1,10 +1,11 @@
 	{% if pagination %}
 	<div class="pagination">
-		<a href="{{ url.serverRankingPage(pagination.first) }}" class="pagination-link" title="First page">&laquo;</a>
-		{% for page in pagination.pages %}
-			<a href="{{ url.serverRankingPage(page) }}" class="pagination-link{% if page == pagination.current %} currentpage{% endif %}" title="Page {{ page }}">{{ page }}</a>
-		{% endfor %}
-		<a href="{{ url.serverRankingPage(pagination.last) }}" class="pagination-link" title="Last page">&raquo;</a>
+		<ul>
+			<li><a href="{{ url.serverRankingPage(pagination.first) }}" class="prev" title="first page">&larr; first</a></li>
+{% for page in pagination.pages %}
+			<li{% if page == pagination.current %} class="active"{% endif %}><a href="{{ url.serverRankingPage(page) }}" title="Page {{ page }}">{{ page }}</a></li>
+{% endfor %}
+			<li><a href="{{ url.serverRankingPage(pagination.last) }}" class="next" title="last page">last &rarr;</a></li>
+		</ul>
 	</div>
-	<div class="clear"></div>
 	{% endif %}

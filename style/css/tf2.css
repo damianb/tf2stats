@@ -1,421 +1,114 @@
-/*!
- * Copyright (c) 2011 scrii.com
- * Licensed under the GPLv3
- * Available at http://github.com/damianb/tf2stats
- */
-
-/**
- * global-ish stuff
- */
-
-body {
-	font-family: 'Droid Sans', 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
-	font-size: 12px;
-	background-color: #181818;
+.container {
+	margin-top: 10px;
+	margin-bottom: 10px;
 }
 
 h1 {
-	font-size: 25px;
-	text-align: right;
-	margin-bottom: 25px;
-	color: #fff;
-	text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 1px;
+	font-smooth: always;
+	-webkit-font-smoothing: antialiased;
+	/*text-shadow: 1px 1px 1px rgba(30, 30, 30, 0.2),
+		-1px 1px 1px rgba(30, 30, 30, 0.2),
+		-1px -1px 1px rgba(30, 30, 30, 0.2),
+		1px -1px 1px rgba(30, 30, 30, 0.2);*/
 }
 
-a, a:active {
-	color: #aaa;
-	text-decoration: none;
+h1 > small {
+	text-shadow: none;
 }
 
-a:hover, a:focus {
-	color: #eee;
-	text-decoration: underline;
+.content {
+	margin-left: 40px;
 }
 
-div.wrap {
-	margin-top: 40px;
-	background-color: #363636;
-	box-shadow: inset 0 0 7px #000000;
-	border-radius: 15px;
-	border: 2px solid #0D0D0D;
-	padding: 5px;
-	padding-top: 15px;
-}
-
-h2.noresults {
-	margin-top: 80px;
-	text-align: center;
-	font-size: 21px;
-	color: #eee;
-	font-weight: bold;
-	text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 1px;
-}
-
-div.content { min-height: 180px; }
-
-div#errbox { margin-bottom: 10px; }
-
-.groupplayer { color: #CFB52B !important; }
-a.groupplayer, a.groupplayer:active { color: #CFB52B !important; }
-a.groupplayer:hover, a.groupplayer:focus { color: #B26620 !important; }
-
-/**
- * navigation stuff
- */
-nav { padding: 0 20px; }
-nav a {
-	display: inline-block;
-	padding: 5px 8px;
-	margin: 0 2px;
-	background-color: #000;
-	border-radius: 4px;
-}
-nav a:hover, nav a:focus { background-color: #D6D6D6; color: #202020; }
-
-/**
- * footer stuff
- */
-
-footer {
-	font-size: 11px;
-	font-weight: bold;
-	color: #D8D8D8;
-	/*text-shadow: rgba(255, 255, 255, 0.1) 1px 1px 1px;*/
-	margin-left: 15px;
-}
-
-footer a, footer a:hover, footer a:focus, footer a:active { color: #D8D8D8; text-decoration: none; }
-footer a:hover, footer a:focus { text-decoration: underline; }
-
-/**
- * error page stuff
- */
-
-div.errordetails {
-	margin: 30px 10px;
-	text-align: center;
-}
-span.errorcode {
-	font-size: 21px;
-	color: #eee;
-	font-weight: bold;
-	text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 1px;
-}
-
-span.errordesc {
-	font-size: 13px;
-	color: #bbb;
-}
-
-img.errorimage {
-	display: block;
-	margin: 20px auto 10px;
-	border-radius: 10px;
-	height: 330px;
-	width: 580px;
-}
-
-/**
- * player page stuff
- */
-
-div.profilecard {
-	width: 500px;
-	margin: 5px auto 15px;
-	background: #686868;
-	padding: 20px;
-	border-radius: 5px;
-	border: 2px solid #262626;
-}
-
-div.profilecard-left, div.profilecard-right { float: left; }
-div.profilecard-right { margin-left: 35px; padding: 15px 0 0 0; }
-
-div.profilecard-links { color: #fff; text-align:center; margin: 100px 0 0 20px; }
-
-div.profile-left {
+.row > .title {
 	float: left;
-	width: 280px;
 }
-div.profile-right {
-	float: left;
-	margin: 20px 0 0 30px;
-	/*width: 470px;*/
-}
-
-h3.playername {
-	font-size: 21px;
-	color: #eee;
-	width: 270px;
-	overflow: hidden;
-	white-space: nowrap;
-}
-
-div.profilerank {
-	float: left;
-	width: 100px;
-	background-color: #eee;
-	height: 100px;
-	margin: 8px 0px 10px 70px;
-	text-align: center;
-	border-radius: 9px;
-	border: 2px solid #222;
-	box-shadow: inset 0 0 8px #000000;
-}
-div.profilerank div.title {
-	color: #222;
-	margin-top: 12px;
-	font-size: 14px;
-	font-weight: bold;
-}
-div.profilerank div.data {
-	margin-top: 16px;
-	font-size: 26px;
-	font-weight: bold;
-	color: #111;
-	text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px;
-}
-
-div.profilerank div.bannedrank {
-	font-size: 22px;
-	color: #a00;
-	text-shadow: rgba(0, 0, 0, 0.3) 1px 1px 1px;
-}
-
-div.profilestats {
+.row > .nav, .row > .nav > nav {
 	float: right;
-	width: 550px;
-	margin: 10px 10px 10px 0;
+	text-align: right;
 }
 
-div.profilestats div.statitem {
-	display: inline-block;
-	background: #eee;
-	padding: 6px;
-	margin: -2px 2px;
-	border-radius: 5px;
+nav > ul.pills > li > a {
+	border-radius: 12px;
+	color: gray;
 }
-
-div.profilestats div.item-points { width: 110px; }
-div.profilestats div.item-kills { width: 100px; }
-div.profilestats div.item-deaths { width: 100px; }
-div.profilestats div.item-kdr { width: 110px; }
-div.profilestats div.item-kpm { width: 130px; }
-div.profilestats div.item-timeonline { width: 328px; }
-div.profilestats div.item-lastonline { width: 477px; }
-
-div.profilestats div.statitem div.statitem-title { float: left; font-weight: bold; }
-div.profilestats div.statitem div.statitem-data { float: right; }
-
-h3.groupplayer {
-	font-weight: bold;
-	text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 1px;
+nav > ul.pills > li > a:hover {
+	background: gray;
 }
-
-h3.banneduser {
-	font-weight: bold;
-	color: #a00;
-	text-decoration: line-through;
-	text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 1px;
-}
-
-div.groupplayermarker {
-	font-size: 14px;
-	color: #eee;
-	margin-left: 17px;
-	font-weight: bold;
-	text-shadow: rgba(255, 255, 255, 0.2) 1px 1px 1px;
-}
-
-div.banplayermarker {
-	font-size: 14px;
-	color: #eee;
-	margin-left: 17px;
-	font-weight: bold;
-	text-shadow: rgba(0, 0, 0, 0.2) 1px 1px 1px;
+nav > ul.pills > li.active > a {
+	background: #555;
 }
 
 img.steamavatarfull {
+	border-radius: 6px;
 	height: 184px;
 	width: 184px;
-	border-radius: 6px;
-	/*border: 2px solid rgba(0, 0, 0, 0.2);*/
 }
 
-img.killicon { display: block; margin: 0 auto; }
-
-.killicon_wrap {
-	display: block;
-	background-color: #eee;
-	width: 187px;
-	height: 50px;
-	padding: 3px;
-	margin: 5px;
-	border-radius: 5px;
-	color: #444;
-}
-
-.weaponranklistrow { text-align: center; margin: 0 auto; }
-.weaponlistrow { height: 50px; }
-
-.weaponrow {
-	font-family: 'TF2 Build', 'Droid Sans', 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
-	font-size: 11px;
-	display: inline-block;
-	white-space: nowrap;
-	text-align: center;
-	height: 50px;
-	position: relative;
-}
-
-.killicon_name { display: inline-block; position: absolute; left: 11px; bottom: -9px; }
-.killicon_kills { display: inline-block; position: absolute; right: 11px; font-size: 22px; text-shadow: rgba(255, 255, 255, 0.3) 1px 1px 1px; }
-.weaponrow img { display: block; position: absolute; left: 15px; top: 12px; }
-
-.weaponrow-left { float: left; }
-.weaponrow-right { float: right; }
-
-div.weaponlisting { margin: 0 auto; width: 500px; }
-div.weaponrow span.killicon_wrap span a, div.weaponlisting div span.killicon_wrap span a { color: #444; }
-
-/**
- * table stuff
- */
-
-div.table {
-	width: 750px;
-	margin: 15px auto;
-	border: 2px solid #000;
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
-	background-color: #000;
-}
-
-div.table, div.table div.tableheader {
-	border-top-left-radius: 8px;
-	border-top-right-radius: 8px;
-}
-
-div.table div.tableheader, div.table div.tableheader span {
-	background-color: #000;
-}
-
-div.table div.tableheader span {
-	text-align: center;
-	padding: 6px 0;
-}
-
-div.table div.tableheader span, div.table div.tablerow span.cell {
-	display: inline-block;
-}
-
-div.table div.tableheader {
-	color: #fff;
-	font-size: 12px;
-	font-weight: bold;
-	text-transform: uppercase;
-	border-bottom: 2px solid #000;
-	text-shadow: rgba(255, 255, 255, 0.1) 1px 1px 1px;
-}
-
-div.table div span.lead { border-left: none; }
-div.table div span.trail { border-right: none !important; }
-
-div.table div.tablebody div span.cell {
-	display: inline-block;
-	padding: 5px 0;
-	background-color: #212121;
-	color: #C6C6C6;
-}
-
-div.profileactions { width: 269px; }
-div.classperformance { width: 269px; }
-
-div.table div.tablebody div.tablerow:hover { background-color: #D6D6D6; }
-div.table div.tablebody div.tablerow span:hover { background-color: #D6D6D6; color: #202020; }
-div.table div.tablebody div.tablerow span:hover a, div.table div.tablebody div.tablerow span:hover a:active{ color: #393939; }
-div.table div.tablebody div.tablerow span:hover a:hover, div.table div.tablebody div.tablerow span:hover a:focus { color: #202020; }
-/* group member fix */
-div.table div.tablebody div.tablerow span a.groupplayer { font-weight: bold; }
-div.table div.tablebody div.tablerow span:hover a.groupplayer, div.table div.tablebody div.tablerow span:hover a.groupplayer:active{ color: #9B5517 !important; }
-div.table div.tablebody div.tablerow span:hover a.groupplayer:hover, div.table div.tablebody div.tablerow span:hover a.groupplayer:focus{ color: #BF6D26 !important; }
-/* banned users */
-div.table div.tablebody div.tablerow span a.banneduser { color: #a00; font-weight: bold; text-decoration: line-through; }
-div.table div.tablebody div.tablerow span:hover a.banneduser, div.table div.tablebody div.tablerow span:hover a.banneduser:active{ color: #8E0200 !important; }
-div.table div.tablebody div.tablerow span:hover a.banneduser:hover, div.table div.tablebody div.tablerow span:hover a.banneduser:focus{ color: #EA0000 !important; }
-
-div.top10 div span.column-rank, div.topgroup div span.column-rank, div.ranking div span.column-rank, div.weaponranking div span.column-rank { width: 60px; text-align: center; font-weight: bold; }
-div.top10 div span.column-name, div.topgroup div span.column-name, div.ranking div span.column-name { width: 200px; }
-div.weaponranking div span.column-name { width: 550px; }
-div.top10 div span.column-name a, div.topgroup div span.column-name a, div.ranking div span.column-name a, div.weaponranking div span.column-name a { display: inline-block; margin-left: 4px; }
-div.top10 div span.column-points, div.topgroup div span.column-points, div.ranking div span.column-points, div.weaponranking div span.column-points { width: 67px; text-align: center; }
-div.weaponranking div span.column-kills { width: 133px; text-align: center; }
-div.top10 div span.column-playtime, div.topgroup div span.column-playtime, div.ranking div span.column-playtime { width: 150px; text-align: center; }
-div.top10 div span.column-lastonline, div.topgroup div span.column-lastonline, div.ranking div span.column-lastonline { width: 260px; text-align: center; }
-
-div.profileactions div span.column-actionname { width: 200px; text-align: center; font-weight: bold; }
-div.profileactions div span.column-actioncount { width: 65px; text-align: center; }
-
-div.classperformance div span.column-classrank { width: 20px; text-align: center; font-weight: bold; }
-div.classperformance div span.column-classname { width: 86px; text-align: center; }
-div.classperformance div span.column-classkills { width: 52px; text-align: center; }
-div.classperformance div span.column-classdeaths { width: 52px; text-align: center; }
-div.classperformance div span.column-classkdr { width: 46px; text-align: center; }
-
-/**
- * pagination stuff
- */
-
-div.pagination {
+.floatright, .forceright {
 	float: right;
-	margin: 0px 30px;
+}
+.alignright, .forceright {
 	text-align: right;
 }
-div.pagination a.pagination-link {
-	padding: 5px 8px;
-	border-radius: 4px;
-	margin: 0 1px;
-	background-color: #000;
+
+.playerstats, .playerlinks {
+	margin-top: 20px;
 }
-div.pagination a.pagination-link:hover, div.pagination a.pagination-link:focus {
-	background-color: #D6D6D6;
-	color: #202020;
+.playerlinks > div > a { color: #787878; }
+.playerstats > .stathead {
+	font-weight: bold;
 }
-div.pagination a.currentpage {
-	background-color: #727272;
-	color: #000;
-}
-div.pagination a.currentpage:hover, div.pagination a.currentpage:focus {
-	background-color: #202020;
-	color: #D6D6D6;
+.rank {
+	font-size: 24px;
+	font-weight: bold;
 }
 
-div.dataoverview {
-	margin: -6px 0 0 30px;
-	float: left;
-	padding: 3px 8px;
-	border-radius: 4px;
-	background-color: #000;
-	color: #fff;
-}
-div.dataoverview div.recordrange, div.dataoverview div.recordtotal { display: inline-block; padding: 2px 4px; }
-div.dataoverview div.recordrange { padding-right: 10px; margin-right: 1px; border-right: 1px solid #777; }
-
-div.timetracker {
-	margin: 20px;
-	padding: 13px;
-	border: 2px solid #F7941D;
-	background-color: #FEEFDA;
-	border-radius: 7px;
+.abbr {
+	border-bottom: 1px dotted #333;
 }
 
-div.timetracker div#timerowset { display: none; }
-div.timetracker div.timeshowhide { font-size: 1.3em; font-weight: bold; text-align: center; color: #825353; cursor: pointer;  }
-div.timetracker div.timeshowhide span:hover { text-decoration: underline; color: #633131; }
-div.timetracker div.firstrow { border-top: 1px solid #F7941D; }
-div.timetracker div.timerow { margin: 10px 0; padding: 4px; line-height: 1.5em; border-bottom: 1px solid #F7941D; }
-div.timetracker div.timerow span { display: inline-block; }
-div.timetracker pre.timer-json { white-space: pre-wrap; font-size: 0.8em; }
-div.timetracker span.timetracker-mark { font-size: 1.3em; font-weight: bold; width: 165px; }
-div.timetracker span.timetracker-instance { font-family: monospace; }
-div.timetracker span.timetracker-span { text-align: center; font-size: 0.9em; font-weight: bold; width: 165px; color: #777; }
+a.groupmember, h3.groupmember {
+	font-weight: bold;
+	color: #D15325;
+}
+h3.groupmember {
+	font-size: 22px;
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+.groupindicator {
+	margin-left: 20px;
+}
+
+.weapon {
+	height: 54px;
+	border-radius: 5px;
+	background-color: #f5f5f5;
+	position: relative;
+
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
+	margin-bottom: 9px;
+	margin-left: 18px;
+
+	font-family: 'TF2 Build', 'Droid Sans', 'Helvetica Neue', Arial, 'Liberation Sans', FreeSans, sans-serif;
+	font-size: 11px;
+	white-space: nowrap;
+	text-align: center;
+
+	display: block;
+}
+
+.weapon-shim {
+	margin-left: 58px;
+}
+.weapon-bigshim {
+	margin-left: 370px;
+}
+.killicon > img { display: block; position: absolute; left: 15px; top: 3px; }
+.killicon_data > .name { display: inline-block; position: absolute; left: 11px; bottom: -1px; }
+.killicon_data > .kills { display: inline-block; position: absolute; right: 12px; top: 5px; font-size: 20px; text-shadow: rgba(255, 255, 255, 0.3) 1px 1px 1px; }
+.killicon_data > .name > a {
+	color: #646464;
+}

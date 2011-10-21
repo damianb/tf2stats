@@ -44,8 +44,6 @@ class Top10 extends \Codebite\Quartz\Controller\Base
 			->limit(10);
 
 		$rows = array();
-		$timezone = new \DateTimeZone(Core::getConfig('site.timezone') ?: 'America/New_York');
-		$utc = new \DateTimeZone('UTC');
 		$i = 0;
 		while($row = $q->fetchRow())
 		{
@@ -88,12 +86,7 @@ class Top10 extends \Codebite\Quartz\Controller\Base
 			$row['steamid64'] = $steam_id->getSteamID64();
 			$row['ismember'] = in_array($row['steamid64'], $quartz->steamgroup->members) ? true : false;
 
-			$online = new \DateTime('@' . $row['LASTONTIME']);
-			$online->setTimeZone($timezone);
-			$utc_online = new \DateTime('@' . $row['LASTONTIME']);
-			$utc_online->setTimeZone($utc);
-			$row['lastonline'] = $online->format(\DateTime::RSS);
-			$row['lastonline_utc'] = $utc_online->format(\DateTime::RSS);
+			$row['lastonline'] = \Scrii\getEventTime($row['LASTONTIME']);
 			$row['rank'] = ++$i;
 			$row['is_banned'] = (isset($row['BANREASON']) && $row['BANREASON'] != '') ? true : false;
 
