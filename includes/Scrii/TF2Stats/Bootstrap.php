@@ -24,7 +24,7 @@ use \OpenFlame\Framework\Event\Instance as Event;
 use \OpenFlame\Framework\Dependency\Injector;
 use \OpenFlame\Framework\Exception\Handler as ExceptionHandler;
 
-define('Scrii\\TF2Stats\\VERSION', '1.2.0-dev');
+define('Scrii\\TF2Stats\\VERSION', '1.2.0');
 
 // Our secondary bootstrap file (quartz), and the functions file...
 require \Scrii\TF2Stats\ROOT_PATH . '/includes/Codebite/Quartz/Site.php';
