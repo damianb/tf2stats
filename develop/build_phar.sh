@@ -35,7 +35,7 @@ SCRIPT=`dirname $(readlink -f $0)`
 #cd $SCRIPT/../
 
 echo "compiling phar for tf2stats web interface"
-phar-build --phar $SCRIPT/$PHARNAME -s $SCRIPT/../$SRC -x "$EXCLUDE" -X "$EXCLUDEDIR" -p $SCRIPT/../keys/priv.pem -P $SCRIPT/../keys/pub.pem
+phar-build --phar $SCRIPT/$PHARNAME -s $SCRIPT/../$SRC -x "$EXCLUDE" -X "$EXCLUDEDIR" -p $SCRIPT/../keys/priv.pem -P $SCRIPT/../keys/pub.pem --strip-files ".php$"
 mv $SCRIPT/$PHARNAME $SCRIPT/../lib/$PHARNAME
 mv $SCRIPT/$PHARNAME.pubkey $SCRIPT/../lib/$PHARNAME.pubkey
 echo 'phar compilation successful'
