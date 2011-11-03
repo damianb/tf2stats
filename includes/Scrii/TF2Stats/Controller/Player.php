@@ -125,6 +125,9 @@ class Player extends \Codebite\Quartz\Controller\Base
 			array('name' => 'Points Captured', 'value' => $row['CPCaptured']),
 			// array('name' => 'Captures Blocked', 'value' => $row['CPBlocked']), // data doesn't seem to track correctly plugin-side
 			array('name' => 'Intel Captures', 'value' => $row['FileCaptured']),
+			// halloween
+			array('name' => 'Monoculus Stuns', 'value' => $row['EyeBossStuns']),
+			array('name' => 'Monoculus Kills', 'value' => $row['EyeBossKills']),
 			// misc
 			array('name' => 'Sandviches Stolen', 'value' => $row['player_stealsandvich']),
 			array('name' => 'People Extinguished', 'value' => $row['player_extinguished']),

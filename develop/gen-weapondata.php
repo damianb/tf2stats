@@ -30,6 +30,8 @@ $weapons = array(
 	'pumpkinbomb'			=> array('Pumpkin Bomb', 'KW_pumpkin', 'pumpkin.png'),
 	'lugermorph'			=> array('The Lugermorph', 'KW_maxgun', 'maxgun.png'),
 	'bleed'					=> array('Bleed Kill', 'KW_bleed_kill', 'bleed.png'),
+	'conscientiousobjector'			=> array('Conscientious Objector', 'KW_ConscientiousObjector', 'Killicon_conscientious_objector.png'),
+	'saxxy'					=> array('The Saxxy', 'KW_Saxxy', 'Killicon_saxxy.png'),
 
 	// scout
 	'bat'					=> array('Bat', 'KW_Bt', 'bat.png'),
@@ -48,6 +50,7 @@ $weapons = array(
 	'sodapopper'			=> array('The Soda Popper', 'KW_soda_popper', 'soda_popper.png'),
 	'winger'				=> array('The Winger', 'KW_the_winger', 'winger.png'),
 	'atomizer'				=> array('The Atomizer', 'KW_atomizer', 'atomizer.png'),
+	'unarmedcombat'				=> array('Unarmed Combat', 'KW_UnarmedCombat', 'Killicon_unarmed_combat.png'),
 
 	// soldier
 	'rocketlauncher'		=> array('Rocket Launcher', 'KW_Rkt', 'rocketlauncher.png'),
@@ -105,6 +108,7 @@ $weapons = array(
 	'persianpersuader'		=> array('The Persian Persuader', 'KW_persian_persuader', 'persian_persuader.png'),
 	'splendidscreen'		=> array('The Splendid Screen', 'KW_splendid_screen', 'splendid_screen.png'),
 	'nessiesnineiron'		=> array('Nessie\'s Nine Iron', 'KW_golfclub', 'nessies_nine_iron.png'),
+	'scottishhandshake'		=> array('The Scottish Handshake', 'KW_ScottishHandshake', 'Killicon_scottish_handshake.png‎'),
 
 	// heavy
 	'minigun'				=> array('Minigun', 'KW_Cg', 'minigun.png'),
@@ -175,6 +179,7 @@ $weapons = array(
 	'enforcer'				=> array('The Enforcer', 'KW_enforcer', 'enforcer.png'),
 	'bigearner'				=> array('The Big Earner', 'KW_big_earner', 'big_earner.png'),
 	'diamondback'			=> array('The Diamondback', 'KW_Diamondback', 'diamondback.png'),
+	'wangaprick'			=> array('Wanga Prick', 'KW_WangaPrick', 'Killicon_wanga_prick.png‎'),
 );
 
 $json = json_encode($weapons);
